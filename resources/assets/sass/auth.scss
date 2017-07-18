@@ -1,0 +1,108 @@
+@import "bower_components/bourbon/app/assets/stylesheets/bourbon";
+@import "utils/utils";
+
+body {
+  background-color: #009688;
+  height: auto;
+  padding: 1px;
+  direction: rtl;
+}
+
+#auth-content {
+  min-width: 350px;
+  max-width: 350px;
+  margin: auto;
+  background-color: rgba(255, 255, 255, 0.89);
+  padding: 20px;
+  @include bshadow(10px 10px 0 rgba(0, 0, 0, 0.4));
+  position: relative;
+  margin-top: 120px;
+}
+
+#wrapper-fix {
+
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  overflow: auto;
+  direction: ltr;
+}
+
+#logo-form {
+  width: 200px;
+  position: absolute;
+  top: -100px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 101;
+}
+
+.form-title {
+  text-align: center;
+  margin-top: 39px;
+  font-size: 18px;
+}
+
+.form-description {
+  text-align: justify;
+  color: #444444;
+  margin: 10px 0;
+  .form-p {
+
+  }
+  a {
+    color: #1484C7;
+    text-decoration: none;
+  }
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form-seprator {
+  margin: 10px 0;
+  height: 1px;
+  background-color: rgba(64, 64, 64, 0.12);
+
+}
+
+.form-preloader {
+  background-color: #ffffff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+}
+
+.row-result {
+  border-bottom: 1px solid #E0E0E0;
+  &:last-child {
+    border-bottom: none;
+  }
+  padding: 15px;
+  .row-title {
+    font-size: 0.9em;
+    color: #1FB2CC;
+  }
+  .row-value {
+    color: rgb(244, 67, 54);
+    font-size: 1.1em;
+    padding: 5px 0;
+    margin-right: 10px;
+  }
+}
+
+.ng-msg {
+  padding: 10px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  &.error {
+    background-color: #F44336;
+    color: #ffffff;
+  }
+}

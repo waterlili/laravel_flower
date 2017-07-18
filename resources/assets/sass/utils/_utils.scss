@@ -1,0 +1,81 @@
+@import "grid";
+@import "margin";
+@import "component";
+@import "reset";
+@import "paginate";
+@import "font";
+@import "notice";
+@import "var";
+@import "select2";
+
+@mixin bshadow($value) {
+  @include prefixer(box-shadow, $value, spec webkit moz o);
+}
+
+.circle-thumb {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  border: 2px solid rgba(234, 234, 234, 0.69);
+  border-radius: 50%;
+  box-shadow: 2px 1px 3px rgba(128, 128, 128, 0.41);
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.w-box {
+  background-color: white;
+  @include bshadow(0px 1px 2px #CCCCCC);
+  &.red {
+    background-color: #FF5722;
+    color: white;
+  }
+  &.blue {
+    background-color: #00bcd4;
+    color: white;
+  }
+  &.green {
+    background-color: #8bc34a;
+    color: white;
+  }
+
+  &.gray {
+    background-color: #828282;
+    color: white;
+  }
+  &.brown {
+    background-color: #795548;
+    color: white;
+  }
+
+  .w-box-header {
+    border-bottom: 1px solid #e6e6e6;
+    padding: 10px;
+    background-color: rgba(128, 128, 128, 0.08);
+    font-weight: 600;
+    color: #9a9a9a;
+    &.h-md {
+      margin: -16px;
+      margin-bottom: 16px;
+    }
+  }
+}
+
+md-chip-template {
+  font-family: yek;
+  font-size: 0.9em;
+  padding: 0 10px;
+}
+
+fieldset {
+  border: 1px solid #DEDEDE;
+}
+
+.submit-wrapper {
+  border-top: 1px solid #d2d2d2;
+  background-color: #f3f3f3;
+  margin: -16px;
+  margin-top: 16px;
+}

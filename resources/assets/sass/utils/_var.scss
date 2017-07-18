@@ -1,0 +1,25 @@
+$c1: #2259a4;
+$c2: #00A797;
+$c3: #3D4C4C;
+$c4: #dbc559;
+$c5: #f4f4f4;
+
+$border-color: rgba(162, 161, 161, 0.24);
+
+@font-face {
+  font-family: yek;
+  src: url('../fonts/iransans/IRANSansMedium.woff');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: yek;
+  src: url('../fonts/iransans/IRANSansLight.woff');
+  font-weight: normal;
+}
+
+.md-tiny-title {
+  font-size: 11px;
+  font-weight: 200;
+
+}

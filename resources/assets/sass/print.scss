@@ -1,0 +1,42 @@
+@import "utils/font";
+
+body {
+  font-family: yek;
+  margin: auto;
+  border: 1px solid rgba(128, 128, 128, 0.27);
+  padding: 16px;
+  border-radius: 5px;
+}
+
+.table-print {
+  width: 100%;
+  th {
+    text-align: right;
+    border-bottom: 2px solid #d8d8d8;
+  }
+  tr {
+    &:not(:last-child) {
+      td {
+        border-bottom: 1px solid #e2e2e2;
+      }
+    }
+
+    &:nth-child(odd) {
+      td {
+        background-color: #f7f7f7;
+      }
+    }
+  }
+
+}
+
+@media only screen {
+  body {
+    width: 960px;
+    margin-top: 20px;
+  }
+}
+
+@media print {
+
+}

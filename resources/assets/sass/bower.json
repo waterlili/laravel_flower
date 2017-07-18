@@ -1,0 +1,17 @@
+{
+  "name": "sass",
+  "authors": [
+    "ara-dev <ar.azizan@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

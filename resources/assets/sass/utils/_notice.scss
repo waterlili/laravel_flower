@@ -1,0 +1,51 @@
+.notice {
+  font-size: 0.85em;
+  padding: 8px;
+  line-height: 1;
+  border: 1px solid;
+  vertical-align: middle;
+  i {
+    vertical-align: middle;
+  }
+}
+
+.notice-info {
+  background-color: #F7FEFF;
+  color: #00BCD4;
+}
+
+.notice-confirm {
+  background-color: #F9FBE7;
+  color: #8BC34A;
+}
+
+.notice-error {
+  background-color: #FFF6F5;
+  color: #F44336;
+}
+
+.notice-warn {
+  background-color: #FFFDE7;
+  color: #FF8F00;
+}
+
+.item-viewer {
+
+  $colors: (blue, #00BCD4), (red, #F44336), (green, #8BC34A), (grey, #3d3d3d), (orange, #FF8F00);
+
+  @each $key, $item in $colors {
+    &.#{$key} {
+      color: $item;
+      background-color: transparentize($item, 0.9);
+      border: 1px solid transparentize($item, 0.75);
+    }
+  }
+
+  .item-viewer-title {
+    font-style: italic;
+  }
+
+  .item-viewer-value {
+
+  }
+}

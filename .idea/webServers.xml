@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="b7b15d0d-8ace-4b50-8635-738c6f4de7a3" name="BonitaH" url="http://ftp.helentech.ir">
+        <fileTransfer host="ftp.helentech.ir" port="21" rootFolder="/public_html/bonita" password="dff3df99dfcfdfebdfdadfc1df9fdfcedf9adf93" username="helentec">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

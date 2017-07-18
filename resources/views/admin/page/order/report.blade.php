@@ -1,0 +1,3 @@
+@include('admin.page.order.block.chart-report' , ['type'=>"day", 'link'=>'console/order/day-pie-chart' , 'title'=>"وضعیت سفارش ها در "])
+@include('admin.page.order.block.chart-report' , ['type'=>"week", 'link'=>'console/order/week-line-chart' , 'title'=>"وضعیت سفارش ها در هفت روز گذشته نسبت به روز "])
+@include('admin.page.order.block.chart-report' , ['type'=>"month", 'link'=>'console/order/month-line-chart' , 'title'=>"وضعیت سفارش ها در 30 روز گذشته از "])

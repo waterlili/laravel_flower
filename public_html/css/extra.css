@@ -1,0 +1,20 @@
+input[ui-mask] {
+  direction: ltr;
+  text-align: left !important;
+}
+.ui.input input {
+  width: 50%;
+  border: 1px solid rgba(34, 36, 38, 0.37);
+}
+.ui.selection.dropdown {
+  border: 1px solid rgba(34, 36, 38, 0.37);
+}
+.ui.basic.label {
+  border: 1px solid rgba(34, 36, 38, 0.52);
+}
+.ng-jalaali-flat-datepicker {
+  left: 0;
+}
+fieldset {
+  border: 1px solid #aba3a3;
+}

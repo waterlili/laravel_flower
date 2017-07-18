@@ -1,0 +1,32 @@
+.layout-padding > *, .layout-padding-gt-sm > *, .layout-padding-md > *, .layout-padding > .flex-gt-sm {
+  padding: 0;
+}
+
+.layout-padding, .layout-padding-gt-sm, .layout-padding-md {
+  padding: 8px;
+}
+
+@media screen and (min-width: 600px) {
+  md-sidenav {
+    max-width: 300px;
+  }
+}
+
+md-input-container {
+  width: 100%;
+}
+
+@for $i from 1 through 6 {
+  h#{$i}, .h#{$i} {
+    margin: 0;
+    line-height: 1;
+  }
+}
+
+.md-list-divider {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.md-chips .md-chip-input-container, .md-chips .md-chip {
+  float: right;
+}

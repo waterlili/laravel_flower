@@ -1,0 +1,135 @@
+@font-face {
+  font-family: 'Averta';
+  font-weight: 500;
+
+  src: url('../fonts/TW-Averta-Regular.eot');
+  src: url('../fonts/TW-Averta-Regular.eot?#iefix') format('embedded-opentype'), url('../fonts/TW-Averta-Regular.woff2') format('woff2'), url('../fonts/TW-Averta-Regular.woff') format('woff'), url('../fonts/TW-Averta-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Averta';
+  font-weight: 600;
+
+  src: url('../fonts/TW-Averta-Semibold.eot');
+  src: url('../fonts/TW-Averta-Semibold.eot?#iefix') format('embedded-opentype'), url('../fonts/TW-Averta-Semibold.woff2') format('woff2'), url('../fonts/TW-Averta-Semibold.woff') format('woff'), url('../fonts/TW-Averta-Semibold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Averta';
+  font-weight: 800;
+
+  src: url('../fonts/TW-Averta-Bold.eot');
+  src: url('../fonts/TW-Averta-Bold.eot?#iefix') format('embedded-opentype'), url('../fonts/TW-Averta-Bold.woff2') format('woff2'), url('../fonts/TW-Averta-Bold.woff') format('woff'), url('../fonts/TW-Averta-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: yek;
+  src: url('../fonts/iransans/IRANSansMedium.woff');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: yek;
+  src: url('../fonts/iransans/IRANSansLight.woff');
+  font-weight: normal;
+}
+
+body {
+  //font-family: "Averta", "Avenir W02", "Avenir", Helvetica, Arial, sans-serif;
+  font-family: yek, tahoma, Sans-Serif;
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.lh-m {
+  line-height: 1.5;
+}
+
+.lh-1 {
+  line-height: 1;
+}
+
+.lh-2 {
+  line-height: 2;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+  margin: 0;
+}
+
+$f_size: 36px 30px 24px 18px 13px 11px;
+@for $i from 1 through 6 {
+  .h#{$i} {
+    font-size: nth($f_size, $i);
+    line-height: 1;
+    small {
+      font-size: 66%;
+      color: rgba(0, 0, 0, 0.3);
+    }
+  }
+
+}
+
+.lead {
+  margin-bottom: 18px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+@media (min-width: 768px) {
+  .lead {
+    font-size: 19.5px;
+  }
+}
+
+strong {
+  font-weight: 500 !important;
+}
+
+.text-muted {
+  color: #bdbdbd;
+}
+
+.text-success {
+  color: #8bc34a;
+}
+
+.text-info {
+  color: #00bcd4;
+}
+
+.text-warning {
+  color: #ffc107;
+}
+
+.text-danger {
+  color: #e51c23;
+}
+
+a, a:hover, a:focus {
+  color: #03a9f4;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:active, a:hover {
+  outline: 0;
+}
+
+.tac {
+  text-align: center;
+}
+
+.tal {
+  text-align: left;
+}
+
+.tar {
+  text-align: right;
+}
+
+.b {
+  font-weight: bold;
+}

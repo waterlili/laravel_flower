@@ -1,0 +1,133 @@
+@import "../breakpoint/breakpoint";
+
+$_mp: (p:padding, pt:padding-top, pb:padding-bottom, pl:padding-left, pr:padding-right, m:margin, mt:margin-top, mb:margin-bottom, ml:margin-left, mr:margin-right);
+$_screen: (n:0, xs:4px, sm:8px, m:12px, md:16px, xl:32px, xxl:40px);
+
+@mixin extra_margin($key , $item , $ext:'') {
+  @if ($ext != '') {
+    $ext: '-'+$ext;
+  }
+  .pv-#{$key}#{$ext} {
+    padding-top: $item !important;
+    padding-bottom: $item !important;
+  }
+
+  .ph-#{$key}#{$ext} {
+    padding-left: $item !important;
+    padding-right: $item !important;
+  }
+
+  .mv-#{$key}#{$ext} {
+    margin-top: $item !important;
+    margin-bottom: $item !important;
+  }
+
+  .mh-#{$key}#{$ext} {
+    margin-left: $item !important;
+    margin-right: $item !important;
+  }
+}
+
+@each $key, $item in $_screen {
+  @each $kp, $property in $_mp {
+    .#{$kp}-#{$key} {
+      #{$property}: $item !important;
+    }
+  }
+  @include extra_margin($key, $item);
+
+}
+
+@media (min-width: 1280px) {
+  @each $key, $item in $_screen {
+    @each $kp, $property in $_mp {
+      .#{$kp}-#{$key}-md {
+        #{$property}: $item !important;
+      }
+    }
+    @include extra_margin($key, $item, 'md');
+  }
+}
+
+@media (max-width: 1279px) {
+  @each $key, $item in $_screen {
+    @each $kp, $property in $_mp {
+      .#{$kp}-#{$key}-nmd {
+        #{$property}: $item !important;
+      }
+    }
+    @include extra_margin($key, $item, 'nmd');
+  }
+}
+
+@media (max-width: 1279px) and (min-width: 600px) {
+  @each $key, $item in $_screen {
+    @each $kp, $property in $_mp {
+      .#{$kp}-#{$key}-sm {
+        #{$property}: $item !important;
+      }
+    }
+    @include extra_margin($key, $item, 'sm');
+  }
+}
+
+@media (min-width: 1279px) and (max-width: 600px) {
+  @each $key, $item in $_screen {
+    @each $kp, $property in $_mp {
+      .#{$kp}-#{$key}-nsm {
+        #{$property}: $item !important;
+      }
+    }
+    @include extra_margin($key, $item, 'nsm');
+  }
+}
+
+@media (max-width: 599px) {
+  @each $key, $item in $_screen {
+    @each $kp, $property in $_mp {
+      .#{$kp}-#{$key}-xs {
+        #{$property}: $item !important;
+      }
+    }
+    @include extra_margin($key, $item, 'xs');
+  }
+}
+
+@media (min-width: 599px) {
+  @each $key, $item in $_screen {
+    @each $kp, $property in $_mp {
+      .#{$kp}-#{$key}-nxs {
+        #{$property}: $item !important;
+      }
+    }
+    @include extra_margin($key, $item, 'nxs');
+  }
+}
+
+.dn {
+  display: none;
+}
+
+.db-md {
+  @include breakpoint(1280px) {
+    display: block;
+  }
+}
+
+.di-md {
+  @include breakpoint(1280px) {
+    display: inline;
+  }
+}
+
+.tac {
+  text-align: center;
+}
+
+.tal {
+  text-align: left;
+}
+
+.tar {
+  text-align: right;
+}

@@ -1,0 +1,50 @@
+{
+  "name": "tw-currency-select",
+  "version": "0.2.0",
+  "main": [
+    "./dist/tw-currency-select.js",
+    "./dist/tw-currency-select.css"
+  ],
+  "ignore": [
+    "example",
+    "example.png",
+    "src",
+    "test",
+    ".gitignore",
+    "bower.json",
+    "gulpfile.js",
+    "package.json",
+    "README.md"
+  ],
+  "dependencies": {
+    "angular": "~1.3.17",
+    "bootstrap": "https://github.com/transferwise/bootstrap.git#>=4.1.1",
+    "jquery": "~2.1.4",
+    "bootstrap-select": "~1.10.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.3.0"
+  },
+  "resolutions": {
+    "angular": ">=1.2.18"
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "./dist/js/bootstrap.js",
+        "./dist/css/bootstrap.css"
+      ]
+    }
+  },
+  "homepage": "https://github.com/transferwise/tw-currency-select",
+  "_release": "0.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.2.0",
+    "commit": "4ac93954d44ca378589bbd377151fa3194eff077"
+  },
+  "_source": "https://github.com/transferwise/tw-currency-select.git",
+  "_target": "^0.2.0",
+  "_originalSource": "https://github.com/transferwise/tw-currency-select.git",
+  "_direct": true
+}

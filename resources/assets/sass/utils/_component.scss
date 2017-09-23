@@ -1,0 +1,7 @@
+.tab-btn {
+  position: relative;
+
+  &.md-active {
+    box-shadow: inset 0px -3px 0;
+  }
+}

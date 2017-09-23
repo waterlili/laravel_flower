@@ -1,0 +1,20 @@
+<?php
+return [
+  'dashboard' => 'Dashboard',
+  'wallet' => 'Wallet',
+  'exchange' => 'Exchange',
+  'accounting' => 'Accounting',
+  'payment' => 'Payment',
+  'message' => 'Message Center',
+  'user_control' => 'User Control',
+  'page_management' => 'Page Management',
+  'pages' => 'Pages',
+  'sys_management' => 'System Management',
+  'events' => 'Events',
+  'one_option' => 'Option One ',
+  'two_option' => 'Option Two ',
+  'three_option' => 'Option Three',
+  'orders' => 'Orders',
+  'last_orders' => 'Last Orders',
+  'add_order' => 'Add Order',
+];

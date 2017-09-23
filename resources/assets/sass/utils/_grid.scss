@@ -1,0 +1,61 @@
+@import "../susy/susy";
+
+$susy: (
+        flow: rtl,
+        math: fluid,
+        output: float,
+        gutter-position: inside,
+        container: auto,
+        container-position: center,
+        columns: 12,
+        gutters: .25,
+        column-width: false,
+        global-box-sizing: content-box,
+        last-flow: to,
+        debug: (
+                image: hide,
+                color: rgba(#66f, .25),
+                output: background,
+                toggle: top right,
+        ),
+        use-custom: (
+                background-image: true,
+                background-options: false,
+                box-sizing: true,
+                clearfix: false,
+                rem: true,
+        )
+);
+
+@media (min-width: 1280px) {
+  .cn-md {
+    @include container();
+  }
+  @each $item in 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 {
+    .row-#{$item}-md {
+      @include span($item);
+    }
+  }
+}
+
+@media (max-width: 1279px) and (min-width: 600px) {
+  .cn-sm {
+    @include container();
+  }
+  @each $item in 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 {
+    .row-#{$item}-sm {
+      @include span($item);
+    }
+  }
+}
+
+@media (max-width: 599px) {
+  .cn-xs {
+    @include container();
+  }
+  @each $item in 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 {
+    .row-#{$item}-xs {
+      @include span($item);
+    }
+  }
+}

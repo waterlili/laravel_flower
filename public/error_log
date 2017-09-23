@@ -1,0 +1,2 @@
+[24-Aug-2017 22:34:10 Asia/Tehran] PHP Fatal error:  Call to a member function delete() on null in /home/helentec/public/bonita/app/Http/Controllers/Adm/AdminController.php on line 130
+[24-Aug-2017 22:34:15 Asia/Tehran] PHP Fatal error:  Call to a member function delete() on null in /home/helentec/public/bonita/app/Http/Controllers/Adm/AdminController.php on line 130

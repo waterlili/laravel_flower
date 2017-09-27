@@ -10,13 +10,13 @@ process.env.NODE_ENV = 'production';
  | file for our application, as well as publishing vendor resources.
  |
  */
-elixir.config.publicPath = 'public_html';
+elixir.config.publicPath = 'public';
 
 elixir(function (mix) {
     mix.sass(['admin.scss']);
-    mix.sass(['auth.scss'], 'public_html/css/auth.css');
-    mix.sass(['public.scss'], 'public_html/css/public.css');
-    mix.sass(['print.scss'], 'public_html/css/print.css');
+    mix.sass(['auth.scss'], 'public/css/auth.css');
+    mix.sass(['public.scss'], 'public/css/public.css');
+    mix.sass(['print.scss'], 'public/css/print.css');
 
     mix.scripts(
         [
@@ -44,7 +44,7 @@ elixir(function (mix) {
             'Notify.js',
             'Preloader.js',
             'PublicCtrl.js'
-        ], 'public_html/js/public.js');
+        ], 'public/js/public.js');
 
     mix.version(['css/admin.css']);
     //mix.browserSync();

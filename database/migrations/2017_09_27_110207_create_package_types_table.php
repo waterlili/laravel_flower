@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTypeToFlowerPackagesTable extends Migration
+class CreatePackageTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,11 @@ class AddTypeToFlowerPackagesTable extends Migration
      */
     public function up()
     {
-        Schema::table('flower_packages', function (Blueprint $table) {
-            $table->string('type')->after('name');
+        Schema::create('package_types', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->decimal('price');
+            $table->timestamps();
         });
     }
 
@@ -24,8 +27,6 @@ class AddTypeToFlowerPackagesTable extends Migration
      */
     public function down()
     {
-        Schema::table('flower_packages', function (Blueprint $table) {
-            $table->removeColumn('type');
-        });
+        Schema::drop('package_types');
     }
 }

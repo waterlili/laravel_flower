@@ -15,6 +15,7 @@ elixir.config.publicPath = 'public';
 elixir(function (mix) {
     mix.sass(['admin.scss']);
     mix.sass(['auth.scss'], 'public/css/auth.css');
+    mix.sass(['app.scss'], 'public/css/app.css');
     mix.sass(['public.scss'], 'public/css/public.css');
     mix.sass(['print.scss'], 'public/css/print.css');
 

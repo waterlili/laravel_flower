@@ -39,7 +39,7 @@ class FlowerPacketController extends Controller
         $record = FlowerPacket::select([
             '*',
             FlowerPacket::$SELECT_TYPE_STR,
-        ])->with('packages');
+        ]);
 
         return $this->tableEngine($record, $request->all());
     }
@@ -47,7 +47,6 @@ class FlowerPacketController extends Controller
     public function postAdd(Request $request)
     {
         $this->validate($request,[
-            'name' => 'required',
             'type' => 'required'
         ]);
         $input = $request->all();

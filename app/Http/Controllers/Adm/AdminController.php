@@ -7,6 +7,7 @@ use App\DB\Flower;
 use App\DB\FlowerPackage;
 use App\DB\FlowerPacket;
 use App\DB\Order;
+use App\DB\PacketType;
 use App\DB\User;
 use App\DB\UserInfo;
 use App\Jobs\RemoveExcelForm;
@@ -106,6 +107,11 @@ class AdminController extends Controller {
     $input = $request->all();
     User::find($input['id'])->delete();
     return response()->json(TRUE);
+  }
+  protected function desPackageTypes(Request $request) {
+        $input = $request->all();
+        PacketType::find($input['id'])->delete();
+        return response()->json(TRUE);
   }
 
     /**

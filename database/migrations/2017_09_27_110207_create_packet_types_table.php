@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePackageTypesTable extends Migration
+class CreatePacketTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreatePackageTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('package_types', function (Blueprint $table) {
+        Schema::create('packet_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
             $table->decimal('price');
@@ -27,6 +27,6 @@ class CreatePackageTypesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('package_types');
+        Schema::drop('packet_types');
     }
 }

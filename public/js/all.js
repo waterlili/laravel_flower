@@ -1183,6 +1183,7 @@ app.controller('DeleteCtrl', function ($scope, htp, $mdDialog, notify) {
                 if (ngTable && ngTable != 'null') {
                     _this.$parent[ngTable].tableParams.reload();
                 }
+
             });
     };
 
@@ -1205,8 +1206,38 @@ app.controller('DeleteCtrl', function ($scope, htp, $mdDialog, notify) {
         });
     };
 });
+app.controller('DeleteItemCtrl', function ($scope, htp, $mdDialog, notify) {
+    var _this = $scope;
+    _this.destroy = function (id, where) {
+        htp(home('console/destroy'), {id: id, where: where})
+            .then(function (response) {
+                notify('warning', 'آیتم مورد نظر با موفقیت حذف شد');
 
+            });
+    };
 
+    _this.showConfirm = function (ev, id, where, title,$index) {
+        var desc = trans('message.desc_delete');
+        if (title) {
+            desc = trans('message.content_delete', {title: title});
+        }
+        var confirm = $mdDialog.confirm()
+            .title(trans('message.title_delete'))
+            .textContent(desc)
+            .ariaLabel('حذف مورد')
+            .targetEvent(ev)
+            .ok('بلی')
+            .cancel('خیر');
+        $mdDialog.show(confirm).then(function () {
+            _this.destroy(id, where);
+            console.log($index);
+            var index = _this.packet_type.items.indexOf($index);
+            _this.packet_type.items.splice(index, 1);
+        }, function () {
+
+        });
+    };
+});
 app.controller('EditCtrl', function ($scope, htp, $mdDialog, notify, $mdMedia) {
     var _this = $scope;
     _this.showEditDialog = function (ev, template_url, row, ctrl, where, id, ngTable) {
@@ -1593,9 +1624,10 @@ app.controller('ConstCtrl', function ($scope, htp, notify) {
         };
         this.add = function () {
             that.errorItems = undefined;
-            htp(home(this.set), {title: this.name}).then(function (res) {
+            htp(home(this.set), {title: this.name,price: this.price}).then(function (res) {
                 that.init();
                 that.name = undefined;
+                that.price =undefined;
             }).error(function (res, sts) {
                 if (sts == 422) {
                     that.errorItems = res;
@@ -1610,7 +1642,7 @@ app.controller('ConstCtrl', function ($scope, htp, notify) {
     _this.pack = new CONST('console/manage/set-const-pack', 'console/manage/get-const-pack');
     _this.cost = new CONST('console/manage/set-const-cost', 'console/manage/get-const-cost');
     _this.user_type = new CONST('console/manage/set-const-user-type', 'console/manage/get-const-user-type');
-    
+    _this.packet_type = new CONST('console/manage/set-const-packet-type', 'console/manage/get-const-packet-type');
 });
 app.controller('CostCtrl', function ($scope, htp, notify) {
     var _this = $scope;
@@ -1717,95 +1749,10 @@ app.controller('CustomerAddCtrl', function ($scope, htp, $controller, notify) {
         return $export;
     };
 });
-app.controller('CustomerListCtrl', function ($scope, htp, $mdDialog, notify) {
+app.controller('CustomerListCtrl', function ($scope) {
     var _this = $scope;
     _this.tbl = {};
-    _this.orderDialog = function (row, ev) {
-        var dialog = $mdDialog.show({
-                controller: function ($scope, $controller, dt, $mdDialog) {
-                    $scope.dt = dt;
-                    $scope.edit_mode = true;
-                    $scope.data = {};
-                    $scope.hide = function () {
-                        $mdDialog.hide();
-                    };
-                    $scope.cancel = function () {
-                        $mdDialog.cancel();
-                    };
-                    $scope.tbl = {};
-                    $scope.tbl.postData = function () {
-                        return {
-                            uid: dt.id
-                        }
-                    };
 
-                    var FACTS = function () {
-                        this.paid = this.unpaid = this.loyalty = undefined;
-                        var that = this;
-                        htp(home('console/customer/get-facts-data'), {uid: dt.id}).then(function (response) {
-                            if (response && response.result == true) {
-                                that.data = response.facts;
-                            }
-                        });
-                    };
-                    $scope.facts = new FACTS();
-                },
-                templateUrl: home('console/customer/get-order-data'),
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                clickOutsideToClose: true,
-                locals: {
-                    dt: row
-                },
-                fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-            })
-            .then(function (answer) {
-
-            });
-    };
-
-
-    _this.ibanDialog = function (row, ev) {
-        var dialog = $mdDialog.show({
-                controller: function ($scope, $controller, dt, $mdDialog) {
-                    $scope.dt = dt;
-                    $scope.edit_mode = true;
-                    $scope.hide = function () {
-                        $mdDialog.hide();
-                    };
-                    $scope.cancel = function () {
-                        $mdDialog.cancel();
-                    };
-                    $scope.editBtnDialog = function () {
-                        $scope.preloader = true;
-                        htp(home('console/edit-dialog'), {
-                            data: $scope.data
-                        }).then(function (response) {
-                            $scope.preloader = false;
-                            $mdDialog.hide();
-                        });
-                    };
-                    // $controller(ctrl, {$scope: $scope});
-                    $scope.init = function ($id) {
-                        htp(home('console/customer/get-iden-info'), {id: $id}).then(function (response) {
-                            console.log('response', response);
-                            $scope.ibans = response;
-                        });
-                    };
-                },
-                templateUrl: home('console/customer/iban-info/' + row.id),
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                clickOutsideToClose: true,
-                locals: {
-                    dt: row
-                },
-                fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-            })
-            .then(function (answer) {
-
-            });
-    }
 });
 app.controller('FlowerAddCtrl', function ($scope, htp, $controller) {
     $controller('SubmitController', {$scope: $scope});
@@ -2482,7 +2429,6 @@ app.controller('ProductAddCtrl', function ($scope, htp, $controller) {
             this.flowerOpt.searchText = undefined;
             this.flowerOpt.selectedItem = undefined;
         };
-
         this.remove = function ($index) {
             _this.data.composit = _.without(_this.data.composit, _this.data.composit[$index]);
         };

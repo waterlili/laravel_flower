@@ -73,7 +73,7 @@ $total = \App\View\Text::create('item.total', 'تعداد')
                 <div flex-gt-md="50" class="mr-md-md">
                     {!! $sender !!}
                 </div>
-
+                    <div ng-click="setVisitor()">{{b}}</div>
             </div>
         </fieldset>
         <fieldset flex-gt-md="33" class="mr-md-md">

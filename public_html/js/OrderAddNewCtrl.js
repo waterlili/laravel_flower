@@ -48,7 +48,6 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope , notify) {
             tmp[item.id] = item.price;
         });
         _this.prices = tmp;
-        
     });
 
     $('.ui.accordion').accordion();

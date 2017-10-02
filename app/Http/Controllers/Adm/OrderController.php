@@ -122,10 +122,7 @@ class OrderController extends Controller {
     if (!is_null($order['uid'])) {
       $order['customer'] = $order['uid_ac'];
     }
-
     return response()->json($order);
-    
-
   }
 
   public function postGetDayReportData(Request $request) {

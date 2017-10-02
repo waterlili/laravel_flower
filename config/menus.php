@@ -43,6 +43,7 @@ return [
         'add' => [
           'title' => 'افزودن سفارش ',
           'url' => 'console/order/add',
+          
           'ctrl' => 'OrderPageCtrl',
           'rid' => 101
         ],

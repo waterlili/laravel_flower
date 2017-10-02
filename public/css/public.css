@@ -2441,7 +2441,6 @@ Version: 3.4.5 Timestamp: Mon Nov  4 08:22:42 PST 2013
 .select2-dropdown-open .select2-choice .select2-arrow {
   background: transparent;
   border-left: none;
-  -webkit-filter: none;
   filter: none; }
 
 .select2-dropdown-open .select2-choice .select2-arrow b {

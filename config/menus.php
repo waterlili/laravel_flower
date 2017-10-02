@@ -37,6 +37,7 @@ return [
                 'add' => [
                     'title' => 'افزودن سفارش ',
                     'url' => 'console/order/add',
+
                     'ctrl' => 'OrderPageCtrl',
                     'rid' => 101
                 ],
@@ -59,7 +60,6 @@ return [
                 ]
             ]
         ],
-
         'node' => [
             'title'    => 'menu.product',
             'icon'     => 'description',

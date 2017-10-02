@@ -1,5 +1,4 @@
 'use strict';
-
 function deepFind(obj, path) {
     var paths = path.split('.')
         , current = obj
@@ -2458,7 +2457,6 @@ app.controller('OrderListDayCtrl', function ($scope) {
 });
 app.controller('OrderListCtrl', function ($scope, htp, $mdDialog, NgTableParams) {
     var _this = $scope;
-
     _this.tbl = {};
 
 

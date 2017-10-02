@@ -1,5 +1,4 @@
 'use strict';
-
 function deepFind(obj, path) {
     var paths = path.split('.')
         , current = obj

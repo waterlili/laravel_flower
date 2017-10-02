@@ -87,7 +87,6 @@ $parent = \App\View\Ac::create('data.parent', 'parentOpt', 'console/cost/parent-
                     @include('MD.input.text' , $paraph)
                 </div>
             </fieldset>
-
             @include('MD.Notice.notice' , ['type'=>'error' , 'repeat'=>'errorItem'])
             @include('MD.button.submit' , ['title'=>"ثبت سند"])
         </form>

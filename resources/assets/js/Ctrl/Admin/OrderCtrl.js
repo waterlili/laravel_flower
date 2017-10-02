@@ -1,6 +1,5 @@
 app.controller('OrderListCtrl', function ($scope, htp, $mdDialog, NgTableParams) {
     var _this = $scope;
-
     _this.tbl = {};
 
 

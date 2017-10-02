@@ -1,4 +1,4 @@
-app.controller('CustomerAddCtrl', function ($scope, htp, $controller, notify) {
+app.controller('CustomerAddCtrl', function ($scope, htp, $controller, notify, $rootScope) {
     $controller('SubmitController', {$scope: $scope});
     var _this = $scope;
     _this.submiterUrl = 'console/customer/add';
@@ -13,8 +13,10 @@ app.controller('CustomerAddCtrl', function ($scope, htp, $controller, notify) {
         });
     }
     _this.afterSuccess = function (response) {
-        notify('info', 'کد مشتری ثبت شده :' + response.id);
+        if (response.id)
+            notify('info', 'کد مشتری ثبت شده :' + response.id);
     };
+
 
     var GROUP = function () {
         this.text = undefined;
@@ -75,4 +77,19 @@ app.controller('CustomerAddCtrl', function ($scope, htp, $controller, notify) {
         traverse(items);
         return $export;
     };
+
+    _this.$watch('customer', function (n) {
+        if (n) {
+            $rootScope.$emit('order:customer', n);
+        }
+    });
+
+    _this.getData = function () {
+        _this.data = undefined;
+        htp(home('console/order/get-data'), {customer: _this.customer}).then(function (res) {
+            _this.data = res
+        }).error(function () {
+
+        });
+    }
 });

@@ -7,11 +7,13 @@ use App\DB\IBAN;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class PublicController extends Controller {
   public function getIndex() {
+//    dd(Hash::make('12563'));
     return redirect('console');
   }
 
@@ -23,6 +25,13 @@ class PublicController extends Controller {
   public function getSignUp() {
     return view('public.signup');
   }
+
+
+    public function getMigrate()
+    {
+        Artisan::call('migrate');
+        return response()->json(true);
+    }
 
 
   public function postCheckAuth() {

@@ -2,34 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ad245ce3-4547-474b-9f4a-11ca444ae540" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/DB/Customer.php" afterPath="$PROJECT_DIR$/app/DB/Customer.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/DB/Order.php" afterPath="$PROJECT_DIR$/app/DB/Order.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/DB/OrderDay.php" afterPath="$PROJECT_DIR$/app/DB/OrderDay.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/DB/Product.php" afterPath="$PROJECT_DIR$/app/DB/Product.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/DB/User.php" afterPath="$PROJECT_DIR$/app/DB/User.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Adm/CostController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Adm/CostController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Adm/CustomerController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Adm/CustomerController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/PublicController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/PublicController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" afterPath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/app.css" afterPath="$PROJECT_DIR$/css/app.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/app.css.map" afterPath="$PROJECT_DIR$/css/app.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/migrations/2017_06_19_005520_add_customer.php" afterPath="$PROJECT_DIR$/database/migrations/2017_06_19_005520_add_customer.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/migrations/2017_06_19_011829_add_order.php" afterPath="$PROJECT_DIR$/database/migrations/2017_06_19_011829_add_order.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/migrations/2017_09_28_213510_add_combination_flowers_to_flower_packages_table.php" afterPath="$PROJECT_DIR$/database/migrations/2017_09_28_213510_add_combination_flowers_to_flower_packages_table.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/app.css.map" afterPath="$PROJECT_DIR$/public/css/app.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/extra.css" afterPath="$PROJECT_DIR$/public/css/extra.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/extra.less" afterPath="$PROJECT_DIR$/public/css/extra.less" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/public.css.map" afterPath="$PROJECT_DIR$/public/css/public.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/all.js.map" afterPath="$PROJECT_DIR$/public/js/all.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/assets/sass/app.css" afterPath="$PROJECT_DIR$/resources/assets/sass/app.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/assets/sass/app.css.map" afterPath="$PROJECT_DIR$/resources/assets/sass/app.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/assets/sass/app.scss" afterPath="$PROJECT_DIR$/resources/assets/sass/app.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/assets/sass/css/app.css" afterPath="$PROJECT_DIR$/resources/assets/sass/css/app.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/assets/sass/css/app.css.map" afterPath="$PROJECT_DIR$/resources/assets/sass/css/app.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/assets/sass/public.css" afterPath="$PROJECT_DIR$/resources/assets/sass/public.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/assets/sass/public.css.map" afterPath="$PROJECT_DIR$/resources/assets/sass/public.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/import.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/import.blade.php" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -44,8 +18,8 @@
       <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="8" column="2" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+            <state relative-caret-position="110">
+              <caret line="5" column="4" lean-forward="false" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -284,11 +258,25 @@
       <option name="project" value="LOCAL" />
       <updated>1506955074535</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Merge branch 'Orderformerge' into developer&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;app/DB/Order.php&#10;#&#9;app/DB/Product.php&#10;#&#9;app/DB/User.php&#10;#&#9;app/Http/Controllers/Adm/AdminController.php&#10;#&#9;app/Http/Controllers/Adm/CostController.php&#10;#&#9;app/Http/Controllers/Adm/CustomerController.php&#10;#&#9;app/Http/Controllers/Adm/ManageController.php&#10;#&#9;app/Http/Controllers/Adm/OrderController.php&#10;#&#9;app/Http/Controllers/PublicController.php&#10;#&#9;app/Http/routes.php&#10;#&#9;app/Providers/AppServiceProvider.php&#10;#&#9;composer.lock&#10;#&#9;config/app.php&#10;#&#9;config/menus.php&#10;#&#9;doc/doc/IMG_20170527_175604.jpg&#10;#&#9;doc/doc/IMG_20170527_175609.jpg&#10;#&#9;gulpfile.js&#10;#&#9;package.json&#10;#&#9;public/css/extra.css&#10;#&#9;public/css/public.css.map&#10;#&#9;public/js/all.js&#10;#&#9;public/js/all.js.map&#10;#&#9;resources/assets/js/AdminCtrl.js&#10;#&#9;resources/assets/js/Ctrl/Admin/ConstCtrl.js&#10;#&#9;resources/assets/js/Ctrl/Admin/CustomerCtrl.js&#10;#&#9;resources/assets/js/Ctrl/Admin/OrderCtrl.js&#10;#&#9;resources/assets/js/Ctrl/Admin/ProductCtrl.js&#10;#&#9;resources/assets/js/Tranc.js&#10;#&#9;resources/assets/sass/admin.scss&#10;#&#9;resources/assets/sass/public.scss&#10;#&#9;resources/lang/fa/menu.php&#10;#&#9;resources/views/MD/input/select-sm.blade.php&#10;#&#9;resources/views/admin/block/deleteBtn.blade.php&#10;#&#9;resources/views/admin/import.blade.php&#10;#&#9;resources/views/admin/page/cost/cost.blade.php&#10;#&#9;resources/views/admin/page/customer/add.blade.php&#10;#&#9;resources/views/admin/page/manage/const/const.blade.php&#10;#&#9;resources/views/admin/page/product/add.blade.php&#10;#&#9;resources/views/welcome.blade.php">
+      <created>1506955127209</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1506955127209</updated>
+    </task>
+    <task id="LOCAL-00003" summary="editor changes wouldn't version control">
+      <created>1506955733718</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1506955733718</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2541000" />
+    <option name="totallyTimeSpent" value="3205000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="57" y="-4" width="1095" height="868" extended-state="6" />
@@ -304,7 +292,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297587" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297587" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24976258" sideWeight="0.508" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24976258" sideWeight="0.508" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24976258" sideWeight="0.492" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -325,6 +313,32 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
@@ -333,7 +347,8 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="some primary changes" />
     <MESSAGE value="Merge branch 'Orderformerge' into developer&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;app/DB/Order.php&#10;#&#9;app/DB/Product.php&#10;#&#9;app/DB/User.php&#10;#&#9;app/Http/Controllers/Adm/AdminController.php&#10;#&#9;app/Http/Controllers/Adm/CostController.php&#10;#&#9;app/Http/Controllers/Adm/CustomerController.php&#10;#&#9;app/Http/Controllers/Adm/ManageController.php&#10;#&#9;app/Http/Controllers/Adm/OrderController.php&#10;#&#9;app/Http/Controllers/PublicController.php&#10;#&#9;app/Http/routes.php&#10;#&#9;app/Providers/AppServiceProvider.php&#10;#&#9;composer.lock&#10;#&#9;config/app.php&#10;#&#9;config/menus.php&#10;#&#9;doc/doc/IMG_20170527_175604.jpg&#10;#&#9;doc/doc/IMG_20170527_175609.jpg&#10;#&#9;gulpfile.js&#10;#&#9;package.json&#10;#&#9;public/css/extra.css&#10;#&#9;public/css/public.css.map&#10;#&#9;public/js/all.js&#10;#&#9;public/js/all.js.map&#10;#&#9;resources/assets/js/AdminCtrl.js&#10;#&#9;resources/assets/js/Ctrl/Admin/ConstCtrl.js&#10;#&#9;resources/assets/js/Ctrl/Admin/CustomerCtrl.js&#10;#&#9;resources/assets/js/Ctrl/Admin/OrderCtrl.js&#10;#&#9;resources/assets/js/Ctrl/Admin/ProductCtrl.js&#10;#&#9;resources/assets/js/Tranc.js&#10;#&#9;resources/assets/sass/admin.scss&#10;#&#9;resources/assets/sass/public.scss&#10;#&#9;resources/lang/fa/menu.php&#10;#&#9;resources/views/MD/input/select-sm.blade.php&#10;#&#9;resources/views/admin/block/deleteBtn.blade.php&#10;#&#9;resources/views/admin/import.blade.php&#10;#&#9;resources/views/admin/page/cost/cost.blade.php&#10;#&#9;resources/views/admin/page/customer/add.blade.php&#10;#&#9;resources/views/admin/page/manage/const/const.blade.php&#10;#&#9;resources/views/admin/page/product/add.blade.php&#10;#&#9;resources/views/welcome.blade.php" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'Orderformerge' into developer&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;app/DB/Order.php&#10;#&#9;app/DB/Product.php&#10;#&#9;app/DB/User.php&#10;#&#9;app/Http/Controllers/Adm/AdminController.php&#10;#&#9;app/Http/Controllers/Adm/CostController.php&#10;#&#9;app/Http/Controllers/Adm/CustomerController.php&#10;#&#9;app/Http/Controllers/Adm/ManageController.php&#10;#&#9;app/Http/Controllers/Adm/OrderController.php&#10;#&#9;app/Http/Controllers/PublicController.php&#10;#&#9;app/Http/routes.php&#10;#&#9;app/Providers/AppServiceProvider.php&#10;#&#9;composer.lock&#10;#&#9;config/app.php&#10;#&#9;config/menus.php&#10;#&#9;doc/doc/IMG_20170527_175604.jpg&#10;#&#9;doc/doc/IMG_20170527_175609.jpg&#10;#&#9;gulpfile.js&#10;#&#9;package.json&#10;#&#9;public/css/extra.css&#10;#&#9;public/css/public.css.map&#10;#&#9;public/js/all.js&#10;#&#9;public/js/all.js.map&#10;#&#9;resources/assets/js/AdminCtrl.js&#10;#&#9;resources/assets/js/Ctrl/Admin/ConstCtrl.js&#10;#&#9;resources/assets/js/Ctrl/Admin/CustomerCtrl.js&#10;#&#9;resources/assets/js/Ctrl/Admin/OrderCtrl.js&#10;#&#9;resources/assets/js/Ctrl/Admin/ProductCtrl.js&#10;#&#9;resources/assets/js/Tranc.js&#10;#&#9;resources/assets/sass/admin.scss&#10;#&#9;resources/assets/sass/public.scss&#10;#&#9;resources/lang/fa/menu.php&#10;#&#9;resources/views/MD/input/select-sm.blade.php&#10;#&#9;resources/views/admin/block/deleteBtn.blade.php&#10;#&#9;resources/views/admin/import.blade.php&#10;#&#9;resources/views/admin/page/cost/cost.blade.php&#10;#&#9;resources/views/admin/page/customer/add.blade.php&#10;#&#9;resources/views/admin/page/manage/const/const.blade.php&#10;#&#9;resources/views/admin/page/product/add.blade.php&#10;#&#9;resources/views/welcome.blade.php" />
+    <MESSAGE value="editor changes wouldn't version control" />
+    <option name="LAST_COMMIT_MESSAGE" value="editor changes wouldn't version control" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -351,8 +366,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="8" column="2" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        <state relative-caret-position="110">
+          <caret line="5" column="4" lean-forward="false" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
           <folding />
         </state>
       </provider>

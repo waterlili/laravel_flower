@@ -21,6 +21,12 @@ return [
           'ctrl' => 'CustomerAddCtrl',
           'rid' => 101
         ],
+        'test' => [
+          'title' => 'تست',
+          'url' => 'console/cost/test',
+          'ctrl' => 'TestCtrl',
+          'rid' => 101
+        ],
 //        'customer_group' => [
 //          'title' => 'گروه بندی مشتریان',
 //          'url' => 'console/customer/group',

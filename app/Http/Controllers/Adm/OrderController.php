@@ -124,6 +124,8 @@ class OrderController extends Controller {
     }
 
     return response()->json($order);
+    
+
   }
 
   public function postGetDayReportData(Request $request) {

@@ -36,6 +36,8 @@ $js = [
         'bower_components/mdPickers/dist/mdPickers.min.js',
         'bower_components/ng-jalaali-flat-datepicker/dist/ng-jalaali-flat-datepicker.min.js',
         'js/all.js?' . time(),
+        'js/TestCtrl.js?' . time(),
+
         'js/OrderAddNewCtrl.js?' . time(),
 ];
 

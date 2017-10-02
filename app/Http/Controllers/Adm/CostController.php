@@ -24,6 +24,18 @@ class CostController extends Controller {
     return view('admin.page.cost.cost');
   }
 
+  
+  
+  public function getTest(){
+    return view('admin.page.test.test');
+  }
+  
+  
+  public function postTest(Request $request){
+    $input = $request->all();
+    return response()->json(['sasasas'], 422);
+    dd($input);
+  }
 
   public function postList(Request $request) {
     $record = Cost::select([

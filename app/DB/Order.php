@@ -4,6 +4,7 @@ namespace App\DB;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Morilog\Jalali\jDate;
 
 class Order extends Model {
 
@@ -16,31 +17,31 @@ class Order extends Model {
   public static $SELECT_CLOSEAT_J = 'closed_at as closed_at_j';
   public static $SELECT_STS_STR = 'sts as sts_str';
   public static $SELECT_AUTOMATE_STR = 'automate as automate_str';
-  public static $SELECT_DAY_STR = 'day as day_str';
-  public static $SELECT_WHEN_STR = 'when as when_str';
-  public static $SELECT_SEND_AT_J = 'send_at as send_at_j';
+    public static $SELECT_DAY_STR = 'week as week_str';
+    public static $SELECT_TIME_STR = 'time as time_str';
+    public static $SELECT_FIRST_J = 'first as first_j';
 
 
   protected $dates = ['deleted_at'];
   protected $fillable = array(
     'type',
-    'when',
-    'day',
-    'uid',
+      'time',
+      'week',
+      'sending',
+      'first',
+      'w',
+      'sending_name',
+      'sending_mobile',
+      'sending_address',
+      'prc',
+      'total',
+      'pay_type',
     'price',
-    'total_product',
-    'automate',
-    'creator',
-    'closed_at',
-    'closed',
-    'submit',
-    'sender',
-    'send_at',
-    'pay_number',
-    'visitor',
+      'bank',
+      'cid',
+      'uid',
+      'no',
     'sts',
-    'feedback',
-    'description'
   );
 
   public static $NORMAL_TYPE = 1;
@@ -71,6 +72,11 @@ class Order extends Model {
     ];
   }
 
+    public static $TypeStr = [
+        1 => 'هفتگی',
+        2 => 'مناسبتی',
+    ];
+
   public static $StsStr = [
     '-2' => 'لغو سفارش',
     '-1' => 'پرداخت نشده',
@@ -78,10 +84,10 @@ class Order extends Model {
   ];
 
   public static $PayType = [
-    1 => 'نقدی',
-    2 => 'اینترنتی',
-    3 => 'واریز به حساب',
-    4 => 'پوز',
+      1 => 'ارسال لینک پرداخت',
+      2 => 'دریافت نقدی',
+//    3 => 'واریز بانکی',
+      4 => 'کارت به کارت',
   ];
 
   public static $StsSubmit = [
@@ -135,8 +141,14 @@ class Order extends Model {
     return $this->belongsTo('App\DB\User', 'sender');
   }
 
-  public function user_name() {
-    return $this->_get_from_user('uid');
+    public function customer()
+    {
+        return $this->belongsTo('App\DB\Customer', 'cid')->select(['id', 'name']);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\DB\User', 'uid')->select(['id', 'lname']);
   }
 
   public function sender_name() {
@@ -159,11 +171,13 @@ class Order extends Model {
     return $this->belongsTo('App\DB\User', 'creator');
   }
 
-  public function getWhenStrAttribute($value) {
+    public function getTimeStrAttribute($value)
+    {
     return array_get(self::GetWhen(), $value, 'تعریف نشده');
   }
 
-  public function getDayStrAttribute($value) {
+    public function getWeekStrAttribute($value)
+    {
     if (is_null($value)) {
       return NULL;
     }
@@ -206,5 +220,19 @@ class Order extends Model {
   public function getAutomateStrAttribute($value) {
     return ($value == 1) ? 'بلی' : 'خیر';
   }
+
+
+    public function getFirstAttribute($value)
+    {
+        if (is_null($value)) {
+            return NULL;
+        }
+        if (!is_string($value)) {
+            return $value;
+        } else {
+            return jDate::forge($value)->format('Y/m/d');
+        }
+
+    }
 
 }

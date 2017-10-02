@@ -62,4 +62,15 @@ class Product extends Model {
       DB::raw('CONCAT(fname , " " , lname) as name')
     ]);
   }
+
+
+    public function scopeActive($qurey)
+    {
+        return $qurey->where('is_active', 1);
+    }
+
+    public static function GetPrc()
+    {
+        return Product::active()->select(['id', 'title', 'price'])->get()->toArray();
+    }
 }

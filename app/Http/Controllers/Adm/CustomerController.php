@@ -97,8 +97,8 @@ class CustomerController extends Controller {
       }
     }
 
-    
-    return response()->json(['result' => TRUE , 'id'=>$user->id]);
+
+      return response()->json(['result' => TRUE, 'id' => $user->id]);
   }
 
 

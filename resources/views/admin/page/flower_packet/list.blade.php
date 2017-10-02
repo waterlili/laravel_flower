@@ -1,7 +1,6 @@
 <?php
 $table = new \App\View\NgTable('جدول بسته ها', 'tbl', 'console/flower_packet/list');
 $table
-        ->addCol('name', 'نام')
         ->addCol('type_str', 'نوع')
         ->addInclude('opt', 'عملیات', 'admin.page.flower_packet.block.listOpt');
 

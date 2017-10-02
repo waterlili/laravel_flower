@@ -605,6 +605,7 @@ app.controller('DeleteCtrl', function ($scope, htp, $mdDialog, notify) {
                 if (ngTable && ngTable != 'null') {
                     _this.$parent[ngTable].tableParams.reload();
                 }
+
             });
     };
 
@@ -627,8 +628,38 @@ app.controller('DeleteCtrl', function ($scope, htp, $mdDialog, notify) {
         });
     };
 });
+app.controller('DeleteItemCtrl', function ($scope, htp, $mdDialog, notify) {
+    var _this = $scope;
+    _this.destroy = function (id, where) {
+        htp(home('console/destroy'), {id: id, where: where})
+            .then(function (response) {
+                notify('warning', 'آیتم مورد نظر با موفقیت حذف شد');
 
+            });
+    };
 
+    _this.showConfirm = function (ev, id, where, title, $index) {
+        var desc = trans('message.desc_delete');
+        if (title) {
+            desc = trans('message.content_delete', {title: title});
+        }
+        var confirm = $mdDialog.confirm()
+            .title(trans('message.title_delete'))
+            .textContent(desc)
+            .ariaLabel('حذف مورد')
+            .targetEvent(ev)
+            .ok('بلی')
+            .cancel('خیر');
+        $mdDialog.show(confirm).then(function () {
+            _this.destroy(id, where);
+            console.log($index);
+            var index = _this.packet_type.items.indexOf($index);
+            _this.packet_type.items.splice(index, 1);
+        }, function () {
+
+        });
+    };
+});
 app.controller('EditCtrl', function ($scope, htp, $mdDialog, notify, $mdMedia) {
     var _this = $scope;
     _this.showEditDialog = function (ev, template_url, row, ctrl, where, id, ngTable) {

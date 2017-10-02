@@ -1,6 +1,5 @@
 <?php
-$name = \App\View\Text::create('data.name', 'نام بسته')->form()->export();
-$types = \App\View\Select::create('data.type', 'نوع پکیج گل', \App\DB\FlowerPacket::types())->setRequired(true)->form()->export();
+$types = \App\View\Select::create('data.type', 'نوع پکیج گل', \App\DB\PacketType::pluck('title')->toArray())->form()->export();
 
 $comp_package = \App\View\Select::create('comp.package', 'ترکیب', \App\DB\FlowerPackage::pluck('name', 'id')->toArray())->form()->export();
 ?>
@@ -10,9 +9,6 @@ $comp_package = \App\View\Select::create('comp.package', 'ترکیب', \App\DB\F
         <div layout-gt-md="row">
             <div flex-gt-md="33">
                 @include('MD.input.select-sm', $types)
-            </div>
-            <div flex-gt-md="33">
-                @include('MD.input.text-sm', $name)
             </div>
         </div>
 
@@ -44,6 +40,5 @@ $comp_package = \App\View\Select::create('comp.package', 'ترکیب', \App\DB\F
                 </div>
             </div>
         </fieldset>
-        <div flex></div>
     </div>
 @endsection

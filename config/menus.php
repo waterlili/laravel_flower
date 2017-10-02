@@ -29,31 +29,37 @@ return [
                 ]
             ]
         ],
-        'order'    => [
-            'title'    => 'menu.orders',
-            'icon'     => 'receipt',
-            'w'        => 1,
+        'order' => [
+            'title' => 'menu.orders',
+            'icon' => 'receipt',
+            'w' => 1,
             'children' => [
-                'add'    => [
+                'add' => [
                     'title' => 'افزودن سفارش ',
-                    'url'   => 'console/order/add',
-                    'ctrl'  => 'OrderAddCtrl',
-                    'rid'   => 101
+                    'url' => 'console/order/add',
+
+                    'ctrl' => 'OrderPageCtrl',
+                    'rid' => 101
                 ],
                 'orders' => [
                     'title' => 'menu.orders',
-                    'url'   => 'console/order/list',
-                    'rid'   => 101
+                    'url' => 'console/order/list',
+                    'rid' => 101
                 ],
-                'menu'   => [
+                'orders-day' => [
+                    'title' => 'سفارش روز',
+                    'url' => 'console/order/list-day',
+                    'ctrl' => 'OrderListDayCtrl',
+                    'rid' => 101
+                ],
+                'menu' => [
                     'title' => 'گزارش',
-                    'url'   => 'console/order/report',
-                    'ctrl'  => 'OrderReportCtrl',
-                    'rid'   => 101
+                    'url' => 'console/order/report',
+                    'ctrl' => 'OrderReportCtrl',
+                    'rid' => 101
                 ]
             ]
         ],
-
         'node' => [
             'title'    => 'menu.product',
             'icon'     => 'description',

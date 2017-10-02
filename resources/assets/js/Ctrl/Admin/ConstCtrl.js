@@ -23,9 +23,10 @@ app.controller('ConstCtrl', function ($scope, htp, notify) {
         };
         this.add = function () {
             that.errorItems = undefined;
-            htp(home(this.set), {title: this.name}).then(function (res) {
+            htp(home(this.set), {title: this.name, price: this.price}).then(function (res) {
                 that.init();
                 that.name = undefined;
+                that.price = undefined;
             }).error(function (res, sts) {
                 if (sts == 422) {
                     that.errorItems = res;
@@ -40,5 +41,5 @@ app.controller('ConstCtrl', function ($scope, htp, notify) {
     _this.pack = new CONST('console/manage/set-const-pack', 'console/manage/get-const-pack');
     _this.cost = new CONST('console/manage/set-const-cost', 'console/manage/get-const-cost');
     _this.user_type = new CONST('console/manage/set-const-user-type', 'console/manage/get-const-user-type');
-    
+    _this.packet_type = new CONST('console/manage/set-const-packet-type', 'console/manage/get-const-packet-type');
 });

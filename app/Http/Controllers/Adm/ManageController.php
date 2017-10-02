@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Adm;
 
 use App\DB\Cnt;
 use App\DB\Log;
+use App\DB\PacketType;
 use App\DB\Permission;
 use App\DB\User;
 use Illuminate\Http\Request;
@@ -51,6 +52,11 @@ class ManageController extends Controller {
     return response()->json(['result' => TRUE, 'data' => $json]);
   }
 
+    public function postGetConstPacketType()
+    {
+        $json = PacketType::packettype()->get();
+        return response()->json(['result' => TRUE, 'data' => $json]);
+    }
   public function postSetConstUserType(Request $request) {
     return $this->_setConst($request, Cnt::$USERTYPE);
   }
@@ -59,6 +65,15 @@ class ManageController extends Controller {
     return $this->_setConst($request, Cnt::$FLOWER);
   }
 
+    public function postSetConstPacketType(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'price' => 'required',
+        ]);
+        PacketType::create(['title' => $request->input('title'), 'price' => $request->input('price')]);
+        return response()->json(['result' => TRUE]);
+    }
 
   public function postSetConstPack(Request $request) {
     $this->_setConst($request, Cnt::$PACK);

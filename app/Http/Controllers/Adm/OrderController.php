@@ -4,18 +4,18 @@ namespace App\Http\Controllers\Adm;
 
 
 use App\DB\Cnt;
+use App\DB\Customer;
 use App\DB\Order;
+use App\DB\OrderDay;
 use App\DB\OrderList;
 use App\DB\Product;
 use App\DB\User;
+use App\Http\Controllers\Controller;
+use App\Http\Requests;
 use App\View\LineChart;
 use App\View\PieChart;
 use Carbon\Carbon;
-use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Morilog\Jalali\jDate;
@@ -26,12 +26,17 @@ class OrderController extends Controller {
   }
 
   public function getAdd() {
-    return view('admin.page.order.add');
+      return view('admin.page.order.add-new');
   }
 
   public function getList() {
     return view('admin.page.order.list');
   }
+
+    public function getListDay()
+    {
+        return view('admin.page.order.list-day');
+    }
 
   public function getEdit() {
     return view('admin.page.order.edit');
@@ -57,6 +62,22 @@ class OrderController extends Controller {
   public function postOrderList(Request $request) {
     return $this->_orderList($request);
   }
+
+    public function postListDay(Request $request)
+    {
+        $records = OrderDay::select([
+            '*',
+            Order::$SELECT_TYPE_STR,
+            Order::$SELECT_STS_STR,
+            'when as when_str',
+            'when as when_day',
+            Order::$selectCJ,
+        ]);
+        $records->with('customer');
+        $records->with('product');
+        $records->with('order');
+        return $this->tableEngine($records, $request->all());
+    }
 
   public function postOrderUnverified(Request $request) {
     return $this->_orderList($request, 'unver');
@@ -103,7 +124,6 @@ class OrderController extends Controller {
     if (!is_null($order['uid'])) {
       $order['customer'] = $order['uid_ac'];
     }
-
     return response()->json($order);
   }
 
@@ -256,23 +276,18 @@ class OrderController extends Controller {
   protected function _orderList(Request $request, $p = NULL) {
     $records = Order::select([
       '*',
-      Order::$SELECT_CLOSEAT_J,
       Order::$SELECT_TYPE_STR,
-      Order::$SELECT_WHEN_STR,
+        Order::$SELECT_TIME_STR,
       Order::$SELECT_DAY_STR,
-      Order::$SELECT_AUTOMATE_STR,
       Order::$SELECT_STS_STR,
-      Order::$SELECT_SEND_AT_J,
       Order::$selectCJ,
       Order::$selectUJ,
     ]);
     if ($p == 'unver') {
       $records->where('sts', -1);
     }
-    $records->with('user_name');
-    $records->with('sender_name');
-    $records->with('visitor_name');
-    $records->with('creator_name');
+      $records->with('customer');
+      $records->with('user');
     return $this->tableEngine($records, $request->all());
   }
 
@@ -283,6 +298,11 @@ class OrderController extends Controller {
       ->get();
     return response()->json($oitems);
   }
+
+    public function postOrderPrices(Request $request)
+    {
+        return response()->json(Product::GetPrc());
+    }
 
   public function postAdd(Request $request) {
     $input = $request->all();
@@ -421,5 +441,71 @@ class OrderController extends Controller {
     $input = $request->all();
     Order::find($input['id'])->update(['sts' => $input['sts']]);
     return response()->json(TRUE);
+
   }
+
+
+    public function postCustomerSearch(Request $request)
+    {
+        $input = $request->all();
+
+        $users = Customer::where('name', 'LIKE', '%' . $input['query'] . '%')
+            ->select(['id', 'name as title'])
+            ->get()
+            ->toArray();
+        return response()->json(['results' => $users]);
+    }
+
+
+    public function postGetData(Request $request)
+    {
+        $input = $request->all();
+        return response()->json(Customer::find($input['customer']['id']));
+    }
+
+
+    public function postSubmit(Request $request)
+    {
+        $input = $request->all();
+
+        foreach ($input['orders'] as $order) {
+            $obj = [
+                'type' => array_get($order, 'type', NULL),
+                'time' => array_get($order, 'time', NULL),
+                'week' => array_get($order, 'week', NULL),
+                'sending' => array_get($order, 'sending', NULL),
+                'first' => jDate::dateTimeFromFormat('Y/m/d', array_get($order, 'first', jDate::forge()
+                    ->format('Y/m/d'))),
+                'w' => array_get($order, 'w', NULL),
+                'sending_name' => array_get($order, 'sending_name', NULL),
+                'sending_mobile' => array_get($order, 'sending_mobile', NULL),
+                'sending_address' => array_get($order, 'sending_mobile', NULL),
+                'prc' => array_get($order, 'prc', NULL),
+                'total' => array_get($order, 'total', NULL),
+                'pay_type' => array_get($order, 'pay_type', NULL),
+                'price' => array_get($order, 'price', NULL),
+                'bank' => array_get($order, 'bank', NULL),
+                'cid' => array_get($input, 'customer.id', NULL),
+                'uid' => Auth::user()->id,
+                'no' => array_get($order, 'no', NULL),
+                'sts' => array_get($order, 'sts', '-1'),
+            ];
+            if (isset($order['id'])) {
+                Order::find($order['id'])->update($obj);
+            } else {
+                Order::create($obj);
+            }
+        }
+
+        return response()->json(['result' => TRUE]);
+    }
+
+
+    public function postGetPrc(Request $request)
+    {
+        $input = $request->all();
+        $orders = Order::whereCid($input['cid'])->get();
+        return response()->json($orders);
+    }
+
 }

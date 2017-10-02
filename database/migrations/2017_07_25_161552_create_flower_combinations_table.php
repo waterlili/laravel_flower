@@ -18,7 +18,7 @@ class CreateFlowerCombinationsTable extends Migration
 //            $table->string('flowers');//serialized array of flowers id - next table is instead this;
             $table->timestamps();
 
-            $table->foreign('package_id')->references('id')->on('packages');
+            $table->foreign('package_id')->references('id')->on('flower_packages');
 
         });
     }

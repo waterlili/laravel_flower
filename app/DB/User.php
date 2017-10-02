@@ -93,14 +93,23 @@ class User extends Authenticatable {
   }
 
   public function getStsStrAttribute($value) {
+      if (is_null($value)) {
+          return NULL;
+      }
     return array_get(User::$STATUS, $value, 'تعریف نشده');
   }
 
   public function getCusTypeStrAttribute($value) {
+      if (is_null($value)) {
+          return NULL;
+      }
     return array_get(self::CUSTOMER_TYPE(), $value, 'تعریف نشده');
   }
 
   public function getTypeStrAttribute($value) {
+      if (is_null($value)) {
+          return NULL;
+      }
     return array_get(User::$TYPES, $value, 'تعریف نشده');
   }
 

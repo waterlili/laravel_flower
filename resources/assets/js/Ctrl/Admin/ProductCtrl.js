@@ -21,7 +21,6 @@ app.controller('ProductAddCtrl', function ($scope, htp, $controller) {
             this.flowerOpt.searchText = undefined;
             this.flowerOpt.selectedItem = undefined;
         };
-
         this.remove = function ($index) {
             _this.data.composit = _.without(_this.data.composit, _this.data.composit[$index]);
         };

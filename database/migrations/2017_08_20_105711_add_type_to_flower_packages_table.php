@@ -13,11 +13,7 @@ class AddTypeToFlowerPackagesTable extends Migration
     public function up()
     {
         Schema::table('flower_packages', function (Blueprint $table) {
-            $table->enum('type', [
-                'normal',
-                'luxury',
-                'managerial'
-            ])->after('combination_flowers');
+            $table->string('type')->after('name');
         });
     }
 

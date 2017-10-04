@@ -7,6 +7,7 @@ use App\DB\Cnt;
 use App\DB\Flower;
 use App\DB\FlowerPackage;
 use App\DB\FlowerPacket;
+use App\DB\PacketType;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -38,7 +39,7 @@ class FlowerPacketController extends Controller
     {
         $record = FlowerPacket::select([
             '*',
-            FlowerPacket::$SELECT_TYPE_STR,
+
         ]);
 
         return $this->tableEngine($record, $request->all());

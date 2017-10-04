@@ -109,10 +109,11 @@ class AdminController extends Controller {
     return response()->json(TRUE);
   }
 
-    protected function desPackageTypes(Request $request)
+    protected function desFlowerPacket(Request $request)
     {
+        dd("sdfsdf");
         $input = $request->all();
-        PacketType::find($input['id'])->delete();
+        FlowerPacket::find($input['id'])->delete();
         return response()->json(TRUE);
     }
 

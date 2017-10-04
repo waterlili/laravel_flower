@@ -1229,7 +1229,6 @@ app.controller('DeleteItemCtrl', function ($scope, htp, $mdDialog, notify) {
             .cancel('خیر');
         $mdDialog.show(confirm).then(function () {
             _this.destroy(id, where);
-            console.log($index);
             var index = _this.packet_type.items.indexOf($index);
             _this.packet_type.items.splice(index, 1);
         }, function () {
@@ -1623,9 +1622,9 @@ app.controller('ConstCtrl', function ($scope, htp, notify) {
         };
         this.add = function () {
             that.errorItems = undefined;
-            htp(home(this.set), {title: this.name, price: this.price}).then(function (res) {
+            htp(home(this.set), {title: this.title, price: this.price}).then(function (res) {
                 that.init();
-                that.name = undefined;
+                that.title = undefined;
                 that.price = undefined;
             }).error(function (res, sts) {
                 if (sts == 422) {
@@ -1641,7 +1640,7 @@ app.controller('ConstCtrl', function ($scope, htp, notify) {
     _this.pack = new CONST('console/manage/set-const-pack', 'console/manage/get-const-pack');
     _this.cost = new CONST('console/manage/set-const-cost', 'console/manage/get-const-cost');
     _this.user_type = new CONST('console/manage/set-const-user-type', 'console/manage/get-const-user-type');
-    _this.packet_type = new CONST('console/manage/set-const-packet-type', 'console/manage/get-const-packet-type');
+    _this.packet_type = new CONST('console/manage/set-const-flower-packet', 'console/manage/get-const-flower-packet');
 });
 app.controller('CostCtrl', function ($scope, htp, notify) {
     var _this = $scope;

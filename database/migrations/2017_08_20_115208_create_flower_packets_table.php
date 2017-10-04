@@ -14,7 +14,8 @@ class CreateFlowerPacketsTable extends Migration
     {
         Schema::create('flower_packets', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('title');
+            $table->decimal('price', 19, 3)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

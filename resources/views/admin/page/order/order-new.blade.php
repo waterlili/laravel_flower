@@ -59,7 +59,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     <i class="dropdown icon"></i>
                     <div class="default text">انتخاب بسته</div>
                     <div class="menu">
-                        @foreach(\App\DB\PacketType::GetPckt() as $item)
+                        @foreach(\App\DB\FlowerPacket::GetPckt() as $item)
                             <div class="item" data-value="<% $item['id'] %>"><% $item['title'] %></div>
                         @endforeach
                     </div>

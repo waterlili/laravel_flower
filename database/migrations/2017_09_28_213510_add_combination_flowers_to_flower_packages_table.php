@@ -14,7 +14,6 @@ class AddCombinationFlowersToFlowerPackagesTable extends Migration
     {
         Schema::table('flower_packages', function (Blueprint $table) {
             $table->text('combination_flowers', 255)->after('has_leaf')->nullable();
-            $table->timestamp('deleted_at')->after('updated_at')->default(Null);
         });
     }
 

@@ -652,7 +652,6 @@ app.controller('DeleteItemCtrl', function ($scope, htp, $mdDialog, notify) {
             .cancel('خیر');
         $mdDialog.show(confirm).then(function () {
             _this.destroy(id, where);
-            console.log($index);
             var index = _this.packet_type.items.indexOf($index);
             _this.packet_type.items.splice(index, 1);
         }, function () {

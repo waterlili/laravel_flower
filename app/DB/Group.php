@@ -3,7 +3,7 @@
 namespace App\DB;
 
 class Group extends Model {
-  public $table = 'group';
+    public $table = 'groups';
   public $timestamps = FALSE;
   protected $fillable = [
     'title',

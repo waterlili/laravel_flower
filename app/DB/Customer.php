@@ -4,7 +4,7 @@ namespace App\DB;
 
 class Customer extends Model
 {
-    protected $table = 'customer';
+    protected $table = 'customers';
     protected $fillable = [
         'fname',
         'lname',

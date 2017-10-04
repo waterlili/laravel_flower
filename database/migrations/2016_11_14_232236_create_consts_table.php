@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePacketsTable extends Migration
+class CreateConstsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,10 @@ class CreatePacketsTable extends Migration
      */
     public function up()
     {
-        Schema::create('packets', function (Blueprint $table) {
+        Schema::create('consts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->timestamps();
+            $table->tinyInteger('w');
+            $table->string('title', 100);
             $table->softDeletes();
         });
     }
@@ -27,6 +27,6 @@ class CreatePacketsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('packets');
+        Schema::drop('consts');
     }
 }

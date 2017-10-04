@@ -19,7 +19,7 @@ class CreateFlowerPackageFlowerPacketTable extends Migration
             $table->timestamps();
 
             $table->foreign('flower_package_id')->references('id')->on('flower_packages');
-            $table->foreign('flower_packet_id')->references('id')->on('packets');
+            $table->foreign('flower_packet_id')->references('id')->on('flower_packets');
         });
     }
 

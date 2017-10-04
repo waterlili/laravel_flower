@@ -85,7 +85,7 @@ class CustomerController extends Controller {
 
   public function postAdd(Request $request) {
     $input = $request->all();
-    $user = User::create($input);
+      $user = Customer::create($input);
 
     UserInfo::create(array_merge(['uid' => $user->id], $input));
     if (isset($input['groups']) && is_array($input['groups'])) {

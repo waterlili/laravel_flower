@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFlowerTable extends Migration
+class CreateFlowersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -23,6 +23,7 @@ class CreateFlowerTable extends Migration
             $table->enum('saghe', ['kootah', 'motvaset', 'boland']);
             $table->enum('mandegari', ['kam', 'motvaset', 'ziad']);
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -306,6 +306,7 @@ class OrderController extends Controller {
 
   public function postAdd(Request $request) {
     $input = $request->all();
+      dd($request->all());
     $input['creator'] = Auth::user()->id;
     if (isset($input['customer']) && isset($input['customer']['id'])) {
       $input['uid'] = $input['customer']['id'];
@@ -466,6 +467,7 @@ class OrderController extends Controller {
 
     public function postSubmit(Request $request)
     {
+//        dd($request->all());
         $input = $request->all();
 
         foreach ($input['orders'] as $order) {
@@ -485,11 +487,12 @@ class OrderController extends Controller {
                 'pay_type' => array_get($order, 'pay_type', NULL),
                 'price' => array_get($order, 'price', NULL),
                 'bank' => array_get($order, 'bank', NULL),
-                'cid' => array_get($input, 'customer.id', NULL),
+                'cid' => array_get($input, 'id', NULL),
                 'uid' => Auth::user()->id,
                 'no' => array_get($order, 'no', NULL),
                 'sts' => array_get($order, 'sts', '-1'),
             ];
+//            dd($obj['cid']);
             if (isset($order['id'])) {
                 Order::find($order['id'])->update($obj);
             } else {

@@ -46,16 +46,18 @@ class FlowerPacketController extends Controller
 
     public function postAdd(Request $request)
     {
-        $this->validate($request,[
-            'type' => 'required'
-        ]);
+//        $input = ['type_id'=>$request->type,'name'=> $request->name];
+//        $flower_packet = FlowerPacket::create($input);
         $input = $request->all();
-        $flower_packet = FlowerPacket::create($input);
+        $flower_packet = new FlowerPacket();
+        $flower_packet->type_id = $request->type;
+        $flower_packet->save();
         $packet_packages = [];
         foreach ($input['composit'] as $packages) {
             $packet_packages[] = $packages['package'];
         }
         $flower_packet->packages()->sync($packet_packages);
+
         return response()->json(['result' => TRUE]);
     }
 

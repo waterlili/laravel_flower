@@ -21,4 +21,9 @@ class FlowerPacket extends Model
         return $this->belongsToMany(FlowerPackage::class);
     }
 
+    public function packetType()
+    {
+        return $this->hasOne(PacketType::class);
+    }
+
 }

@@ -9,7 +9,6 @@ class Flower extends Model
 
     public $timestamps = TRUE;
     protected $table = 'flowers';
-
     use SoftDeletes;
     protected $dates = ['deleted_at'];
     protected $fillable = array(
@@ -102,5 +101,10 @@ class Flower extends Model
     public function variations()
     {
         return $this->hasMany(FlowerVariation::class);
+    }
+
+    public static function GetFlw()
+    {
+        return Flower::select(['id', 'name', 'price'])->get()->toArray();
     }
 }

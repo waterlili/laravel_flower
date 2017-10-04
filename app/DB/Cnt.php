@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cnt extends Model {
   use SoftDeletes;
-  protected $table = 'const';
+    protected $table = 'consts';
   public $timestamps = FALSE;
   protected $fillable = [
     'title',

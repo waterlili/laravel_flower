@@ -15,5 +15,15 @@ class PacketType extends Model
         return $q;
     }
 
+    public function flowerPackets()
+    {
+        return $this->belongsToMany(FlowerPacket::class);
+    }
+
+    public static function GetPckt()
+    {
+        return PacketType::select(['id', 'title', 'price'])->get()->toArray();
+    }
+
 
 }

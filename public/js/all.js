@@ -1670,7 +1670,7 @@ app.controller('CostCtrl', function ($scope, htp, notify) {
         });
     };
 });
-app.controller('CustomerAddCtrl', function ($scope, htp, $controller, notify) {
+app.controller('CustomerAddCtrl', function ($scope, htp, $controller, notify, $rootScope) {
     $controller('SubmitController', {$scope: $scope});
     var _this = $scope;
     _this.submiterUrl = 'console/customer/add';
@@ -1685,8 +1685,10 @@ app.controller('CustomerAddCtrl', function ($scope, htp, $controller, notify) {
         });
     }
     _this.afterSuccess = function (response) {
-        notify('info', 'کد مشتری ثبت شده :' + response.id);
+        if (response.id)
+            notify('info', 'کد مشتری ثبت شده :' + response.id);
     };
+
 
     var GROUP = function () {
         this.text = undefined;
@@ -1747,6 +1749,21 @@ app.controller('CustomerAddCtrl', function ($scope, htp, $controller, notify) {
         traverse(items);
         return $export;
     };
+
+    _this.$watch('customer', function (n) {
+        if (n) {
+            $rootScope.$emit('order:customer', n);
+        }
+    });
+
+    _this.getData = function () {
+        _this.data = undefined;
+        htp(home('console/order/get-data'), {customer: _this.customer}).then(function (res) {
+            _this.data = res
+        }).error(function () {
+
+        });
+    }
 });
 app.controller('CustomerListCtrl', function ($scope) {
     var _this = $scope;
@@ -1849,39 +1866,39 @@ app.controller('FlowerAddCtrl', function ($scope, htp, $controller) {
 app.controller('FlowerListCtrl', function ($scope, $mdDialog, htp) {
     var _this = $scope;
     _this.tbl = {};
-    _this.showDialog = function (row, ev) {
-        console.log(row);
-        var dialog = $mdDialog.show({
-            controller: function ($scope, $controller, dt, $mdDialog) {
-                $scope.dt = dt;
-                $scope.edit_mode = true;
-                $scope.data = row;
-                $scope.hide = function () {
-                    $mdDialog.hide();
-                };
-                $scope.cancel = function () {
-                    $mdDialog.cancel();
-                };
-                $scope.tbl = {};
-                $scope.tbl.postData = function () {
-                    return {
-                        uid: dt.id
-                    }
-                };
-            },
-            templateUrl: home('console/flower/data'),
-            parent: angular.element(document.body),
-            targetEvent: ev,
-            clickOutsideToClose: true,
-            locals: {
-                dt: row
-            },
-            fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-        })
-            .then(function (answer) {
-
-            });
-    };
+    // _this.showDialog = function (row, ev) {
+    //     console.log(row);
+    //     var dialog = $mdDialog.show({
+    //         controller: function ($scope, $controller, dt, $mdDialog) {
+    //             $scope.dt = dt;
+    //             $scope.edit_mode = true;
+    //             $scope.data = row;
+    //             $scope.hide = function () {
+    //                 $mdDialog.hide();
+    //             };
+    //             $scope.cancel = function () {
+    //                 $mdDialog.cancel();
+    //             };
+    //             $scope.tbl = {};
+    //             $scope.tbl.postData = function () {
+    //                 return {
+    //                     uid: dt.id
+    //                 }
+    //             };
+    //         },
+    //         templateUrl: home('console/flower/data'),
+    //         parent: angular.element(document.body),
+    //         targetEvent: ev,
+    //         clickOutsideToClose: true,
+    //         locals: {
+    //             dt: row
+    //         },
+    //         fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+    //     })
+    //         .then(function (answer) {
+    //
+    //         });
+    // };
 });
 app.controller('FlowerEditCtrl', function ($scope, htp, $controller) {
     var _this = $scope;

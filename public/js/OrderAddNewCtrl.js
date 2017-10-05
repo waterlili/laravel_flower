@@ -31,7 +31,7 @@ app.controller('OrderPageCtrl', function ($scope, htp, $rootScope) {
 });
 
 
-app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
+app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope , notify) {
     var _this = $scope;
     _this.data = {};
     _this.prc = {};
@@ -185,7 +185,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     _this.submit = function () {
         _this.loading = true;
         htp(home('console/order/submit'), _this.data).then(function (res) {
-            notify('info', 'اطلاعات با موفقیت ثبت گردید')
+            notify('info' , 'اطلاعات با موفقیت ثبت گردید')
         }).error(function (res, sts) {
             if (sts == 422) {
                 _this.errorItems = res;

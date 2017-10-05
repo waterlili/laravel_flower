@@ -1,6 +1,6 @@
 
 <div class="mb-xxl">
-    <div class="ui selection dropdown" use-select-sm ng-model="<% $ngModel %>" style="width: 100%">
+    <div class="ui selection dropdown" use-dropdown ng-model="<% $ngModel %>" style="width: 100%">
         <input type="hidden" ng-model="<% $ngModel %>" name="<% $name %>">
         <i class="dropdown icon"></i>
         <div class="default text"><% $label %></div>

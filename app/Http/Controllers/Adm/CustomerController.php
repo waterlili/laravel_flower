@@ -9,14 +9,10 @@ use App\DB\IBAN;
 use App\DB\Order;
 use App\DB\User;
 use App\DB\UserInfo;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Collection;
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller {
   //
@@ -85,20 +81,17 @@ class CustomerController extends Controller {
 
   public function postAdd(Request $request) {
     $input = $request->all();
+    $input['name'] = $input['fname'] . ' ' . $input['lname'];
+    $input['sts'] = 1;
+    if (isset($input['id'])) {
+      $user = Customer::find($input['id'])->update($input);
+      return response()->json(['result' => TRUE]);
+    }
+    else {
       $user = Customer::create($input);
-
-    UserInfo::create(array_merge(['uid' => $user->id], $input));
-    if (isset($input['groups']) && is_array($input['groups'])) {
-      foreach ($input['groups'] as $item) {
-        CustomerGroup::create([
-          'group' => $item,
-          'customer' => $user->id
-        ]);
-      }
+      return response()->json(['result' => TRUE, 'id' => $user->id]);
     }
 
-
-      return response()->json(['result' => TRUE, 'id' => $user->id]);
   }
 
 

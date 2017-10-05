@@ -306,7 +306,6 @@ class OrderController extends Controller {
 
   public function postAdd(Request $request) {
     $input = $request->all();
-      dd($request->all());
     $input['creator'] = Auth::user()->id;
     if (isset($input['customer']) && isset($input['customer']['id'])) {
       $input['uid'] = $input['customer']['id'];

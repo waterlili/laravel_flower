@@ -10,7 +10,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 <md-button class="md-raised md-primary" ng-click="addOrder()">افزودن سفارش</md-button>
 
 <div class="ui styled accordion" style="width: 100%">
-    <div class="title" layout="row" layout-align="start center" ng-repeat-start="item in data.orders">
+    <div class="title" layout="row" layout-align="start center"  ng-repeat-start="item in data.orders">
         <i class="icon edit"></i>
         سفارش
         <span>{{item.id || $index + 1}}</span>
@@ -23,48 +23,29 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
         <div class="p-md">
             <div layout-gt-md="row" layout-align="start center">
                 <div class="ui buttons mb-md">
-                    <button class="ui button" ng-click="type(item , 1)" ng-class="{'active teal':item.type == 1}">
-                        اشتراکی
+                    <button class="ui button" ng-click="type(item , 1)" ng-class="{'active teal':item.type == 1}">هفتگی
                     </button>
                     <button class="ui button" ng-click="type(item , 2)" ng-class="{'active teal':item.type == 2}">
-                        هدیه
+                        مناسبتی
                     </button>
                 </div>
                 <div flex></div>
 
             </div>
             <div layout-gt-md="row" layout-align="start center">
-                <div class="ui checkbox mb-md">
-                    <input type="checkbox" ng-model="item.shared_flower">
-                    <label>گل</label>
-                </div>
-                <div layout-gt-md="row" layout-align="start center" ng-if="item.shared_flower">
-                    <div class="ui fluid search selection dropdown ml-md-md mb-xl" use-dropdown ng-model="item.prc">
-                        <input type="hidden" name="country">
-                        <i class="dropdown icon"></i>
-                        <div class="default text">انتخاب گل</div>
-                        <div class="menu">
-                            @foreach(\App\DB\Flower::GetFlw() as $item)
-                                <div class="item" data-value="<% $item['id'] %>"><% $item['name'] %></div>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div>
-                        @include('MD.input.text-sm' , $total)
-                    </div>
-                </div>
-                <div class="ui fluid search selection dropdown ml-md-md mb-xl" ng-hide="item.shared_flower" use-dropdown
-                     ng-model="item.prc">
+                <div class="ui fluid search selection dropdown ml-md-md mb-xl" use-dropdown ng-model="item.prc">
                     <input type="hidden" name="country">
                     <i class="dropdown icon"></i>
-                    <div class="default text">انتخاب بسته</div>
+                    <div class="default text">انتخاب محصول</div>
                     <div class="menu">
-                        @foreach(\App\DB\FlowerPacket::GetPckt() as $item)
+                        @foreach(\App\DB\Product::GetPrc() as $item)
                             <div class="item" data-value="<% $item['id'] %>"><% $item['title'] %></div>
                         @endforeach
                     </div>
                 </div>
-
+                <div>
+                    @include('MD.input.text-sm' , $total)
+                </div>
             </div>
             <div layout-gt-md="row" ng-if="item.type == 1">
                 <div class="ui buttons mb-md ml-md-md" flex-gt-md="66">
@@ -92,7 +73,6 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                 <div flex-gt-md="33">
                     @include('MD.input.text-sm' , $first)
                 </div>
-
             </div>
 
             <div layout-gt-md="row" ng-if="item.type == 2">

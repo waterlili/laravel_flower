@@ -22,7 +22,7 @@ $comp_total = \App\View\Text::create('comp.total', 'تعداد')->numeric()->exp
 @section('form')
     <div layout-gt-md="row">
         <div flex-gt-md="33">
-            @include('MD.input.text' ,  $title)
+            @include('MD.input.text-sm' ,  $title)
         </div>
         <div flex-gt-md="33">
             @include('MD.input.text' ,  $code)

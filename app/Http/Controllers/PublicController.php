@@ -27,11 +27,10 @@ class PublicController extends Controller {
   }
 
 
-    public function getMigrate()
-    {
-        Artisan::call('migrate');
-        return response()->json(true);
-    }
+  public function getMigrate() {
+    Artisan::call('migrate');
+    return response()->json(true);
+  }
 
 
   public function postCheckAuth() {

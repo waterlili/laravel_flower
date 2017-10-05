@@ -8,14 +8,13 @@ use Morilog\Jalali\jDate;
 
 class Order extends Model {
 
-  protected $table = 'order';
+    protected $table = 'orders';
   public $timestamps = TRUE;
 
   use SoftDeletes;
 
   public static $SELECT_TYPE_STR = 'type as type_str';
   public static $SELECT_CLOSEAT_J = 'closed_at as closed_at_j';
-  public static $SELECT_STS_STR = 'sts as sts_str';
   public static $SELECT_AUTOMATE_STR = 'automate as automate_str';
     public static $SELECT_DAY_STR = 'week as week_str';
     public static $SELECT_TIME_STR = 'time as time_str';
@@ -24,24 +23,18 @@ class Order extends Model {
 
   protected $dates = ['deleted_at'];
   protected $fillable = array(
+      'cid',
     'type',
       'time',
-      'week',
+      'daysOfWeek',
       'sending',
-      'first',
-      'w',
+      'month',
       'sending_name',
       'sending_mobile',
       'sending_address',
-      'prc',
-      'total',
-      'pay_type',
-    'price',
-      'bank',
-      'cid',
-      'uid',
-      'no',
-    'sts',
+      'expired_at'
+
+
   );
 
   public static $NORMAL_TYPE = 1;
@@ -77,13 +70,8 @@ class Order extends Model {
         2 => 'مناسبتی',
     ];
 
-  public static $StsStr = [
-    '-2' => 'لغو سفارش',
-    '-1' => 'پرداخت نشده',
-    1 => 'پرداخت شده',
-  ];
 
-  public static $PayType = [
+    public static $PayType = [
       1 => 'ارسال لینک پرداخت',
       2 => 'دریافت نقدی',
 //    3 => 'واریز بانکی',
@@ -99,20 +87,6 @@ class Order extends Model {
   public function users() {
     return $this->belongsTo('App\DB\User', 'uid');
   }
-
-
-  public function scopePaid($q) {
-    return $q->where(function ($q) {
-      return $q->whereSts(1);
-    });
-  }
-
-  public function scopeUnpaid($q) {
-    return $q->where(function ($q) {
-      return $q->whereSts(-1);
-    });
-  }
-
   protected function _get_from_user($col) {
     return $this->belongsTo('App\DB\User', $col)->select([
       'id',
@@ -209,14 +183,6 @@ class Order extends Model {
     return $this->_get_from_user_for_ac('visitor');
   }
 
-  public function getStsStrAttribute($value) {
-    return array_get(self::$StsStr, $value, '');
-  }
-
-  public function getSubmitStrAttribute($value) {
-    return array_get(self::$StsSubmit, $value, '');
-  }
-
   public function getAutomateStrAttribute($value) {
     return ($value == 1) ? 'بلی' : 'خیر';
   }
@@ -234,5 +200,6 @@ class Order extends Model {
         }
 
     }
+
 
 }

@@ -7,6 +7,7 @@ use App\DB\FlowerPacket;
 use App\DB\Log;
 use App\DB\Permission;
 use App\DB\User;
+use App\DB\FlowerPacketType;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -52,7 +53,7 @@ class ManageController extends Controller {
     return response()->json(['result' => TRUE, 'data' => $json]);
   }
 
-    public function postGetConstFlowerPacket()
+    public function postGetConstPacketType()
     {
         $json = FlowerPacket::GetPckt();
         return response()->json(['result' => TRUE, 'data' => $json]);
@@ -65,7 +66,7 @@ class ManageController extends Controller {
     return $this->_setConst($request, Cnt::$FLOWER);
   }
 
-    public function postSetConstFlowerPacket(Request $request)
+    public function postSetConstPacketType(Request $request)
     {
         $this->validate($request, [
             'title' => 'required',
@@ -86,7 +87,7 @@ class ManageController extends Controller {
 
   public function _setConst(Request $request, $w) {
     $this->validate($request, [
-      'title' => 'required|unique:const'
+        'title' => 'required|unique:consts'
     ]);
     Cnt::create(['title' => $request->input('title'), 'w' => $w]);
     return response()->json(['result' => TRUE]);

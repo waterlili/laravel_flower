@@ -6,6 +6,7 @@ use App\DB\Customer;
 use App\DB\Flower;
 use App\DB\FlowerPackage;
 use App\DB\FlowerPacket;
+use App\DB\FlowerPacketType;
 use App\DB\Order;
 use App\DB\PacketType;
 use App\DB\User;
@@ -109,13 +110,6 @@ class AdminController extends Controller {
     return response()->json(TRUE);
   }
 
-    protected function desFlowerPacket(Request $request)
-    {
-        dd("sdfsdf");
-        $input = $request->all();
-        FlowerPacket::find($input['id'])->delete();
-        return response()->json(TRUE);
-    }
 
     /**
      * Delete flowers from database
@@ -148,9 +142,9 @@ class AdminController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     protected function desFlowerPackets(Request $request) {
-    $input = $request->all();
-    FlowerPacket::find($input['id'])->delete();
-    return response()->json(TRUE);
+        $input = $request->all();
+        FlowerPacket::find($input['id'])->delete();
+        return response()->json(TRUE);
   }
 
 

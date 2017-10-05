@@ -5,7 +5,7 @@
         @include('MD.Notice.notice' , ['type'=>'error' , 'repeat'=>'submit.errorItem'])
         @if(!isset($edt))
             <md-divider class="mv-md"></md-divider>
-            <div layout="row" layout-align="start center" class="mt-md">
+            <div layout="row" layout-align="start center" class="mt-md" ng-hide="dk">
                 @include('MD.button.submit' , ['title'=>"ثبت" , 'submit.submit()'])
                 <div layout="row" ng-if="_loading">
                     <md-progress-circular md-diameter="20px"></md-progress-circular>

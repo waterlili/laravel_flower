@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddOrder extends Migration
+class CreateOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,28 +12,26 @@ class AddOrder extends Migration
      */
     public function up()
     {
-        Schema::create('order', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('cid')->unsigned();
             $table->tinyInteger('type');
             $table->tinyInteger('time')->nullable();
-            $table->timestamp('first')->nullable();
-            $table->tinyInteger('week')->nullable();
+            $table->tinyInteger('daysOfWeek')->nullable();
             $table->tinyInteger('sending')->nullable();
-            $table->tinyInteger('w')->nullable();
+            $table->tinyInteger('month')->nullable();
             $table->string('sending_name', 50)->nullable();
             $table->string('sending_mobile', 15)->nullable();
             $table->string('sending_address')->nullable();
-            $table->integer('prc')->unsigned();
-            $table->integer('cid')->unsigned();
-            $table->integer('uid')->unsigned();
-            $table->mediumInteger('total')->nullable();
-            $table->tinyInteger('pay_type')->nullable();
-            $table->integer('price')->nullable();
-            $table->string('bank')->nullable();
-            $table->string('no')->nullable();
-            $table->tinyInteger('sts')->nullable();
+            $table->timestamp('expired_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('cid')->references('id')->on('customers')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+
         });
     }
 
@@ -44,6 +42,6 @@ class AddOrder extends Migration
      */
     public function down()
     {
-        Schema::drop('order');
+        Schema::drop('orders');
     }
 }

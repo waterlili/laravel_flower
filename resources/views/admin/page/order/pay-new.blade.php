@@ -34,7 +34,7 @@ $date2 = \App\View\Text::create('item.pay_date', 'تاریخ واریز')->dateI
                         <i class="dropdown icon"></i>
                         <div class="default text">وضعیت سند</div>
                         <div class="menu">
-                            @foreach(\App\DB\Order::$StsStr as $key=>$item)
+                            @foreach(\App\DB\OrderPayment::$StsStr as $key=>$item)
                                 <div class="item" data-value="<% $key %>"><% $item %></div>
                             @endforeach
                         </div>

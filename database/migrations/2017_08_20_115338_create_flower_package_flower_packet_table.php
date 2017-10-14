@@ -16,6 +16,7 @@ class CreateFlowerPackageFlowerPacketTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('flower_package_id');
             $table->unsignedInteger('flower_packet_id');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('flower_package_id')->references('id')->on('flower_packages');

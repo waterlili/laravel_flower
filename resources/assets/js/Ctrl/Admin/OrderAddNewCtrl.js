@@ -40,7 +40,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     _this.type = function (item, $index) {
         item.type = $index;
     };
-
+    angular.module('tabsDemoDynamicHeight', ['ngMaterial']);
 
     htp(home('console/order/order-prices')).then(function (res) {
         var tmp = {};
@@ -57,7 +57,6 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
             _this.data.orders = res;
         });
     });
-
 
     _this.payType = function (item, $index) {
         item.pay_type = $index;
@@ -135,16 +134,6 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
         },
     ];
     _this.time = [
-        {
-            id: 1,
-            title: 'صبح 9- 13'
-        },
-        {
-            id: 2,
-            title: 'بعد از ظهر 15-18'
-        }
-    ];
-    _this.time2 = [
         {
             id: 1,
             title: '9-12'

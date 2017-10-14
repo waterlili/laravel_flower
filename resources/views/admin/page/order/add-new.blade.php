@@ -17,7 +17,7 @@ $day = \App\View\Select::create('data.day', 'روز', \App\DB\Order::GetDays())
         ->form()
         ->export();
 
-$sts = \App\View\Select::create('data.sts', 'وضعیت سفارش', \App\DB\Order::$StsStr)
+$sts = \App\View\Select::create('data.sts', 'وضعیت سفارش', \App\DB\OrderPayment::$StsStr)
         ->setRequired(true)
         ->form()
         ->export();
@@ -52,35 +52,61 @@ $total = \App\View\Text::create('item.total', 'تعداد')
         ->export();
 
 ?>
+
 <div  ng-controller="OrderAddNewCtrl">
     <div class="ui label red" ng-if="data.customer">{{data.customer.title}}</div>
     <div class="ui label green" ng-if="data.customer"><span>تعداد سفارش‌ :‌ </span>{{data.orders.length}}</div>
-    <div class="ui top attached tabular menu">
-        <a class="active item" data-tab="first">مشتری</a>
-        <a class="item" data-tab="second">اطلاعات سفارش</a>
-        <a class="item" data-tab="third">اطلاعات پرداخت</a>
-    </div>
-    <div class="ui bottom attached active tab segment" data-tab="first">
-        <div class="content" ng-controller="CustomerAddCtrl">
-            @include('admin.page.customer.add')
-        </div>
-    </div>
-    <div class="ui bottom attached tab segment" data-tab="second">
-        <div class="content">
-            @include('admin.page.order.order-new')
-        </div>
-    </div>
-    <div class="ui bottom attached tab segment" data-tab="third">
-        <div class="title" id="pay-tab">
-            <i class="add to cart icon"></i>
-            اطلاعات پرداخت
-        </div>
-        <div class="content">
-            @include('admin.page.order.pay-new')
-        </div>
-    </div>
-    <md-button class="md-raised md-primary" ng-click="submit()" ng-disabled="loading">
-        ثبت سفارش
-    </md-button>
+
+    <md-content ng-controller="OrderAddNewCtrl">
+        <md-tabs md-dynamic-height md-border-bottom md-selected="myTabIndex">
+            <md-tab label="مشتری">
+                <md-content class="md-padding">
+                    <div class="content" ng-controller="CustomerAddCtrl">
+                        @include('admin.page.customer.add')
+                    </div>
+                    <md-button class="md-raised md-primary md-button md-default-theme md-ink-ripple"
+                               ng-click="myTabIndex = myTabIndex+1">بعدی
+                    </md-button>
+                </md-content>
+            </md-tab>
+            <md-tab label="اطلاعات سفارش">
+                <div class="ui bottom attached segment" data-tab="second">
+                    <md-content class="md-padding">
+
+                        @include('admin.page.order.order-new')
+
+
+                        <md-button class="md-raised md-primary md-button md-default-theme md-ink-ripple"
+                                   ng-click="myTabIndex = myTabIndex-1">قبلی
+                        </md-button>
+                        <md-button class="md-raised md-primary md-button md-default-theme md-ink-ripple"
+                                   ng-click="myTabIndex = myTabIndex+1">بعدی
+                        </md-button>
+                    </md-content>
+                </div>
+            </md-tab>
+            <md-tab label="اطلاعات پرداخت">
+                <div class="ui bottom attached segment" data-tab="third">
+                    <md-content class="md-padding">
+                        <div class="title" id="pay-tab">
+                            <i class="add to cart icon"></i>
+                            اطلاعات پرداخت
+                        </div>
+
+                        <div ng-controller="OrderAddNewCtrl">
+                            @include('admin.page.order.pay-new')
+                        </div>
+                        <md-button class="md-raised md-primary md-button md-default-theme md-ink-ripple"
+                                   ng-click="myTabIndex = myTabIndex-1">قبلی
+                        </md-button>
+                        <md-button class="md-raised md-primary md-button md-default-theme md-ink-ripple"
+                                   ng-click="myTabIndex = myTabIndex+1">بعدی
+                        </md-button>
+                    </md-content>
+                </div>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>
 </div>
 

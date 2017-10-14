@@ -38,9 +38,9 @@ class AppServiceProvider extends ServiceProvider {
             OrderDay::whereOid($order->id)->delete();
             $this->_orderDay($order);
         });
-        Order::created(function ($order) {
-            $this->_orderDay($order);
-        });
+//        Order::created(function ($order) {
+//            $this->_orderDay($order);
+//        });
     }
 
     protected function _orderDay($order)

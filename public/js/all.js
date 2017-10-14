@@ -1597,7 +1597,7 @@ app.directive('useNgTable', function (NgTableParams, $http, $window) {
         }
     }
 });
-app.controller('ConstCtrl', function ($scope, htp, notify) {
+app.controller('ConstCtrl', function ($scope, htp, notify, $mdDialog) {
     var _this = $scope;
     var CONST = function ($set, $get) {
         var that = this;
@@ -1622,9 +1622,10 @@ app.controller('ConstCtrl', function ($scope, htp, notify) {
         };
         this.add = function () {
             that.errorItems = undefined;
-            htp(home(this.set), {title: this.title, price: this.price}).then(function (res) {
+            htp(home(this.set), {name: this.name, title: this.title, price: this.price}).then(function (res) {
                 that.init();
                 that.title = undefined;
+                that.name = undefined;
                 that.price = undefined;
             }).error(function (res, sts) {
                 if (sts == 422) {
@@ -1634,13 +1635,38 @@ app.controller('ConstCtrl', function ($scope, htp, notify) {
                 that.loading = false;
             });
         };
+        this.remove = function (ev, item, tbl_name) {
+            var id = item.id;
+            var index = _this.packet_type.items.indexOf(item);
+            _this.destroy = function (id, where) {
+                htp(home('console/destroy'), {id: id, where: where})
+                    .then(function (response) {
+                        _this.packet_type.items.splice(index, 1);
+                        notify('warning', 'رکورد مورد نظر با موفقیت حذف شد');
+
+                    });
+            };
+            var desc = trans('message.desc_delete');
+            var confirm = $mdDialog.confirm()
+                .title(trans('message.title_delete'))
+                .textContent(desc)
+                .ariaLabel('حدف رکورد')
+                .targetEvent(ev)
+                .ok('بلی')
+                .cancel('خیر');
+            $mdDialog.show(confirm).then(function () {
+                _this.destroy(id, tbl_name);
+            }, function () {
+
+            });
+        };
         this.init();
     };
     _this.flower = new CONST('console/manage/set-const-flower', 'console/manage/get-const-flower');
     _this.pack = new CONST('console/manage/set-const-pack', 'console/manage/get-const-pack');
     _this.cost = new CONST('console/manage/set-const-cost', 'console/manage/get-const-cost');
     _this.user_type = new CONST('console/manage/set-const-user-type', 'console/manage/get-const-user-type');
-    _this.packet_type = new CONST('console/manage/set-const-flower-packet', 'console/manage/get-const-flower-packet');
+    _this.packet_type = new CONST('console/manage/set-const-packet-type', 'console/manage/get-const-packet-type');
 });
 app.controller('CostCtrl', function ($scope, htp, notify) {
     var _this = $scope;
@@ -2214,7 +2240,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     _this.type = function (item, $index) {
         item.type = $index;
     };
-
+    angular.module('tabsDemoDynamicHeight', ['ngMaterial']);
 
     htp(home('console/order/order-prices')).then(function (res) {
         var tmp = {};
@@ -2231,7 +2257,6 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
             _this.data.orders = res;
         });
     });
-
 
     _this.payType = function (item, $index) {
         item.pay_type = $index;
@@ -2309,16 +2334,6 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
         },
     ];
     _this.time = [
-        {
-            id: 1,
-            title: 'صبح 9- 13'
-        },
-        {
-            id: 2,
-            title: 'بعد از ظهر 15-18'
-        }
-    ];
-    _this.time2 = [
         {
             id: 1,
             title: '9-12'

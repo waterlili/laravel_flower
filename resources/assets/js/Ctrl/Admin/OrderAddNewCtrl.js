@@ -64,6 +64,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
 
     _this.addOrder = function () {
         _this.data.orders.push({type: 1, week: 1, time: 1, w: 1, total: 1});
+        $('.ui.accordion').accordion();
     };
 
     _this.removeOrder = function (item) {

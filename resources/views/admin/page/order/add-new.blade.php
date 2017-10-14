@@ -57,7 +57,7 @@ $total = \App\View\Text::create('item.total', 'تعداد')
     <div class="ui label red" ng-if="data.customer">{{data.customer.title}}</div>
     <div class="ui label green" ng-if="data.customer"><span>تعداد سفارش‌ :‌ </span>{{data.orders.length}}</div>
 
-    <md-content ng-controller="OrderAddNewCtrl">
+    <md-content>
         <md-tabs md-dynamic-height md-border-bottom md-selected="myTabIndex">
             <md-tab label="مشتری">
                 <md-content class="md-padding">
@@ -93,7 +93,7 @@ $total = \App\View\Text::create('item.total', 'تعداد')
                             اطلاعات پرداخت
                         </div>
 
-                        <div ng-controller="OrderAddNewCtrl">
+                        <div>
                             @include('admin.page.order.pay-new')
                         </div>
                         <md-button class="md-raised md-primary md-button md-default-theme md-ink-ripple"

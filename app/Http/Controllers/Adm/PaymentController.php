@@ -14,7 +14,7 @@ class PaymentController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function Zarinpal()
     {
         $MerchantID = 'cb4e1e9c-84e1-11e6-bd64-000c295eb8fc'; //Required
         $Amount = 1000; //Amount will be based on Toman - Required

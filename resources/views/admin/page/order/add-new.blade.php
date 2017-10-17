@@ -53,7 +53,7 @@ $total = \App\View\Text::create('item.total', 'تعداد')
 
 ?>
 
-<div  ng-controller="OrderAddNewCtrl">
+<div ng-controller="OrderAddNewCtrl">
     <div class="ui label red" ng-if="data.customer">{{data.customer.title}}</div>
     <div class="ui label green" ng-if="data.customer"><span>تعداد سفارش‌ :‌ </span>{{data.orders.length}}</div>
 
@@ -99,8 +99,8 @@ $total = \App\View\Text::create('item.total', 'تعداد')
                         <md-button class="md-raised md-primary md-button md-default-theme md-ink-ripple"
                                    ng-click="myTabIndex = myTabIndex-1">قبلی
                         </md-button>
-                        <md-button class="md-raised md-primary md-button md-default-theme md-ink-ripple"
-                                   ng-click="myTabIndex = myTabIndex+1">بعدی
+                        <md-button class="md-raised md-primary" ng-click="submit()" ng-disabled="loading">
+                            ثبت سفارش
                         </md-button>
                     </md-content>
                 </div>

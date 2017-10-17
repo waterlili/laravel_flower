@@ -24,7 +24,9 @@ $date2 = \App\View\Text::create('item.pay_date', 'تاریخ واریز')->dateI
             <div layout-gt-md="row" layout-align="start start">
                 <div class="ui label large blue mb-md">
                     <span>مبلغ قابل پرداخت</span>
-                    <div class="detail">{{calcPrice(item) | currency:"":""}}</div>
+                    <div class="detail">{{calcPrice(item)}}</div>
+
+                    <!--| currency:"":""-->
                     <span>تومان</span>
                 </div>
                 <div flex></div>

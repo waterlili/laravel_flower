@@ -24,7 +24,8 @@ class Order extends Model {
   protected $dates = ['deleted_at'];
   protected $fillable = array(
       'cid',
-    'type',
+      'type',
+      'amount',
       'time',
       'daysOfWeek',
       'sending',
@@ -72,7 +73,7 @@ class Order extends Model {
 
 
     public static $PayType = [
-      1 => 'ارسال لینک پرداخت',
+        1 => 'ارسال لینک پرداخت به ایمیل',
       2 => 'دریافت نقدی',
 //    3 => 'واریز بانکی',
       4 => 'کارت به کارت',
@@ -201,5 +202,9 @@ class Order extends Model {
 
     }
 
+    public static function GetPrc()
+    {
+        return Order::select(['id', 'amount'])->get()->toArray();
+    }
 
 }

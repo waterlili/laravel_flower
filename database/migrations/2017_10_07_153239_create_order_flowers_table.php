@@ -15,7 +15,7 @@ class CreateOrderFlowersTable extends Migration
         Schema::create('order_flowers', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('order_id')->unsigned();
-            $table->string('name');
+            $table->integer('flower_id')->unsigned();
             $table->integer('stalk_counter');
             $table->tinyInteger('type');
             $table->dateTime('send_at')->nullable()->default(null);
@@ -23,6 +23,8 @@ class CreateOrderFlowersTable extends Migration
             $table->timestamps();
 
             $table->foreign('order_id')->references('id')->on('orders')
+                ->onUpdate('cascade');
+            $table->foreign('flower_id')->references('id')->on('flowers')
                 ->onUpdate('cascade');
         });
     }

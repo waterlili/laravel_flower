@@ -16,6 +16,7 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->integer('cid')->unsigned();
             $table->tinyInteger('type');
+            $table->double('amount')->default('0');
             $table->tinyInteger('time')->nullable();
             $table->tinyInteger('daysOfWeek')->nullable();
             $table->tinyInteger('sending')->nullable();

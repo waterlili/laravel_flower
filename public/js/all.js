@@ -64,7 +64,7 @@ var _trans_en = {
         'consoleproductlist': 'محصولات',
         'consoleproductadd': 'افزودن محصول',
         'consoleflowerslist': 'گلها',
-        'consoleorderadd': 'افزودن سفارش مناسبتی',
+        'consoleorderadd': 'افزودن سفارش',
         'consoleorderlistlist': 'سفارش ها',
         'consoleorderlistunverified': 'سفارش های تایید نشده',
         'consoleorderreport': 'گزارش سفارش',
@@ -2237,6 +2237,9 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     _this.prc = {};
     _this.pay = {};
     _this.data.orders = [];
+    _this.init = function () {
+        $('.ui.accordion').accordion();
+    };
     _this.type = function (item, $index) {
         item.type = $index;
     };
@@ -2250,6 +2253,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
         _this.prices = tmp;
     });
 
+
     $('.ui.accordion').accordion();
     $rootScope.$on('order:customer', function (data, dt) {
         _this.data.customer = dt;
@@ -2260,8 +2264,17 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
 
     _this.payType = function (item, $index) {
         item.pay_type = $index;
+        _this.loading = true;
+        htp(home('console/order/send-email'), _this.data).then(function (res) {
+            notify('info', 'اطلاعات با موفقیت ثبت گردید')
+        }).error(function (res, sts) {
+            if (sts == 422) {
+                _this.errorItems = res;
+            }
+        }).after(function (res) {
+            _this.loading = false;
+        });
     };
-
     _this.addOrder = function () {
         _this.data.orders.push({type: 1, week: 1, time: 1, w: 1, total: 1});
         $('.ui.accordion').accordion();
@@ -2298,12 +2311,18 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     };
     _this.timeChange = function (item, index) {
         item.time = index;
+
     };
 
     _this.calcPrice = function (item) {
-        item.price = _this.prices[item.prc];
-        return item.total * item.price * item.w;
+        // item.price = _this.prices[item.prc];
+        // return item.total * item.price * item.w;
+        if (item.amount) {
+            return item.amount;
+
+        }
     };
+
     _this.week = [
         {
             id: 1,

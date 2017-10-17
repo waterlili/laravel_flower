@@ -1,7 +1,7 @@
 <?php
-$fname = \App\View\Text::create('data.fname', 'نام')->form()->export();
-$lname = \App\View\Text::create('data.lname', 'نام خانوادگی')->form()->export();
-$email = \App\View\Text::create('data.email', 'ایمیل')->form()->setType('email')->export();
+$fname = \App\View\Text::create('data.fname', 'نام')->form()->setRequired(true)->export();
+$lname = \App\View\Text::create('data.lname', 'نام خانوادگی')->form()->setRequired(true)->export();
+$email = \App\View\Text::create('data.email', 'ایمیل')->form()->setRequired(true)->setType('email')->export();
 $type = \App\View\Select::create('data.type', 'نحوه جذب', \App\DB\User::CUSTOMER_TYPE())
         ->setRequired(true)
         ->form()

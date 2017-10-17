@@ -10,7 +10,8 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 <md-button class="md-raised md-primary" ng-click="addOrder()">افزودن سفارش</md-button>
 
 <div class="ui styled accordion" style="width: 100%">
-    <div class="title" layout="row" layout-align="start center"  ng-repeat-start="item in data.orders">
+    <div class="title" layout="row" layout-align="start center" data-ng-init="init()"
+         ng-repeat-start="item in data.orders">
         <i class="icon edit"></i>
         سفارش
         <span>{{item.id || $index + 1}}</span>
@@ -43,7 +44,9 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     <div class="default text">انتخاب بسته</div>
                     <div class="menu">
                         @foreach(\App\DB\FlowerPacket::GetPckt() as $item)
-                            <div class="item" data-value="<% $item['id'] %>"><% $item['title'] %></div>
+                            <div class="item" data-value="<% $item['id'] %><% $item['price']%>""><% $item['title'] %>
+                    </div>
+                    <div ng-hide="true" class="item" data-value="<% $item['id'] %>"><% $item['title'] %></div>
                         @endforeach
                     </div>
                 </div>
@@ -63,41 +66,48 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     @include('MD.input.text-sm' , $total)
                 </div>
             </div>
+        <div class="flexbox-parent">
             <div layout-gt-md="row" ng-if="item.type == 1">
-                <div flex-gt-md="66" class="ml-md-md">
+                <div flex-gt-md="66" class="ml-md-md pos_plate">
                     <div class="ui buttons mb-md ml-md-md" flex-gt-md="66">
                         <button class="ui button" ng-click="wChange(item , r.id)"
                                 ng-class="{'active blue':item.w == r.id}"
                                 ng-repeat="r in w">{{r.title}}</button>
                     </div>
                 </div>
-                <div class="ui buttons mb-md ml-md-md" flex-gt-md="66">
-                    <button class="ui button" ng-click="weekChange(item , w.id)"
-                            ng-class="{'active red':item.week == w.id}"
-                            ng-repeat="w in week">{{w.title}}</button>
+                <div flex-gt-md="66" class="ml-md-md pos_plate">
+                    <div class="ui buttons mb-md ml-md-md" flex-gt-md="66">
+                        <button class="ui button" ng-click="weekChange(item , w.id)"
+                                ng-class="{'active red':item.week == w.id}"
+                                ng-repeat="w in week">{{w.title}}</button>
+                    </div>
                 </div>
-                <div class="ui buttons mb-md" flex-gt-md="33">
-                    <button class="ui button" ng-click="timeChange(item,t.id)"
-                            ng-class="{'active green':item.time == t.id}"
-                            ng-repeat="t in time">{{t.title}}</button>
+                <div flex-gt-md="66" class="ml-md-md pos_plate">
+                    <div class="ui buttons mb-md" flex-gt-md="33">
+                        <button class="ui button" ng-click="timeChange(item,t.id)"
+                                ng-class="{'active green':item.time == t.id}"
+                                ng-repeat="t in time">{{t.title}}</button>
+                    </div>
                 </div>
 
+            </div>
             </div>
 
 
             <div layout-gt-md="row" ng-if="item.type == 1">
-
-                <div flex-gt-md="33">
+                <div flex-gt-md="66">
                     @include('MD.input.text-sm' , $first)
                 </div>
             </div>
             <div layout-gt-md="row" ng-if="item.type == 2">
-                <div class="ui buttons mb-md" flex-gt-md="33">
-                    <button class="ui button" ng-click="timeChange(item,t.id)"
-                            ng-class="{'active blue':item.time == t.id}"
-                            ng-repeat="t in time">{{t.title}}</button>
+                <div flex-gt-md="66" class="ml-md-md pos_plate">
+                    <div class="ui buttons mb-md pos_plate" flex-gt-md="33">
+                        <button class="ui button" ng-click="timeChange(item,t.id)"
+                                ng-class="{'active blue':item.time == t.id}"
+                                ng-repeat="t in time">{{t.title}}</button>
+                    </div>
                 </div>
-                <div flex-gt-md="33">
+                <div flex-gt-md="66">
                     @include('MD.input.text-sm' , $first2)
                 </div>
             </div>

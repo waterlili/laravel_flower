@@ -38,19 +38,20 @@ Route::group(['middleware' => 'web'], function () {
   Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
   Route::post('password/reset', 'Auth\PasswordController@postReset');
   Route::get('password/set/{token}', 'Auth\PasswordController@getPass');
-
-  Route::get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha')
+    Route::any('send', 'Adm\EmailController@postSend');
+    Route::get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha')
     ->middleware('web');
 
-  Route::controller('/console/customer', 'Adm\CustomerController');
-  Route::controller('/console/manage', 'Adm\ManageController');
-  Route::controller('/console/product', 'Adm\ProductController');
-  Route::controller('/console/flower', 'Adm\FlowerController');
-  Route::controller('/console/flower_package', 'Adm\FlowerPackageController');
-  Route::controller('/console/flower_packet', 'Adm\FlowerPacketController');
-  Route::controller('/console/order', 'Adm\OrderController');
-  Route::controller('/console/cost', 'Adm\CostController');
-  Route::controller('/console/profile', 'Adm\ProfileController');
-  Route::controller('/console', 'Adm\AdminController');
-  Route::controller('/', 'PublicController');
+    Route::controller('/console/customer', 'Adm\CustomerController');
+    Route::controller('/console/manage', 'Adm\ManageController');
+    Route::controller('/console/product', 'Adm\ProductController');
+    Route::controller('/console/flower', 'Adm\FlowerController');
+    Route::controller('/console/flower_package', 'Adm\FlowerPackageController');
+    Route::controller('/console/flower_packet', 'Adm\FlowerPacketController');
+    Route::controller('/console/order', 'Adm\OrderController');
+    Route::controller('/console/cost', 'Adm\CostController');
+    Route::controller('/console/profile', 'Adm\ProfileController');
+    Route::controller('/console/payments', 'Adm\PaymentController');
+    Route::controller('/console', 'Adm\AdminController');
+    Route::controller('/', 'PublicController');
 });

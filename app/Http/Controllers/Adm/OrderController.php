@@ -767,10 +767,27 @@ class OrderController extends Controller {
 
     public function postSendEmail(Request $request)
     {
+        $input = $request->all();
+        $cid = $input['customer']['id'];
+        $od_count = Order::where('cid', $cid)->get()->count();
+        for ($i = 0; $i < $od_count; $i++) {
+            if (!empty($input['orders'][$i]['id'])) {
+                $oid = $input['orders'][$i]['id'];
+                break;
+
+            } else {
+                $last_ord = Order::orderBy('created_at', 'desc')->first();
+                $oid = $last_ord['id'] + 1;
+            }
+        }
         $title = $request->input('title');
         $message = $request->input('content');
+        $data = array(
+            'orderId' => $oid,
+        );
 
-        Mail::send('emails.send', ['title' => $title, 'message' => $message], function ($message) {
+
+        Mail::send('emails.send', $data, function ($message) {
             $message->from('nw.tahmasebi@gmail.com', 'Scotch.IO');
             $message->to('nw.tahmasebi@gmail.com');
         });

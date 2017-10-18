@@ -14,7 +14,7 @@ class PaymentController extends Controller
 
         $MerchantID = 'cb4e1e9c-84e1-11e6-bd64-000c295eb8fc'; //Required
         $Amount = 100; //Amount will be based on Toman - Required
-        $Order_id = 1;
+        $Order_id = $_GET['orderId'];
         $Description = 'توضیحات تراکنش تستی'; // Required
         $CallbackURL = 'http://185.173.106.234/payment/zarinpal-response'; // Required
 
@@ -29,6 +29,7 @@ class PaymentController extends Controller
                 'CallbackURL' => $CallbackURL,
             ]
         );
+        dd($Order_id);
 //dd('https://www.zarinpal.com/pg/StartPay/' . $result->Authority);
 //Redirect to URL You can do it also by creating a form
         if ($result->Status == 100) {

@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers\Adm;
 
-use Illuminate\Http\Request;
+use Request;
+use App\DB\Order;
 use SoapClient;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
 
 class PaymentController extends Controller
 {
-    public function getZarinpal()
+    public function getZarinpal($query)
     {
-
+           $qu = http_build_query(array($query));
+           $arr=explode("&",$query);
+           $OrderId=explode("=",$arr[0]);
+           $Amount=explode("=",$arr[1]);
         $MerchantID = 'cb4e1e9c-84e1-11e6-bd64-000c295eb8fc'; //Required
-        $Amount = 100; //Amount will be based on Toman - Required
-        $Order_id = $_GET['orderId'];
         $Description = 'توضیحات تراکنش تستی'; // Required
-        $CallbackURL = 'http://185.173.106.234/payment/zarinpal-response'; // Required
+        $CallbackURL = 'http://185.173.106.234/payment/'.$qu.'/zarinpal-response'; // Required
+
 
 
         $client = new SoapClient('https://www.zarinpal.com/pg/services/WebGate/wsdl', ['encoding' => 'UTF-8']);
@@ -24,12 +28,13 @@ class PaymentController extends Controller
         $result = $client->PaymentRequest(
             [
                 'MerchantID' => $MerchantID,
-                'Amount' => $Amount,
+                'Amount' => $Amount[1],
+                'orderId' => $OrderId[1],
                 'Description' => $Description,
                 'CallbackURL' => $CallbackURL,
             ]
         );
-        dd($Order_id);
+        
 //dd('https://www.zarinpal.com/pg/StartPay/' . $result->Authority);
 //Redirect to URL You can do it also by creating a form
         if ($result->Status == 100) {
@@ -40,10 +45,14 @@ class PaymentController extends Controller
             echo 'ERR: ' . $result->Status;
         }
     }
-   public function getZarinpalResponse(){
+   public function getZarinpalResponse($query){
 
          $Authority = $_GET['Authority'];
-	 $data = array('MerchantID' => 'cb4e1e9c-84e1-11e6-bd64-000c295eb8fc', 'Authority' => $Authority, 'Amount' => 100);
+           $arr=explode("&",$query);
+           $OrderId=explode("=",$arr[0]);
+           $Amount=explode("=",$arr[1]);
+
+	 $data = array('MerchantID' => 'cb4e1e9c-84e1-11e6-bd64-000c295eb8fc', 'Authority' => $Authority, 'Amount' => $Amount[1]);
 	 $jsonData = json_encode($data);
 	 $ch = curl_init('https://www.zarinpal.com/pg/rest/WebGate/PaymentVerification.json');
 	 curl_setopt($ch, CURLOPT_USERAGENT, 'ZarinPal Rest Api v1');
@@ -54,6 +63,7 @@ class PaymentController extends Controller
 	 'Content-Type: application/json',
 	 'Content-Length: ' . strlen($jsonData)
 	 ));
+        
 	 $result = curl_exec($ch);
 	$err = curl_error($ch);
 	 curl_close($ch);
@@ -63,10 +73,16 @@ class PaymentController extends Controller
 	 } else {
 	 if ($result['Status'] == 100) {
 	 echo 'Transation success. RefID:' . $result['RefID'];
+               //update row of database for order i
 	 } else {
-	 echo 'Transation failed. Status:' . $result['Status'];
-	 }
-	 }
+	  echo 'Transation failed. Status:' . $result['Status'];
+          if(!empty($OrderId[2])){
+               $order=Order::orderBy('created_at','DESC')->where('id',$OrderId[2])->get();
+              if(!empty($order))
+                dd("ok");
+           }
 
+	 }
+      }
    }
 }

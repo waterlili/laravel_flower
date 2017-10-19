@@ -770,24 +770,32 @@ class OrderController extends Controller {
         $input = $request->all();
         $cid = $input['customer']['id'];
         $od_count = Order::where('cid', $cid)->get()->count();
+            
         for ($i = 0; $i < $od_count; $i++) {
             if (!empty($input['orders'][$i]['id'])) {
                 $oid = $input['orders'][$i]['id'];
                 break;
-
-            } else {
-                $last_ord = Order::orderBy('created_at', 'desc')->first();
-                $oid = $last_ord['id'] + 1;
-            }
+             }
         }
+            if(empty($oid)){
+
+                $last_ord = Order::orderBy('created_at', 'desc')->first();
+                if($last_ord)
+                  $oid = $last_ord['id'] + 1;
+                else{
+                  $ord_new = new Order();
+                   $oid = $ord_new->id;
+                }
+              
+            }
         $title = $request->input('title');
         $message = $request->input('content');
-        $data = array(
+        $data1 =array( 'data'=> array(
             'orderId' => $oid,
-        );
+            'Amount' => 100
+        ));
 
-
-        Mail::send('emails.send', $data, function ($message) {
+        Mail::send('emails.send', $data1, function ($message) {
             $message->from('nw.tahmasebi@gmail.com', 'Scotch.IO');
             $message->to('nw.tahmasebi@gmail.com');
         });

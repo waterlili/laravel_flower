@@ -65,6 +65,9 @@ class CreateForeignKeys extends Migration {
 		Schema::table('user_info', function(Blueprint $table) {
 			$table->dropForeign('user_info_uid_foreign');
 		});
+        Schema::table('transaction', function (Blueprint $table) {
+            $table->dropForeign('transaction_order_foreign');
+        });
 		Schema::table('transaction', function(Blueprint $table) {
 			$table->dropForeign('transaction_cid_foreign');
 		});

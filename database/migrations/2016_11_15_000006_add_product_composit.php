@@ -16,7 +16,7 @@ class AddProductComposit extends Migration {
       $table->foreign('product')->references('id')->on('product')
         ->onDelete('cascade')
         ->onUpdate('cascade');
-      $table->foreign('flower')->references('id')->on('flower')
+        $table->foreign('flower')->references('id')->on('flowers')
         ->onDelete('cascade')
         ->onUpdate('cascade');
     });

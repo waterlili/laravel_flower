@@ -21,6 +21,12 @@ class CreateTransactionTable extends Migration
             $table->integer('cid')->unsigned();
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('order')->references('id')->on('orders')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->foreign('cid')->references('id')->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

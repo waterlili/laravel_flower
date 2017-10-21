@@ -14,13 +14,12 @@ class CreateCombinationFlowersTable extends Migration
     {
         Schema::create('combination_flowers', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('flower_combination_id');
             $table->unsignedInteger('flower_id');
             $table->unsignedInteger('order');
             $table->timestamps();
 
             $table->foreign('flower_id')->references('id')->on('flowers');
-            $table->foreign('flower_combination_id')->references('id')->on('flower_combinations');
+
 
         });
     }

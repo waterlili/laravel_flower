@@ -10,14 +10,14 @@ $date2 = \App\View\Text::create('item.pay_date', 'تاریخ واریز')->dateI
 ?>
 <div class="ui segment">
     <div class="ui styled accordion" style="width: 100%">
-        <div class="title" layout="row" layout-align="start center" ng-repeat-start="item in data.orders">
+        <div class="title" layout="row" layout-align="start center" ng-repeat-start="item in data.new_orders">
             <i class="icon edit"></i>
             سفارش
             <span>{{item.id || $index + 1}}</span>
 
             <div flex></div>
             <div>
-                <i class="icon trash red color  " ng-click="removeOrder(item)"></i>
+                <i class="icon trash red color  " ng-click="removenewOrder(item)"></i>
             </div>
         </div>
         <div class="content" ng-repeat-end>
@@ -30,31 +30,21 @@ $date2 = \App\View\Text::create('item.pay_date', 'تاریخ واریز')->dateI
                     <span>تومان</span>
                 </div>
                 <div flex></div>
-                <div>
-                    <div class="ui fluid search selection dropdown ml-md-md mb-xl" use-dropdown ng-model="item.sts">
-                        <input type="hidden" name="sts">
-                        <i class="dropdown icon"></i>
-                        <div class="default text">وضعیت سند</div>
-                        <div class="menu">
-                            @foreach(\App\DB\OrderPayment::$StsStr as $key=>$item)
-                                <div class="item" data-value="<% $key %>"><% $item %></div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
+
             </div>
             <div layout-gt-md="row" layout-align="start center">
                 <div>
-                    <label>نوع پرداخت</label>
-                    <div class="ui buttons mb-md">
+                    <h3>نوع پرداخت</h3></br>
+                    <md-radio-group layout="row">
                         @foreach(\App\DB\Order::$PayType as $key=>$item)
-                            <button class="ui button" ng-click="payType(item, <%$key %>)"
-                                    ng-class="{'active teal':item.pay_type == <% $key %>}"><% $item %>
-                            </button>
+                            <md-radio-button value="<%$key%>" class="md-primary" ng-click="payType(item, <%$key %>)"><%
+                                $item %>
+                            </md-radio-button>
                         @endforeach
-                    </div>
+                    </md-radio-group>
                 </div>
             </div>
+            </br>
             <div layout-gt-md="row" layout-align="start start" ng-if="item.pay_type == 1">
                 <div flex-gt-md="25" class="ml-md-md">
                     @include('MD.input.text-sm' , $mobile)

@@ -5,6 +5,7 @@ namespace App\DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Morilog\Jalali\jDate;
+use App\DB\OrderPacket;
 
 class Order extends Model {
 
@@ -77,6 +78,7 @@ class Order extends Model {
       2 => 'دریافت نقدی',
 //    3 => 'واریز بانکی',
       4 => 'کارت به کارت',
+        5 => 'عدم پرداخت',
   ];
 
   public static $StsSubmit = [
@@ -205,6 +207,16 @@ class Order extends Model {
     public static function GetPrc()
     {
         return Order::select(['id', 'amount'])->get()->toArray();
+    }
+
+    public function orderPackets()
+    {
+        return $this->hasMany(OrderPacket::class);
+    }
+
+    public function orderFlowers()
+    {
+        return $this->hasMany(OrderFlower::class);
     }
 
 }

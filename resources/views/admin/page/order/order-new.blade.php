@@ -8,16 +8,16 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 
 ?>
 <md-button class="md-raised md-primary" ng-click="addOrder()">افزودن سفارش</md-button>
-
 <div class="ui styled accordion" style="width: 100%">
+<!--<span>{{data.orders.ord_count}}</span>-->
     <div class="title" layout="row" layout-align="start center" data-ng-init="init()"
-         ng-repeat-start="item in data.orders">
+         ng-repeat-start="item in data.new_orders">
         <i class="icon edit"></i>
         سفارش
-        <span>{{item.id || $index + 1}}</span>
+        <span>{{$index+1}}</span>
         <div flex></div>
         <div>
-            <i class="icon trash red color  " ng-click="removeOrder(item)"></i>
+            <i class="icon trash red color  " ng-click="removenewOrder(item)"></i>
         </div>
     </div>
     <div class="content" ng-repeat-end>
@@ -39,14 +39,12 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
             </div>
             <div layout-gt-md="row" layout-align="start center" ng-hide="Flower">
                 <div class="ui fluid search selection dropdown ml-md-md mb-xl" use-dropdown ng-model="item.pck_type">
-                    <input type="hidden" name="country">
                     <i class="dropdown icon"></i>
                     <div class="default text">انتخاب بسته</div>
                     <div class="menu">
                         @foreach(\App\DB\FlowerPacket::GetPckt() as $item)
-                            <div class="item" data-value="<% $item['id'] %><% $item['price']%>""><% $item['title'] %>
+                            <div class="item" data-value="<% $item['id'] %>"><% $item['title'] %>
                     </div>
-                    <div ng-hide="true" class="item" data-value="<% $item['id'] %>"><% $item['title'] %></div>
                         @endforeach
                     </div>
                 </div>
@@ -91,7 +89,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                 </div>
 
             </div>
-            </div>
+        </div>
 
 
             <div layout-gt-md="row" ng-if="item.type == 1">
@@ -136,3 +134,8 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
         </div>
     </div>
 </div>
+
+
+
+
+

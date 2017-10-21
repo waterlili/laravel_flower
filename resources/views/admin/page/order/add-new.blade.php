@@ -82,6 +82,7 @@ $total = \App\View\Text::create('item.total', 'تعداد')
                         <md-button class="md-raised md-primary md-button md-default-theme md-ink-ripple"
                                    ng-click="myTabIndex = myTabIndex+1">بعدی
                         </md-button>
+                        @include('admin.page.order.orders')
                     </md-content>
                 </div>
             </md-tab>
@@ -108,5 +109,5 @@ $total = \App\View\Text::create('item.total', 'تعداد')
         </md-tabs>
     </md-content>
 </div>
-</div>
+
 

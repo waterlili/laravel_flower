@@ -19,7 +19,7 @@ class OrderPayment extends Model
         'price',
         'bank',
         'issue_tracking',
-        'sts'
+        'sts',
 
 
     );

@@ -16,10 +16,10 @@ class CreateOrderPaymentsTable extends Migration
             $table->increments('id');
             $table->integer('oid')->unsigned();
             $table->tinyInteger('type')->nullable();
-            $table->integer('price')->nullable();
             $table->string('bank')->nullable();
             $table->string('issue_tracking')->nullable();
             $table->tinyInteger('sts')->nullable();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('oid')->references('id')->on('orders')

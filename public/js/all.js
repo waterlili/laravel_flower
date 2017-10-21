@@ -2236,6 +2236,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     _this.data = {};
     _this.prc = {};
     _this.pay = {};
+    _this.data.new_orders = [];
     _this.data.orders = [];
     _this.init = function () {
         $('.ui.accordion').accordion();
@@ -2245,13 +2246,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     };
     angular.module('tabsDemoDynamicHeight', ['ngMaterial']);
 
-    htp(home('console/order/order-prices')).then(function (res) {
-        var tmp = {};
-        _.each(res, function (item) {
-            tmp[item.id] = item.price;
-        });
-        _this.prices = tmp;
-    });
+
 
 
     $('.ui.accordion').accordion();
@@ -2259,38 +2254,32 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
         _this.data.customer = dt;
         htp(home('console/order/get-prc'), {cid: _this.data.customer.id}).then(function (res) {
             _this.data.orders = res;
+
         });
     });
 
     _this.payType = function (item, $index) {
         item.pay_type = $index;
-        _this.loading = true;
-        htp(home('console/order/send-email'), _this.data).then(function (res) {
-            notify('info', 'اطلاعات با موفقیت ثبت گردید')
-        }).error(function (res, sts) {
-            if (sts == 422) {
-                _this.errorItems = res;
-            }
-        }).after(function (res) {
-            _this.loading = false;
-        });
+        // _this.loading = true;
+        // htp(home('console/order/send-email'), _this.data).then(function (res) {
+        //     notify('success', 'اطلاعات با موفقیت ثبت گردید')
+        // }).error(function (res, sts) {
+        //     if (sts == 422) {
+        //         _this.errorItems = res;
+        //     }
+        // }).after(function (res) {
+        //     _this.loading = false;
+        // });
     };
     _this.addOrder = function () {
-        _this.data.orders.push({type: 1, week: 1, time: 1, w: 1, total: 1});
+        _this.data.new_orders.push({type: 1, week: 1, time: 1, w: 1, total: 1});
         $('.ui.accordion').accordion();
     };
 
-    _this.removeOrder = function (item) {
-        _this.data.orders = _.without(_this.data.orders, item);
+    _this.removenewOrder = function (item) {
+        _this.data.new_orders = _.without(_this.data.new_orders, item);
     };
 
-    _this.$watch('data.orders', function (n) {
-        if (n && n.length > 0) {
-            $rootScope.$emit('order:order', n);
-        } else {
-            $rootScope.$emit('order:order:not', n);
-        }
-    }, true);
 
     // _this.$watch('pay.type',function (n) {
     //    if(n){
@@ -2394,7 +2383,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     _this.submit = function () {
         _this.loading = true;
         htp(home('console/order/submit'), _this.data).then(function (res) {
-            notify('info', 'اطلاعات با موفقیت ثبت گردید')
+            notify('success', 'اطلاعات با موفقیت ثبت گردید')
         }).error(function (res, sts) {
             if (sts == 422) {
                 _this.errorItems = res;

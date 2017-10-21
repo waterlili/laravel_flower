@@ -305,10 +305,6 @@ class OrderController extends Controller {
     return response()->json($oitems);
   }
 
-    public function postOrderPrices(Request $request)
-    {
-        return response()->json(Order::GetPrc());
-    }
 
 
   public function postAdd(Request $request) {
@@ -475,35 +471,35 @@ class OrderController extends Controller {
 
     public function postSubmit(Request $request)
     {
-
         $input = $request->all();
         //find packages that are set for special packet
-        $orders = count($input['orders']) - 1;
+        $orders = count($input['new_orders']);
         $packets_rand = array();
         for ($i = 0; $i <= $orders; $i++) {
 
 
-            if (!empty($input['orders'][$i]['pck_type'])) {
-                if (!empty($input['orders'][$i]['w'])) {
+            if (!empty($input['new_orders'][$i]['pck_type'])) {
+
+                if (!empty($input['new_orders'][$i]['w'])) {
                     //first of all submit order in orders
                     $order = $this->submitOrder($input, $orders)->getData();
                     $id = $order->last_insert_id;
-                    $month = (int)$input['orders'][$i]['w'];
+                    $month = (int)$input['new_orders'][$i]['w'];
                 } else
                     continue;
                 $week = $month * 4;
-                $packages = FlowerPacket::find($input['orders'][$i]['pck_type'])->packages()->distinct()->get();
+                $packages = FlowerPacket::find($input['new_orders'][$i]['pck_type'])->packages()->distinct()->get();
                 foreach ($packages as $package) {
                     $packets_rand[] = $package;
                 }
                 $pkg_cnt = count($packets_rand);
                 $numbers = range(0, $pkg_cnt - 1);
                 shuffle($numbers);
-                $started_at = $input['orders'][$i]['first'];
+                $started_at = $input['new_orders'][$i]['first'];
                 $last_date = '';
 
-                if ($input['orders'][$i]['type'] == 2) {
-                    $packages = FlowerPacket::find($input['orders'][$i]['pck_type'])->packages()->get();
+                if ($input['new_orders'][$i]['type'] == 2) {
+                    $packages = FlowerPacket::find($input['new_orders'][$i]['pck_type'])->packages()->get();
                     $packets_rand = $packages->toArray();
                     if ($packets_rand != null)
                         $rand_keys = array_rand($packets_rand, 1);
@@ -513,9 +509,9 @@ class OrderController extends Controller {
                         $rnd_pkt = $packets_rand[$rand_keys]['name'];
                     $pkt_order = new OrderPacket();
                     $pkt_order->order_id = $id;
-                    $pkt_order->packet_id = (int)$input['orders'][$i]['pck_type'];
+                    $pkt_order->packet_id = (int)$input['new_orders'][$i]['pck_type'];
                     $pkt_order->combination = $rnd_pkt;
-                    $pkt_order->type = (int)$input['orders'][$i]['type'];
+                    $pkt_order->type = (int)$input['new_orders'][$i]['type'];
                     $date = str_replace('/', '-', $started_at);
                     $send_at = Carbon::createFromFormat('Y-m-d', $date);
                     $pkt_order->send_at = $send_at;
@@ -528,9 +524,9 @@ class OrderController extends Controller {
                         $rnd_pkt = $packets_rand[$rand_keys]['name'];
                         $pkt_order = new OrderPacket();
                         $pkt_order->order_id = $id;
-                        $pkt_order->packet_id = (int)$input['orders'][$i]['pck_type'];
+                        $pkt_order->packet_id = (int)$input['new_orders'][$i]['pck_type'];
                         $pkt_order->combination = $rnd_pkt;
-                        $pkt_order->type = (int)$input['orders'][$i]['type'];
+                        $pkt_order->type = (int)$input['new_orders'][$i]['type'];
                         if ($k == 0) {
                             $date = str_replace('/', '-', $started_at);
                             $send_at = Carbon::createFromFormat('Y-m-d', $date);
@@ -551,7 +547,7 @@ class OrderController extends Controller {
                     }
                 } elseif ($pkg_cnt <= $week) {
 
-                    $packages = FlowerPacket::find($input['orders'][$i]['pck_type'])->packages()->get();
+                    $packages = FlowerPacket::find($input['new_orders'][$i]['pck_type'])->packages()->get();
                     $packets_rand = $packages->toArray();
 
                     $exist_arr = array();
@@ -573,9 +569,9 @@ class OrderController extends Controller {
 
                             $pkt_order = new OrderPacket();
                             $pkt_order->order_id = $id;
-                            $pkt_order->packet_id = (int)$input['orders'][$i]['pck_type'];
+                            $pkt_order->packet_id = (int)$input['new_orders'][$i]['pck_type'];
                             $pkt_order->combination = $rnd_pkt;
-                            $pkt_order->type = (int)$input['orders'][$i]['type'];
+                            $pkt_order->type = (int)$input['new_orders'][$i]['type'];
                             if ($j == 0) {
                                 $date = str_replace('/', '-', $started_at);
                                 $send_at = Carbon::createFromFormat('Y-m-d', $date);
@@ -603,25 +599,25 @@ class OrderController extends Controller {
 
                     }
                 }
-            } elseif (!empty($input['orders'][$i]['flw_type'])) {
-                if (!empty($input['orders'][$i]['w'])) {
+            } elseif (!empty($input['new_orders'][$i]['flw_type'])) {
+                if (!empty($input['new_orders'][$i]['w'])) {
                     //first of all submit order in orders
                     $order = $this->submitOrder($input, $orders)->getData();
                     $id = $order->last_insert_id;
-                    $month = (int)$input['orders'][$i]['w'];
+                    $month = (int)$input['new_orders'][$i]['w'];
                 } else
                     continue;
                 $week = $month * 4;
-                if ($input['orders'][$i]['type'] == 1) {
-                    $flower = Flower::find($input['orders'][$i]['flw_type'])->distinct()->get();
-                    $started_at = $input['orders'][$i]['first'];
+                if ($input['new_orders'][$i]['type'] == 1) {
+                    $flower = Flower::find($input['new_orders'][$i]['flw_type'])->distinct()->get();
+                    $started_at = $input['new_orders'][$i]['first'];
                     $last_date = '';
                     for ($j = 0; $j < $week; $j++) {
                         $flw_order = new OrderFlower();
                         $flw_order->order_id = $id;
-                        $flw_order->flower_id = (int)$input['orders'][$i]['flw_type'];
-                        $flw_order->stalk_counter = $input['orders'][$i]['total'];
-                        $flw_order->type = (int)$input['orders'][$i]['type'];
+                        $flw_order->flower_id = (int)$input['new_orders'][$i]['flw_type'];
+                        $flw_order->stalk_counter = $input['new_orders'][$i]['total'];
+                        $flw_order->type = (int)$input['new_orders'][$i]['type'];
 
                         if ($j == 0) {
                             $date = str_replace('/', '-', $started_at);
@@ -645,10 +641,10 @@ class OrderController extends Controller {
                 } else {
                     $flw_order = new OrderFlower();
                     $flw_order->order_id = $id;
-                    $flw_order->flower_id = (int)$input['orders'][$i]['flw_type'];
-                    $flw_order->stalk_counter = $input['orders'][$i]['total'];
-                    $flw_order->type = (int)$input['orders'][$i]['type'];
-                    $date = str_replace('/', '-', $input['orders'][$i]['first']);
+                    $flw_order->flower_id = (int)$input['new_orders'][$i]['flw_type'];
+                    $flw_order->stalk_counter = $input['new_orders'][$i]['total'];
+                    $flw_order->type = (int)$input['new_orders'][$i]['type'];
+                    $date = str_replace('/', '-', $input['new_orders'][$i]['first']);
                     $send_at = Carbon::createFromFormat('Y-m-d', $date);
                     $flw_order->send_at = $send_at;
                     $flw_order->save();
@@ -672,22 +668,28 @@ class OrderController extends Controller {
         } else {
             if (!empty($input['customer']['id'])) {
                 for ($i = 0; $i <= $orders; $i++) {
-                    if (!empty($input['orders'][$i]['week'])) {
+                    if (!empty($input['new_orders'][$i]['week'])) {
                         $amount = $this->postGetCaulateAmount($i, $input)->getData();
                         $obj = [
                             'cid' => $cid,
                             'amount' => $amount->amount,
-                            'type' => array_get($input['orders'][$i], 'type', NULL),
-                            'time' => array_get($input['orders'][$i], 'time', NULL),
-                            'daysOfWeek' => array_get($input['orders'][$i], 'week', NULL),
-                            'sending' => array_get($input['orders'][$i], 'sending', NULL),
-                            'month' => array_get($input['orders'][$i], 'w', NULL),
-                            'sending_name' => array_get($input['orders'][$i], 'sending_name', NULL),
-                            'sending_mobile' => array_get($input['orders'][$i], 'sending_mobile', NULL),
-                            'sending_address' => array_get($input['orders'][$i], 'sending_mobile', NULL),
+                            'type' => array_get($input['new_orders'][$i], 'type', NULL),
+                            'time' => array_get($input['new_orders'][$i], 'time', NULL),
+                            'daysOfWeek' => array_get($input['new_orders'][$i], 'week', NULL),
+                            'sending' => array_get($input['new_orders'][$i], 'sending', NULL),
+                            'month' => array_get($input['new_orders'][$i], 'w', NULL),
+                            'sending_name' => array_get($input['new_orders'][$i], 'sending_name', NULL),
+                            'sending_mobile' => array_get($input['new_orders'][$i], 'sending_mobile', NULL),
+                            'sending_address' => array_get($input['new_orders'][$i], 'sending_mobile', NULL),
 //
                         ];
                         $id = Order::create($obj)->id;
+                        $ord_amount = $obj['amount'];
+                        //each payment will do after create an object
+                        app('App\Http\Controllers\Adm\PaymentController')->createPayment($id, $input, $i);
+                        if ($input['new_orders'][$i]['pay_type'] == 1)
+                            $this->postSendEmail($id, $ord_amount);
+
                         return response()->json(array('success' => true, 'last_insert_id' => $id), 200);
                     } else {
                         continue;
@@ -726,22 +728,45 @@ class OrderController extends Controller {
 
     public function postGetCaulateAmount($i, $input)
     {
-        if (!empty($input['orders'][$i]['pck_type'])) {
-            $pkt_id = $input['orders'][$i]['pck_type'];
+        if ($i == -1) {
+            if (!empty($input['pck_type'])) {
+                $pkt_id = $input['pck_type'];
+                $price = FlowerPacket::where('id', $pkt_id)->pluck('price');
+                if ($input['type'] == 1)
+                    $count = (int)$input['w'] * 4;
+                else
+                    $count = 1;
+                $amount = $price[0] * $count;
+                return response()->json(array('success' => true, 'amount' => $amount), 200);
+            } elseif (empty($input['pck_type'])) {
+                $flw_id = $input['flw_type'];
+                $stalk = $input['total'];
+                $price = Flower::where('id', $flw_id)->pluck('price');
+                $prc_stalks = $price[0] * $stalk;
+                if ($input['type'] == 1) {
+                    $weeks = (int)$input['w'] * 4;
+                    $total_price = $prc_stalks * $weeks;
+                } else
+                    $total_price = $prc_stalks;
+                return response()->json(array('success' => true, 'amount' => $total_price), 200);
+            }
+        }
+        if (!empty($input['new_orders'][$i]['pck_type'])) {
+            $pkt_id = $input['new_orders'][$i]['pck_type'];
             $price = FlowerPacket::where('id', $pkt_id)->pluck('price');
-            if ($input['orders'][$i]['type'] == 1)
-                $count = (int)$input['orders'][$i]['w'] * 4;
+            if ($input['new_orders'][$i]['type'] == 1)
+                $count = (int)$input['new_orders'][$i]['w'] * 4;
             else
                 $count = 1;
             $amount = $price[0] * $count;
             return response()->json(array('success' => true, 'amount' => $amount), 200);
-        } else {
-            $flw_id = $input['orders'][$i]['flw_type'];
-            $stalk = $input['orders'][$i]['total'];
+        } elseif (empty($input['new_orders'][$i]['pck_type'])) {
+            $flw_id = $input['new_orders'][$i]['flw_type'];
+            $stalk = $input['new_orders'][$i]['total'];
             $price = Flower::where('id', $flw_id)->pluck('price');
             $prc_stalks = $price[0] * $stalk;
-            if ($input['orders'][$i]['type'] == 1) {
-                $weeks = (int)$input['orders'][$i]['w'] * 4;
+            if ($input['new_orders'][$i]['type'] == 1) {
+                $weeks = (int)$input['new_orders'][$i]['w'] * 4;
                 $total_price = $prc_stalks * $weeks;
             } else
                 $total_price = $prc_stalks;
@@ -753,8 +778,9 @@ class OrderController extends Controller {
     public function postGetPrc(Request $request)
     {
         $input = $request->all();
-        $orders = Order::whereCid($input['cid'])->get();
-        return response()->json($orders);
+        $orders = Order::whereCid($input['cid'])->with('orderPackets', 'orderFlowers')->get();
+        $ord_count = Order::whereCid($input['cid'])->count();
+        return response()->json(['orders' => $orders, 'ord_count' => $ord_count]);
     }
 
     public function postGetPacketPrc(Request $request)
@@ -765,36 +791,12 @@ class OrderController extends Controller {
         return response()->json($packet);
     }
 
-    public function postSendEmail(Request $request)
+    public function postSendEmail($id, $ord_amount)
     {
-        $input = $request->all();
-        $cid = $input['customer']['id'];
-        $od_count = Order::where('cid', $cid)->get()->count();
-            
-        for ($i = 0; $i < $od_count; $i++) {
-            if (!empty($input['orders'][$i]['id'])) {
-                $oid = $input['orders'][$i]['id'];
-                break;
-             }
-        }
-            if(empty($oid)){
-
-                $last_ord = Order::orderBy('created_at', 'desc')->first();
-                if($last_ord)
-                  $oid = $last_ord['id'] + 1;
-                else{
-                  $ord_new = new Order();
-                   $oid = $ord_new->id;
-                }
-              
-            }
-        $title = $request->input('title');
-        $message = $request->input('content');
         $data1 =array( 'data'=> array(
-            'orderId' => $oid,
-            'Amount' => 100
+            'orderId' => $id,
+            'Amount' => $ord_amount
         ));
-
         Mail::send('emails.send', $data1, function ($message) {
             $message->from('nw.tahmasebi@gmail.com', 'Scotch.IO');
             $message->to('nw.tahmasebi@gmail.com');

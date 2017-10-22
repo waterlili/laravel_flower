@@ -38,17 +38,17 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     _this.pay = {};
     _this.data.new_orders = [];
     _this.data.orders = [];
+    _this.data.amount = [];
+    _this.data.total_price = [];
     _this.init = function () {
         $('.ui.accordion').accordion();
     };
+
     _this.type = function (item, $index) {
         item.type = $index;
     };
+
     angular.module('tabsDemoDynamicHeight', ['ngMaterial']);
-
-
-
-
     $('.ui.accordion').accordion();
     $rootScope.$on('order:customer', function (data, dt) {
         _this.data.customer = dt;
@@ -104,12 +104,25 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     };
 
     _this.calcPrice = function (item) {
-        // item.price = _this.prices[item.prc];
-        // return item.total * item.price * item.w;
-        if (item.amount) {
-            return item.amount;
+        var price = "";
+        if (item.pck_type && item.type == 1) {
+            var count = item.week * 4;
+            price = item.pck_type * count;
+            return price;
+        } else if (item.pck_type && item.type == 2) {
 
+            price = item.pck_type;
+            return price;
+        } else if (item.flw_type && item.type == 1) {
+            var count = item.week * 4;
+            price = item.flw_type * item.total * count;
+            return price;
+        } else if (item.flw_type && item.type == 2) {
+
+            price = item.flw_type * item.total;
+            return price;
         }
+
     };
 
     _this.week = [
@@ -193,8 +206,8 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
         });
     }
 
-});
 
+});
 
 app.directive('useDropdown', function ($timeout) {
     function link(s, elm, attr, ngModel) {

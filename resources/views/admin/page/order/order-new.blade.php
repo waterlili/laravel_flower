@@ -6,6 +6,7 @@ $address = \App\View\Text::create('item.sending_address', 'آدرس')->form()->e
 $first = \App\View\Text::create('item.first', 'تاریخ اولین ارسال')->dateInput()->form()->export();
 $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInput()->form()->export();
 
+
 ?>
 <md-button class="md-raised md-primary" ng-click="addOrder()">افزودن سفارش</md-button>
 <div class="ui styled accordion" style="width: 100%">
@@ -43,11 +44,13 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     <div class="default text">انتخاب بسته</div>
                     <div class="menu">
                         @foreach(\App\DB\FlowerPacket::GetPckt() as $item)
-                            <div class="item" data-value="<% $item['id'] %>"><% $item['title'] %>
+                            <div class="item" data-value="<% $item['price'] %>"><% $item['title'] %>
+
                     </div>
                         @endforeach
                     </div>
                 </div>
+                <input type="hidden" value="<% $item['price'] %>" ng-model="item.price">
             </div>
             <div layout-gt-md="row" layout-align="start center" ng-if="Flower">
                 <div class="ui fluid search selection dropdown ml-md-md mb-xl" use-dropdown ng-model="item.flw_type">
@@ -56,7 +59,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     <div class="default text">انتخاب گل</div>
                     <div class="menu">
                         @foreach(\App\DB\Flower::GetFlw() as $item)
-                            <div class="item" data-value="<% $item['id'] %>"><% $item['name'] %></div>
+                            <div class="item" data-value="<% $item['price'] %>"><% $item['name'] %></div>
                         @endforeach
                     </div>
                 </div>

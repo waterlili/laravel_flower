@@ -26,6 +26,7 @@ class PaymentController extends Controller
         $order_payment->oid = $id;
         $order_payment->type = $type;
         $order_payment->save();
+        return $type;
     }
 
     public function getZarinpal($query)

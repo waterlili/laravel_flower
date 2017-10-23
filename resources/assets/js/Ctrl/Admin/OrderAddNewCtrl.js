@@ -38,8 +38,6 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     _this.pay = {};
     _this.data.new_orders = [];
     _this.data.orders = [];
-    _this.data.amount = [];
-    _this.data.total_price = [];
     _this.init = function () {
         $('.ui.accordion').accordion();
     };
@@ -104,24 +102,30 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     };
 
     _this.calcPrice = function (item) {
-        var price = "";
-        if (item.pck_type && item.type == 1) {
-            var count = item.week * 4;
-            price = item.pck_type * count;
-            return price;
-        } else if (item.pck_type && item.type == 2) {
 
-            price = item.pck_type;
-            return price;
-        } else if (item.flw_type && item.type == 1) {
-            var count = item.week * 4;
-            price = item.flw_type * item.total * count;
-            return price;
-        } else if (item.flw_type && item.type == 2) {
+        var price = '';
+        if (item.pck_type) {
+            prc_part = item.pck_type.split("|");
+            if (item.type == 1) {
+                var count = item.week * 4;
+                price = prc_part[1] * count;
+                return price;
+            } else if (item.type == 2) {
+                return prc_part[1];
+            }
+        } else if (item.flw_type) {
+            var prc_part = item.flw_type.split("|");
+            if (item.type == 1) {
+                var count = item.week * 4;
+                price = prc_part[1] * item.total * count;
+                return price;
+            } else if (item.type == 2) {
 
-            price = item.flw_type * item.total;
-            return price;
+                price = prc_part[1] * item.total;
+                return price;
+            }
         }
+
 
     };
 

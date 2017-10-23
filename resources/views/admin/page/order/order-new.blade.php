@@ -10,12 +10,16 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 ?>
 <md-button class="md-raised md-primary" ng-click="addOrder()">افزودن سفارش</md-button>
 <div class="ui styled accordion" style="width: 100%">
-<!--<span>{{data.orders.ord_count}}</span>-->
+
     <div class="title" layout="row" layout-align="start center" data-ng-init="init()"
          ng-repeat-start="item in data.new_orders">
+        <!--TODO check how-->
+        <span><?php
+            $value = "{{data.orders.length+1}}";
+            ?></span>
         <i class="icon edit"></i>
         سفارش
-        <span>{{$index+1}}</span>
+        <span><?php echo $value; ?></span>
         <div flex></div>
         <div>
             <i class="icon trash red color  " ng-click="removenewOrder(item)"></i>
@@ -44,7 +48,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     <div class="default text">انتخاب بسته</div>
                     <div class="menu">
                         @foreach(\App\DB\FlowerPacket::GetPckt() as $item)
-                            <div class="item" data-value="<% $item['price'] %>"><% $item['title'] %>
+                            <div class="item" data-value="<% $item['id'] %>|<% $item['price'] %>"><% $item['title'] %>
 
                     </div>
                         @endforeach
@@ -59,7 +63,8 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     <div class="default text">انتخاب گل</div>
                     <div class="menu">
                         @foreach(\App\DB\Flower::GetFlw() as $item)
-                            <div class="item" data-value="<% $item['price'] %>"><% $item['name'] %></div>
+                            <div class="item" data-value="<% $item['id'] %>|<% $item['price'] %>"><% $item['name'] %>
+                            </div>
                         @endforeach
                     </div>
                 </div>

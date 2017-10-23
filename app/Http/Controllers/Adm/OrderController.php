@@ -455,7 +455,7 @@ class OrderController extends Controller {
         $input = $request->all();
 
         $users = Customer::where('name', 'LIKE', '%' . $input['query'] . '%')
-            ->select(['id', 'name as title'])
+            ->select(['id', 'name as title', 'mobile'])
             ->get()
             ->toArray();
         return response()->json(['results' => $users]);
@@ -477,9 +477,7 @@ class OrderController extends Controller {
         $packets_rand = array();
         for ($i = 0; $i <= $orders; $i++) {
 
-
             if (!empty($input['new_orders'][$i]['pck_type'])) {
-
                 if (!empty($input['new_orders'][$i]['w'])) {
                     //first of all submit order in orders
                     $order = $this->submitOrder($input, $orders)->getData();
@@ -488,7 +486,9 @@ class OrderController extends Controller {
                 } else
                     continue;
                 $week = $month * 4;
-                $packages = FlowerPacket::find($input['new_orders'][$i]['pck_type'])->packages()->distinct()->get();
+                $pk_type = explode('|', $input['new_orders'][$i]['pck_type']);
+                $pk_id = $pk_type[0];
+                $packages = FlowerPacket::find($pk_id)->packages()->distinct()->get();
                 foreach ($packages as $package) {
                     $packets_rand[] = $package;
                 }
@@ -499,7 +499,7 @@ class OrderController extends Controller {
                 $last_date = '';
 
                 if ($input['new_orders'][$i]['type'] == 2) {
-                    $packages = FlowerPacket::find($input['new_orders'][$i]['pck_type'])->packages()->get();
+                    $packages = FlowerPacket::find($pk_id)->packages()->get();
                     $packets_rand = $packages->toArray();
                     if ($packets_rand != null)
                         $rand_keys = array_rand($packets_rand, 1);
@@ -509,7 +509,7 @@ class OrderController extends Controller {
                         $rnd_pkt = $packets_rand[$rand_keys]['name'];
                     $pkt_order = new OrderPacket();
                     $pkt_order->order_id = $id;
-                    $pkt_order->packet_id = (int)$input['new_orders'][$i]['pck_type'];
+                    $pkt_order->packet_id = (int)$pk_id;
                     $pkt_order->combination = $rnd_pkt;
                     $pkt_order->type = (int)$input['new_orders'][$i]['type'];
                     $date = str_replace('/', '-', $started_at);
@@ -524,7 +524,7 @@ class OrderController extends Controller {
                         $rnd_pkt = $packets_rand[$rand_keys]['name'];
                         $pkt_order = new OrderPacket();
                         $pkt_order->order_id = $id;
-                        $pkt_order->packet_id = (int)$input['new_orders'][$i]['pck_type'];
+                        $pkt_order->packet_id = (int)$pk_id;
                         $pkt_order->combination = $rnd_pkt;
                         $pkt_order->type = (int)$input['new_orders'][$i]['type'];
                         if ($k == 0) {
@@ -546,30 +546,18 @@ class OrderController extends Controller {
 
                     }
                 } elseif ($pkg_cnt <= $week) {
-
-                    $packages = FlowerPacket::find($input['new_orders'][$i]['pck_type'])->packages()->get();
+                    $packages = FlowerPacket::find($pk_id)->packages()->distinct()->get();
                     $packets_rand = $packages->toArray();
+
 
                     $exist_arr = array();
 //                        shuffle($numbers);
                     for ($j = 0; $j < $week; $j++) {
-                        if ($packets_rand != null) {
-
-                            $rand_keys = array_rand($packets_rand, 1);
-                        } else {
-                            DB::table('orders')->latest()->delete();
-                            return response()->json(['result' => FALSE], 422);
-                        }
-                        if (!empty($exist_arr) && in_array($rand_keys, $exist_arr)) {
-                            $j--;
-                            continue;
-                        } else {
-                            if (isset($packets_rand[$rand_keys]['name']))
-                                $rnd_pkt = $packets_rand[$rand_keys]['name'];
-
+                        if ($pkg_cnt == 1) {
+                            $rnd_pkt = $packets_rand[0]['name'];
                             $pkt_order = new OrderPacket();
                             $pkt_order->order_id = $id;
-                            $pkt_order->packet_id = (int)$input['new_orders'][$i]['pck_type'];
+                            $pkt_order->packet_id = (int)$pk_id;
                             $pkt_order->combination = $rnd_pkt;
                             $pkt_order->type = (int)$input['new_orders'][$i]['type'];
                             if ($j == 0) {
@@ -588,13 +576,51 @@ class OrderController extends Controller {
 
                             }
                             $pkt_order->save();
-                            $exist_arr[] = $rand_keys;
-                            if (count($exist_arr) > 2 && ($pkg_cnt % 3 == 0)) {
-                                array_shift($exist_arr);
-                            } elseif (count($exist_arr) >= 2 && ($pkg_cnt % 2 == 0)) {
-                                array_shift($exist_arr);
+                        } else {
+                            if ($packets_rand != null) {
+
+                                $rand_keys = array_rand($packets_rand, 1);
+                            } else {
+                                DB::table('orders')->latest()->delete();
+                                return response()->json(['result' => FALSE], 422);
+                            }
+                            if (!empty($exist_arr) && in_array($rand_keys, $exist_arr)) {
+                                $j--;
+                                continue;
+                            } else {
+                                if (isset($packets_rand[$rand_keys]['name']))
+                                    $rnd_pkt = $packets_rand[$rand_keys]['name'];
+
+                                $pkt_order = new OrderPacket();
+                                $pkt_order->order_id = $id;
+                                $pkt_order->packet_id = (int)$pk_id;
+                                $pkt_order->combination = $rnd_pkt;
+                                $pkt_order->type = (int)$input['new_orders'][$i]['type'];
+                                if ($j == 0) {
+                                    $date = str_replace('/', '-', $started_at);
+                                    $send_at = Carbon::createFromFormat('Y-m-d', $date);
+                                    $last_date = $send_at;
+                                    $pkt_order->send_at = $send_at;
+//
+                                } else {
+                                    $extra_date = 7;
+                                    $next_time = date('Y-m-d', strtotime($last_date . ' + ' . $extra_date . ' days'));
+                                    $next_time = Carbon::createFromFormat('Y-m-d', $next_time);
+                                    $pkt_order->send_at = $next_time;
+                                    $last_date = $next_time;
+
+
+                                }
+                                $pkt_order->save();
+                                $exist_arr[] = $rand_keys;
+                                if (count($exist_arr) > 2 && ($pkg_cnt % 3 == 0)) {
+                                    array_shift($exist_arr);
+                                } elseif (count($exist_arr) >= 2 && ($pkg_cnt % 2 == 0)) {
+                                    array_shift($exist_arr);
+                                }
                             }
                         }
+
 
 
                     }
@@ -608,14 +634,16 @@ class OrderController extends Controller {
                 } else
                     continue;
                 $week = $month * 4;
+                $fl_type = explode('|', $input['new_orders'][$i]['flw_type']);
+                $flw_id = $fl_type[0];
                 if ($input['new_orders'][$i]['type'] == 1) {
-                    $flower = Flower::find($input['new_orders'][$i]['flw_type'])->distinct()->get();
+                    $flower = Flower::find($flw_id)->distinct()->get();
                     $started_at = $input['new_orders'][$i]['first'];
                     $last_date = '';
                     for ($j = 0; $j < $week; $j++) {
                         $flw_order = new OrderFlower();
                         $flw_order->order_id = $id;
-                        $flw_order->flower_id = (int)$input['new_orders'][$i]['flw_type'];
+                        $flw_order->flower_id = (int)$flw_id;
                         $flw_order->stalk_counter = $input['new_orders'][$i]['total'];
                         $flw_order->type = (int)$input['new_orders'][$i]['type'];
 
@@ -641,7 +669,7 @@ class OrderController extends Controller {
                 } else {
                     $flw_order = new OrderFlower();
                     $flw_order->order_id = $id;
-                    $flw_order->flower_id = (int)$input['new_orders'][$i]['flw_type'];
+                    $flw_order->flower_id = (int)$flw_id;
                     $flw_order->stalk_counter = $input['new_orders'][$i]['total'];
                     $flw_order->type = (int)$input['new_orders'][$i]['type'];
                     $date = str_replace('/', '-', $input['new_orders'][$i]['first']);
@@ -663,6 +691,7 @@ class OrderController extends Controller {
 
         $customer = $this->checkCustomer($input)->getData();
         $cid = $customer->customer_id;
+        $mobile = $customer->customer_mobile;
         if (empty($cid)) {
             return response()->json(array('error' => false), 422);
         } else {
@@ -687,8 +716,18 @@ class OrderController extends Controller {
                         $ord_amount = $obj['amount'];
                         //each payment will do after create an object
                         app('App\Http\Controllers\Adm\PaymentController')->createPayment($id, $input, $i);
-                        if ($input['new_orders'][$i]['pay_type'] == 1)
-                            $this->postSendEmail($id, $ord_amount);
+                        if (!empty($input['new_orders'][$i]['pay_type'])) {
+                            switch ($input['new_orders'][$i]['pay_type']) {
+                                case 1:
+                                    $this->postSendEmail($id, $ord_amount);
+                                    break;
+                                case 3:
+                                    app('App\Http\Controllers\Adm\SmsController')->getSendMessage($id, $ord_amount, $mobile);
+                                    break;
+
+                            }
+                        }
+
 
                         return response()->json(array('success' => true, 'last_insert_id' => $id), 200);
                     } else {
@@ -708,15 +747,18 @@ class OrderController extends Controller {
     {
         if (!empty($input['customer']['id'])) {
             $cid = $input['customer']['id'];
-            return response()->json(array('success' => true, 'customer_id' => $cid), 200);
+            $cMobile = $input['customer']['mobile'];
+            return response()->json(array('success' => true, 'customer_id' => $cid, 'customer_mobile' => $cMobile), 200);
 
         } elseif (!empty($input['email'])) {
             $exist_customer = Customer::where('email', $input['email'])->first();
             if (empty($exist_customer)) {
                 $input['name'] = $input['fname'] . ' ' . $input['lname'];
                 $input['sts'] = 1;
-                $cid = Customer::create($input)->id;
-                return response()->json(array('success' => true, 'customer_id' => $cid), 200);
+                $customer = Customer::create($input);
+                $cid = $customer->id;
+                $cMobile = $customer->mobile;
+                return response()->json(array('success' => true, 'customer_id' => $cid, 'customer_mobile' => $cMobile), 200);
 
             }
 
@@ -761,7 +803,9 @@ class OrderController extends Controller {
             $amount = $price[0] * $count;
             return response()->json(array('success' => true, 'amount' => $amount), 200);
         } elseif (empty($input['new_orders'][$i]['pck_type'])) {
-            $flw_id = $input['new_orders'][$i]['flw_type'];
+            $fl_type = explode('|', $input['new_orders'][$i]['flw_type']);
+            $flw_id = $fl_type[0];
+            $flw_id = $flw_id;
             $stalk = $input['new_orders'][$i]['total'];
             $price = Flower::where('id', $flw_id)->pluck('price');
             $prc_stalks = $price[0] * $stalk;
@@ -779,8 +823,7 @@ class OrderController extends Controller {
     {
         $input = $request->all();
         $orders = Order::whereCid($input['cid'])->with('orderPackets', 'orderFlowers')->get();
-        $ord_count = Order::whereCid($input['cid'])->count();
-        return response()->json(['orders' => $orders, 'ord_count' => $ord_count]);
+        return response()->json(['orders', $orders]);
     }
 
     public function postGetPacketPrc(Request $request)

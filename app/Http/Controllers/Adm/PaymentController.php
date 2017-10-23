@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Input;
 
 class PaymentController extends Controller
 {
+
     public function createPayment($id, $input, $i)
     {
         $order_payment = new OrderPayment();
@@ -90,15 +91,17 @@ class PaymentController extends Controller
             echo "cURL Error #:" . $err;
         } else {
             if ($result['Status'] == 100) {
-                echo 'Transation success. RefID:' . $result['RefID'];
-                //update row of database for order i
-            } else {
-                echo 'Transation failed. Status:' . $result['Status'];
-                if(!empty($OrderId[2])){
+                if (!empty($OrderId[2])) {
                     $order = Order::orderBy('created_at', 'DESC')->where('id', $OrderId[2])->first();
-                    if(!empty($order))
-                        OrderPayment::where('oid', $order->id)->update(['sts' => 1]);
+                    if (!empty($order))
+                        OrderPayment::where('oid', $order->id)->update(['sts' => 1, 'refID' => $result['RefID']]);
                 }
+                $refID = $result['RefID'];
+                return view('admin/page/payment/paymentstatus', compact('refID'));
+            } else {
+                $status = $result['Status'];
+                return view('admin/page/payment/paymentstatus', compact('status'));
+
 
             }
         }

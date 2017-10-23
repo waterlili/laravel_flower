@@ -30,7 +30,6 @@ Blade::setEscapedContentTags('<%%', '%%>');   // for escaped data
 
 Route::group(['middleware' => 'web'], function () {
   Route::controller('auth', 'Auth\AuthController');
-
 // Password reset link request routes...
   Route::get('password/email', 'Auth\PasswordController@getEmail');
   Route::post('password/email', 'Auth\PasswordController@postEmail');

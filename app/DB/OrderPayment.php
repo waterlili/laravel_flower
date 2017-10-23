@@ -16,6 +16,7 @@ class OrderPayment extends Model
     protected $dates = ['deleted_at'];
     protected $fillable = array(
         'type',
+        'refID',
         'price',
         'bank',
         'issue_tracking',

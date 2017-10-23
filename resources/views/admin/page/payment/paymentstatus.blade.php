@@ -2,7 +2,7 @@
 <head>
     <style>
         body {
-            background-image: url("img/payments.jpg");
+            background-image: url("http://185.173.106.234/img/payments.jpg");
             background-repeat: no-repeat;
             background-size: cover;
         }

@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Input;
 
 class PaymentController extends Controller
 {
-
     public function createPayment($id, $input, $i)
     {
         $order_payment = new OrderPayment();

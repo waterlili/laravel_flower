@@ -13,7 +13,7 @@ $date2 = \App\View\Text::create('item.pay_date', 'تاریخ واریز')->dateI
         <div class="title" layout="row" layout-align="start center" ng-repeat-start="item in data.new_orders">
             <i class="icon edit"></i>
             سفارش
-            <span>{{item.id || $index + 1}}</span>
+            <span>{{data.orders.length+1}}</span>
 
             <div flex></div>
             <div>

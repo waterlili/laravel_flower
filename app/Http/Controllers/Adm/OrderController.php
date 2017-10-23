@@ -823,7 +823,7 @@ class OrderController extends Controller {
     {
         $input = $request->all();
         $orders = Order::whereCid($input['cid'])->with('orderPackets', 'orderFlowers')->get();
-        return response()->json(['orders', $orders]);
+        return response()->json($orders);
     }
 
     public function postGetPacketPrc(Request $request)

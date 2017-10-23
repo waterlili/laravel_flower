@@ -2238,8 +2238,6 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     _this.pay = {};
     _this.data.new_orders = [];
     _this.data.orders = [];
-    _this.data.amount = [];
-    _this.data.total_price = [];
     _this.init = function () {
         $('.ui.accordion').accordion();
     };

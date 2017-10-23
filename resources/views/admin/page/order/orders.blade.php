@@ -17,7 +17,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
         <span>{{$index + 1}}</span>
         <div flex></div>
     </div>
-    <div class="content" ng-repeat-end>
+    <div class="content odr_style" ng-repeat-end>
         <div class="p-md">
             <div layout-gt-md="row" layout-align="start center">
                 <div class="form-group">

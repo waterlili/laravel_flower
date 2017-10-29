@@ -44,6 +44,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::controller('/console/manage', 'Adm\ManageController');
     Route::controller('/console/product', 'Adm\ProductController');
     Route::controller('/console/flower', 'Adm\FlowerController');
+    Route::controller('/console/flower_vase', 'Adm\FlowerVaseController');
     Route::controller('/console/flower_package', 'Adm\FlowerPackageController');
     Route::controller('/console/flower_packet', 'Adm\FlowerPacketController');
     Route::controller('/console/order', 'Adm\OrderController');

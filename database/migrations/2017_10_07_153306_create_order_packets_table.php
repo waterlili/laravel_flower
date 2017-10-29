@@ -17,8 +17,6 @@ class CreateOrderPacketsTable extends Migration
             $table->integer('order_id')->unsigned();
             $table->integer('packet_id')->unsigned();
             $table->string('combination');
-            $table->tinyInteger('type');
-            $table->dateTime('send_at')->nullable()->default(null);
             $table->softDeletes();
             $table->timestamps();
 

@@ -66,9 +66,13 @@ class KavenegarApi extends Model
         } else {
             $json_return = $json_response->return;
             if ($json_return->status != 200) {
-                throw new ApiException($json_return->message, $json_return->status);
+                $error = new ApiException($json_return->message, $json_return->status);
+
             }
-            return $json_response->entries;
+            if ($error)
+                return $error;
+            else
+                return $json_response->entries;
         }
 
     }

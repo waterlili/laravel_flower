@@ -102,6 +102,12 @@ return [
                 ]
             ]
         ],
+        'flowers_vase' => [
+            'title' => 'menu.flowers_vase',
+            'icon' => 'description',
+            'w' => 2
+
+        ],
 
         'flower_packages' => [
             'title'    => 'menu.flower_packages',
@@ -185,6 +191,13 @@ return [
                     'ctrl'  => 'ConstCtrl',
                     'rid'   => 100,
                     'w'     => 11
+                ],
+                'message' => [
+                    'title' => 'مدیریت متن پیام ها',
+                    'url' => 'console/manage/message',
+                    'ctrl' => 'ConstCtrl',
+                    'rid' => 100,
+                    'w' => 11
                 ],
                 'log'         => [
                     'title' => 'رویداد های سیستمی',

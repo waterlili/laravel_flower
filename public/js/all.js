@@ -64,6 +64,7 @@ var _trans_en = {
         'consoleproductlist': 'محصولات',
         'consoleproductadd': 'افزودن محصول',
         'consoleflowerslist': 'گلها',
+        'consoleflowersvaselist': 'گلدان ها',
         'consoleorderadd': 'افزودن سفارش',
         'consoleorderlistlist': 'سفارش ها',
         'consoleorderlistunverified': 'سفارش های تایید نشده',
@@ -2137,6 +2138,143 @@ app.controller('FlowerPacketListCtrl', function ($scope, $mdDialog, htp) {
             });
     };
 });
+app.controller('FlowerAddCtrl', function ($scope, htp, $controller) {
+    $controller('SubmitController', {$scope: $scope});
+    var _this = $scope;
+    _this.submiterUrl = 'console/flower_vase/add';
+    _this.submiterName = 'گل';
+
+    if (_this.edit_mode) {
+        _this.data = _this.dt;
+    }
+    _this.data = {};
+    _this.data.composit = [];
+    var COMP = function () {
+        this.disabled = false;
+        this.flower = this.image = undefined;
+        this.add = function () {
+            _this.data.composit.push({
+                flower: this.flower,
+                image: this.image
+            });
+            this.flower = this.image = undefined;
+            this.flowerOpt.searchText = undefined;
+            this.flowerOpt.selectedItem = undefined;
+        };
+
+        this.remove = function ($index) {
+            _this.data.composit = _.without(_this.data.composit, _this.data.composit[$index]);
+        };
+    };
+    _this.afterSuccess = function () {
+        _this.data = {};
+        _this.data.composit = [];
+        _this.comp = new COMP();
+    };
+    _this.comp = new COMP();
+
+    var Fls = function ($name) {
+        this.errorUploading = undefined;
+        this.file = undefined;
+        this.success = undefined;
+        this.readyUpload = undefined;
+        this.progress = undefined;
+        this.name = $name;
+        this.has = undefined;
+        this.finish = true;
+        this.url = undefined;
+        this.clear = function () {
+            this.errorUploading = this.readyUpload = this.file = this.success = this.progress = undefined;
+        };
+
+        this.clearError = function () {
+            this.errorUploading = undefined;
+        };
+
+        this.__submit = function () {
+            _this._upload(this);
+        };
+
+        this.init = function () {
+            this.has = true;
+            this.finish = false;
+        };
+    };
+
+
+    _this._upload = function (fls) {
+        fls.clearError();
+        fls.uploading = true;
+        Upload.upload({
+            url: home('console/flower/upload-flower-image'),
+            data: {file: fls.file, type: fls.name}
+        }).then(function (resp) {
+            fls.uploading = false;
+            fls.clear();
+            fls.success = true;
+            fls.finish = true;
+            fls.url = resp.data.url;
+            var d = new Date();
+            _this.data.personal.url = resp.data.url + '?ver=' + d.getTime();
+        }, function (resp) {
+            fls.errorUploading = true;
+            fls.file = undefined;
+            fls.uploading = false;
+            fls.progress = undefined;
+        }, function (evt) {
+            fls.progress = parseInt(100.0 * evt.loaded / evt.total);
+        });
+    };
+
+    _this.data.flower_picture = new Fls('flower_picture');
+
+});
+
+
+app.controller('FlowerListCtrl', function ($scope, $mdDialog, htp) {
+    var _this = $scope;
+    _this.tbl = {};
+    // _this.showDialog = function (row, ev) {
+    //     console.log(row);
+    //     var dialog = $mdDialog.show({
+    //         controller: function ($scope, $controller, dt, $mdDialog) {
+    //             $scope.dt = dt;
+    //             $scope.edit_mode = true;
+    //             $scope.data = row;
+    //             $scope.hide = function () {
+    //                 $mdDialog.hide();
+    //             };
+    //             $scope.cancel = function () {
+    //                 $mdDialog.cancel();
+    //             };
+    //             $scope.tbl = {};
+    //             $scope.tbl.postData = function () {
+    //                 return {
+    //                     uid: dt.id
+    //                 }
+    //             };
+    //         },
+    //         templateUrl: home('console/flower/data'),
+    //         parent: angular.element(document.body),
+    //         targetEvent: ev,
+    //         clickOutsideToClose: true,
+    //         locals: {
+    //             dt: row
+    //         },
+    //         fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+    //     })
+    //         .then(function (answer) {
+    //
+    //         });
+    // };
+});
+app.controller('FlowerEditCtrl', function ($scope, htp, $controller) {
+    var _this = $scope;
+    htp(home('console/flower/get-edit-flower-data'), {id: _this.dt.id}).then(function (resposnne) {
+        _this.data = resposnne;
+
+    });
+});
 app.controller('CustomerGroupCtrl', function ($scope, htp , notify) {
     var _this = $scope;
     _this.chipOpt = {};
@@ -2292,7 +2430,9 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
         item.week = index;
     };
 
-
+    _this.change_w = function (item) {
+        item.w = '';
+    };
     _this.wChange = function (item, index) {
         item.w = index;
     };
@@ -2300,11 +2440,13 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
         item.time = index;
 
     };
+    // _this.v.Dt = Date.parse(item.order_packets[0]['send_at']);
+
 
     _this.calcPrice = function (item) {
-
         var price = '';
         if (item.pck_type) {
+
             prc_part = item.pck_type.split("|");
             if (item.type == 1) {
                 var count = item.week * 4;
@@ -2325,6 +2467,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
                 return price;
             }
         }
+
 
 
     };
@@ -2399,10 +2542,12 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
 
     _this.submit = function () {
         _this.loading = true;
-        htp(home('console/order/submit'), _this.data).then(function (res) {
+        htp(home('console/order/submit'), _this.data, _this.data.msg).then(function (res) {
             notify('success', 'اطلاعات با موفقیت ثبت گردید')
         }).error(function (res, sts) {
             if (sts == 422) {
+                notify('error', res['msg'])
+            } else {
                 _this.errorItems = res;
             }
         }).after(function (res) {

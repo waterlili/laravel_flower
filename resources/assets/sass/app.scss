@@ -6,6 +6,12 @@ html {
   box-sizing: inherit;
 }
 
+$ligh-green: #80A500;
+$strange-red: #E53020;
+$foundation-palette: (
+        success: $light-green,
+        alert: $strange-red,
+);
 @media (min-width: 1280px) {
   .cn-md {
     max-width: 100%;
@@ -4504,4 +4510,11 @@ ul.ng-table-pagination {
 
 .odr_style {
   background-color: rgb(223, 240, 216);
+}
+
+.pym_re {
+  text-align: center;
+  color: $foundation-palette;
+  font-size: 18px;
+
 }

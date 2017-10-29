@@ -3527,4 +3527,17 @@ ul.ng-table-pagination {
     text-align: center;
 }
 
+.odr_style {
+    background-color: #dff0d8;
+}
+
+.pym_re {
+    text-align: center;
+    color: #80A500;
+    font-size: 18px;
+    text-align: center;
+    color: #E53020;
+    font-size: 18px;
+}
+
 /*# sourceMappingURL=app.css.map */

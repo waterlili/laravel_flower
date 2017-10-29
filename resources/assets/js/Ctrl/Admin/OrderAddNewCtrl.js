@@ -92,7 +92,9 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
         item.week = index;
     };
 
-
+    _this.change_w = function (item) {
+        item.w = '';
+    };
     _this.wChange = function (item, index) {
         item.w = index;
     };
@@ -100,11 +102,13 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
         item.time = index;
 
     };
+    // _this.v.Dt = Date.parse(item.order_packets[0]['send_at']);
+
 
     _this.calcPrice = function (item) {
-
         var price = '';
         if (item.pck_type) {
+
             prc_part = item.pck_type.split("|");
             if (item.type == 1) {
                 var count = item.week * 4;
@@ -125,6 +129,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
                 return price;
             }
         }
+
 
 
     };
@@ -199,10 +204,12 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
 
     _this.submit = function () {
         _this.loading = true;
-        htp(home('console/order/submit'), _this.data).then(function (res) {
+        htp(home('console/order/submit'), _this.data, _this.data.msg).then(function (res) {
             notify('success', 'اطلاعات با موفقیت ثبت گردید')
         }).error(function (res, sts) {
             if (sts == 422) {
+                notify('error', res['msg'])
+            } else {
                 _this.errorItems = res;
             }
         }).after(function (res) {

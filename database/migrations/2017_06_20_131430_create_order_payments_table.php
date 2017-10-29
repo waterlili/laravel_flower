@@ -14,10 +14,9 @@ class CreateOrderPaymentsTable extends Migration
     {
         Schema::create('order_payments', function (Blueprint $table) {
             $table->increments('id');
+            //each orders has a payments
             $table->integer('oid')->unsigned();
             $table->tinyInteger('type')->nullable();
-            $table->string('bank')->nullable();
-            $table->string('issue_tracking')->nullable();
             $table->tinyInteger('sts')->nullable();
             $table->softDeletes();
             $table->timestamps();

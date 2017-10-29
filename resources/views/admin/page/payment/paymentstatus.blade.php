@@ -12,12 +12,12 @@
 <body>
 <div>
     @if(!empty($refID))
-    <div style="text-align: center;color:#80A500">
+        <div class="pym_re success">
         <p>پرداخت شما با موفقیت انجام شد</p>
         <p>{{ $refID }}:شماره مرجع</p></p>
     </div>
     @elseif(!empty($status))
-        <div style="text-align: center;color:#E53020">
+        <div class="pym_re alert">
             <p>پرداخت ناموفق</p>
 
         </div>

@@ -21,21 +21,36 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
         <div class="p-md">
             <div layout-gt-md="row" layout-align="start center">
                 <div class="form-group">
-                    <p ng-if="item.type==1">
-                        اشتراکی
-                    </p>
-                    <p ng-if="item.type==2">
-                        هدیه
-                    </p>
+                    <div ng-if="item.order_flowers.length > 0 && item.type==1">
+                        <h4><i class="material-icons">local_florist</i> سفارش گل از نوع اشتراکی {{item.month_str}}</h4>
+                        <p>{{item.week_str}} ها </p>
+                        <p>نام گل:{{item.order_flowers[0]['flower']['name']}}</p>
+                        تاریخ اولین ارسال: {{item.order_flowers[0]['send_at']}}
+                        <p>{{item.order_packets[0]['packet']['title']}}</p>
+                    </div>
+                    <div ng-if="item.order_flowers.length > 0 && item.type==2">
+                        <h4> سفارش گل از نوع هدیه</h4>
+                        <p>
+                            تاریخ اولین ارسال: {{item.send_at}}
+                        </p>
+                    </div>
+                    <div ng-if="item.order_packets.length > 0 && item.type==1">
+                        <h4><i class="material-icons">local_florist</i> سفارش بسته ی گل از نوع
+                            اشتراکی {{item.month_str}}</h4>
+                        <p>{{item.week_str}} ها </p>
+                        <div> تاریخ اولین ارسال:{{item.order_packets[0]['send_at']}}
+                        </div>
+
+                        <p>نوع بسته:{{item.order_packets[0]['packet']['title']}}</p>
+                    </div>
+                    <div ng-if="item.order_packets.length > 0 && item.type==2">
+                        <h4>سفارش بسته ی گل از نوع هدیه</h4>
+                        <div> تاریخ ارسال: {{item.send_at}}</div>
+
+
+                    </div>
                     <p>
                         قیمت: {{item.amount}}
-                    </p>
-                    <p ng-if="item.sending!=Null">
-                    <div flex>اطلاعات دریافت کننده</div>
-                    <p ng-if="item.sending_name!=Null">نام:{{item.sending_name}}</p>
-                    <p ng-if="item.sending_mobile!=Null">موبایل:{{item.sending_mobile}}</p>
-                    <p ng-if="item.sending_address!=Null">آدرس :{{item.sending_address}}</p>
-
                     </p>
 
 

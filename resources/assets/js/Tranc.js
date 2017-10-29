@@ -64,6 +64,7 @@ var _trans_en = {
         'consoleproductlist': 'محصولات',
         'consoleproductadd': 'افزودن محصول',
         'consoleflowerslist': 'گلها',
+        'consoleflowersvaselist': 'گلدان ها',
         'consoleorderadd': 'افزودن سفارش',
         'consoleorderlistlist': 'سفارش ها',
         'consoleorderlistunverified': 'سفارش های تایید نشده',

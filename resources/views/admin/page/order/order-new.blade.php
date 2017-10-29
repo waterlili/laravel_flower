@@ -48,7 +48,8 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     <div class="default text">انتخاب بسته</div>
                     <div class="menu">
                         @foreach(\App\DB\FlowerPacket::GetPckt() as $item)
-                            <div class="item" data-value="<% $item['id'] %>|<% $item['price'] %>"><% $item['title'] %>
+                            <div class="item" ng-click="item.flw_type= ''"
+                                 data-value="<% $item['id'] %>|<% $item['price'] %>"><% $item['title'] %>
 
                     </div>
                         @endforeach
@@ -63,7 +64,8 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     <div class="default text">انتخاب گل</div>
                     <div class="menu">
                         @foreach(\App\DB\Flower::GetFlw() as $item)
-                            <div class="item" data-value="<% $item['id'] %>|<% $item['price'] %>"><% $item['name'] %>
+                            <div class="item" ng-click="item.pck_type= ''"
+                                 data-value="<% $item['id'] %>|<% $item['price'] %>"><% $item['name'] %>
                             </div>
                         @endforeach
                     </div>

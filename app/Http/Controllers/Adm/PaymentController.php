@@ -96,10 +96,10 @@ class PaymentController extends Controller
                         OrderPayment::where('oid', $order->id)->update(['sts' => 1, 'refID' => $result['RefID']]);
                 }
                 $refID = $result['RefID'];
-                return view('admin/page/payment/paymentstatus', compact('refID', $refID));
+                return view('admin/page/payment/paymentstatus', compact('refID'));
             } else {
                 $status = $result['Status'];
-                return view('admin/page/payment/paymentstatus', compact('status', $status));
+                return view('admin/page/payment/paymentstatus', compact('status'));
 
 
             }

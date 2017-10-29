@@ -15,21 +15,28 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('cid')->unsigned();
+            //define vase
+            $table->integer('vid')->unsigned()->nullable();
             $table->tinyInteger('type');
-            $table->double('amount')->default('0');
-            $table->tinyInteger('time')->nullable();
+            $table->tinyInteger('sts')->default(1);
+            $table->double('amount')->default(0);
+            $table->integer('sent_count')->default(0);
+            $table->tinyInteger('time_duration')->nullable();
             $table->tinyInteger('daysOfWeek')->nullable();
-            $table->tinyInteger('sending')->nullable();
             $table->tinyInteger('month')->nullable();
+            $table->tinyInteger('sending')->nullable();
             $table->string('sending_name', 50)->nullable();
             $table->string('sending_mobile', 15)->nullable();
             $table->string('sending_address')->nullable();
-            $table->timestamp('expired_at')->nullable();
+            $table->dateTime('started_at')->nullable()->default(null);
+            $table->dateTime('expired_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('cid')->references('id')->on('customers')
                 ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->foreign('vid')->references('id')->on('flower_vases')
                 ->onUpdate('cascade');
 
 

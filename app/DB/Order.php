@@ -12,6 +12,7 @@ class Order extends Model {
     protected $table = 'orders';
   public $timestamps = TRUE;
 
+
   use SoftDeletes;
 
   public static $SELECT_TYPE_STR = 'type as type_str';
@@ -27,17 +28,30 @@ class Order extends Model {
       'cid',
       'type',
       'amount',
-      'time',
+      'time_duration',
       'daysOfWeek',
       'sending',
       'month',
       'sending_name',
       'sending_mobile',
       'sending_address',
+      'sts',
+      'sent_count',
+      'started_at',
       'expired_at'
 
 
   );
+
+    protected static function GetMonths()
+    {
+        return [
+            1 => 'یک ماهه',
+            2 => 'دو ماهه',
+            3 => 'سه ماهه',
+            4 => 'چهار ماهه',
+        ];
+    }
 
   public static $NORMAL_TYPE = 1;
 
@@ -162,6 +176,14 @@ class Order extends Model {
     return array_get(self::GetDays(), $value, 'تعریف نشده');
   }
 
+    public function getMonthStrAttribute($value)
+    {
+        if (is_null($value)) {
+            return NULL;
+        }
+        return array_get(self::GetMonths(), $value, 'تعریف نشده');
+    }
+
   public function getTypeStrAttribute($value) {
     return array_get(self::GetType(), $value, 'تعریف نشده');
   }
@@ -219,5 +241,6 @@ class Order extends Model {
     {
         return $this->hasMany(OrderFlower::class);
     }
+
 
 }

@@ -23,9 +23,17 @@ class SmsController extends Controller
         $message = "لینک پرداخت بونیتا:)
                     http://185.173.106.234/payment/$query/zarinpal";
         $api = new KavenegarApi("6756677159634973344D706951593961467647486E673D3D");
-        $api->Send($sender, $receptor, $message);
+        $res = $api->Send($sender, $receptor, $message);
+        $code = $res->getCode();
+        $message = $res->getMessage();
+        if (!empty($code)) {
+            return response()->json(['message', $message], 422);
+        } else {
+            return response()->json(['message', $message], 200);
 
-        return redirect()->back()->with('message', 'Message has been sent successfully');
+        }
+
+
     }
 
 }

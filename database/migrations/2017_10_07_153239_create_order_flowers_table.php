@@ -17,8 +17,6 @@ class CreateOrderFlowersTable extends Migration
             $table->integer('order_id')->unsigned();
             $table->integer('flower_id')->unsigned();
             $table->integer('stalk_counter');
-            $table->tinyInteger('type');
-            $table->dateTime('send_at')->nullable()->default(null);
             $table->softDeletes();
             $table->timestamps();
 

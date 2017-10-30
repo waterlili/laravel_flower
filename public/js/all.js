@@ -2138,7 +2138,7 @@ app.controller('FlowerPacketListCtrl', function ($scope, $mdDialog, htp) {
             });
     };
 });
-app.controller('FlowerAddCtrl', function ($scope, htp, $controller) {
+app.controller('FlowerVaseAddCtrl', function ($scope, htp, $controller) {
     $controller('SubmitController', {$scope: $scope});
     var _this = $scope;
     _this.submiterUrl = 'console/flower_vase/add';
@@ -2382,6 +2382,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
 
     _this.type = function (item, $index) {
         item.type = $index;
+
     };
 
     angular.module('tabsDemoDynamicHeight', ['ngMaterial']);
@@ -2390,6 +2391,8 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
         _this.data.customer = dt;
         htp(home('console/order/get-prc'), {cid: _this.data.customer.id}).then(function (res) {
             _this.data.orders = res;
+            _this.flag = res.flag;
+
 
         });
     });
@@ -2441,16 +2444,21 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
 
     };
     // _this.v.Dt = Date.parse(item.order_packets[0]['send_at']);
-
+    // _this.changeCheck =function (item) {
+    //     console.log("s");
+    // };
 
     _this.calcPrice = function (item) {
+        var flag = _this.flag;
         var price = '';
         if (item.pck_type) {
-
             prc_part = item.pck_type.split("|");
             if (item.type == 1) {
                 var count = item.week * 4;
-                price = prc_part[1] * count;
+                if (flag == 1 && item.flowerVase)
+                    price = prc_part[1] * count;
+                else
+                    price = (prc_part[1] * count) + item.flowerVase;
                 return price;
             } else if (item.type == 2) {
                 return prc_part[1];
@@ -2459,7 +2467,10 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
             var prc_part = item.flw_type.split("|");
             if (item.type == 1) {
                 var count = item.week * 4;
-                price = prc_part[1] * item.total * count;
+                if (flag == 1 && item.flowerVase)
+                    price = prc_part[1] * item.total * count;
+                else
+                    price = (prc_part[1] * item.total * count) + item.flowerVase;
                 return price;
             } else if (item.type == 2) {
 

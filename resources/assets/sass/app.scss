@@ -6,12 +6,9 @@ html {
   box-sizing: inherit;
 }
 
-$ligh-green: #80A500;
-$strange-red: #E53020;
-$foundation-palette: (
-        success: $light-green,
-        alert: $strange-red,
-);
+$light-green: #80A500;
+$dark_green: #004D40;
+
 @media (min-width: 1280px) {
   .cn-md {
     max-width: 100%;
@@ -4514,7 +4511,17 @@ ul.ng-table-pagination {
 
 .pym_re {
   text-align: center;
-  color: $foundation-palette;
+  color: $light-green;
   font-size: 18px;
 
+}
+
+.topic_pos {
+  color: $dark-green;
+  display: inline-block;
+}
+
+.lab_sty {
+  color: $dark-green;
+  padding-right: 23px;
 }

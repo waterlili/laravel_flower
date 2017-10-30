@@ -1,4 +1,4 @@
-app.controller('FlowerAddCtrl', function ($scope, htp, $controller) {
+app.controller('FlowerVaseAddCtrl', function ($scope, htp, $controller) {
     $controller('SubmitController', {$scope: $scope});
     var _this = $scope;
     _this.submiterUrl = 'console/flower_vase/add';

@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Adm;
 
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class FlowerVaseController extends Controller
 {
@@ -16,7 +15,6 @@ class FlowerVaseController extends Controller
 
     public function getAdd()
     {
-        dd("sdfs");
         return view('admin.page.flower_vase.add');
     }
 }

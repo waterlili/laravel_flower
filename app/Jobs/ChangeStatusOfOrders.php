@@ -34,15 +34,9 @@ class ChangeStatusOfOrders extends Job implements ShouldQueue
         $exp = Carbon::parse($order['expired_at'])->format('Y,m,d');
         $now_con = \jDateTime::strftime('Y,m,d', strtotime($now));
         $cnv_date = $this->convert($now_con);
-        $count = $order['sent_count'] + 1;
         if ($exp <= $cnv_date) {
-            //add count
-            //update and change sts of order
-            $order->update(array('sent_count' => $count, 'sts' => 0));
+            $order->update(array('sts' => 0));
 
-        } else {
-            //add count
-            $order->update(array('sent_count' => $count));
         }
 
     }

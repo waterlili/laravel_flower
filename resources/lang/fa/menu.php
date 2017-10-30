@@ -26,6 +26,7 @@ return [
     'flowers'            => 'گل ها',
     'flowers_vase' => 'گلدان ها',
     'add_flower'         => 'افزودن گل',
+    'add_flower_vase' => 'افزودن گلدان',
     'flower_packages'    => 'ترکیب گل ها',
     'add_flower_package' => 'افزودن ترکیب گل',
     'flower_packets'     => 'بسته ها',

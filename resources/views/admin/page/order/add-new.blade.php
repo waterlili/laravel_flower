@@ -55,7 +55,7 @@ $total = \App\View\Text::create('item.total', 'تعداد')
 
 <div ng-controller="OrderAddNewCtrl">
     <div class="ui label red" ng-if="data.customer">{{data.customer.title}}</div>
-    <div class="ui label green" ng-if="data.customer"><span>تعداد سفارش‌ :‌ </span>{{data.orders.length}}</div>
+    <div class="ui label green" ng-if="data.customer"><span>تعداد سفارش‌ :‌ </span>{{data.orders.orders.length}}</div>
 
     <md-content>
         <md-tabs md-dynamic-height md-border-bottom md-selected="myTabIndex">

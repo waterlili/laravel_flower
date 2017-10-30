@@ -19,7 +19,7 @@ class CreateFlowerVasesTable extends Migration
             $table->string('quality')->nullable();
             $table->string('capacity')->nullable();
             $table->string('images', 500)->nullable();
-            $table->decimal('price');
+            $table->double('price')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

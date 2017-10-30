@@ -105,7 +105,23 @@ return [
         'flowers_vase' => [
             'title' => 'menu.flowers_vase',
             'icon' => 'description',
-            'w' => 2
+            'w' => 2,
+            'children' => [
+                'list' => [
+                    'title' => 'menu.flowers',
+                    'url' => 'console/flower_vase/list',
+                    'ctrl' => 'FlowerListCtrl',
+                    'rid' => 100,
+                    'w' => 11
+                ],
+                'add' => [
+                    'title' => 'menu.add_flower',
+                    'url' => 'console/flower_vase/add',
+                    'ctrl' => 'FlowerVaseAddCtrl',
+                    'rid' => 100,
+                    'w' => 11
+                ]
+            ]
 
         ],
 

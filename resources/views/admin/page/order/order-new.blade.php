@@ -41,6 +41,14 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     <input type="checkbox" ng-model="Flower">
                     <label>انتخاب گل</label>
                 </div>
+                <div class="ui checkbox mb-md">
+
+                    <?php $item = \App\DB\FlowerVase::select(['price'])->first();?>
+                    <input type="checkbox" ng-model="item.flowerVase" ng-true-value="<% $item['price'] %>"
+                           ng-false-value="0"/>
+                    <input type="hidden" ng-model="flag"/>
+                    <label>گلدان</label>
+                </div>
             </div>
             <div layout-gt-md="row" layout-align="start center" ng-hide="Flower">
                 <div class="ui fluid search selection dropdown ml-md-md mb-xl" use-dropdown ng-model="item.pck_type">

@@ -26,6 +26,7 @@ class Order extends Model {
   protected $dates = ['deleted_at'];
   protected $fillable = array(
       'cid',
+      'vid',
       'type',
       'amount',
       'time_duration',
@@ -176,6 +177,15 @@ class Order extends Model {
     return array_get(self::GetDays(), $value, 'تعریف نشده');
   }
 
+    public function getFirstDateAttribute($value)
+    {
+        if (is_null($value)) {
+            return NULL;
+        } else {
+            $date = explode(" ", $value);
+            return $date[0];
+        }
+    }
     public function getMonthStrAttribute($value)
     {
         if (is_null($value)) {

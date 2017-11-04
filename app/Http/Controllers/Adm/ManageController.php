@@ -43,6 +43,11 @@ class ManageController extends Controller {
     return response()->json(['result' => TRUE, 'data' => $json]);
   }
 
+    public function postGetConstColor()
+    {
+        $json = Cnt::color()->get();
+        return response()->json(['result' => TRUE, 'data' => $json]);
+    }
   public function postGetConstCost() {
     $json = Cnt::cost()->get();
     return response()->json(['result' => TRUE, 'data' => $json]);
@@ -65,6 +70,11 @@ class ManageController extends Controller {
   public function postSetConstFlower(Request $request) {
     return $this->_setConst($request, Cnt::$FLOWER);
   }
+
+    public function postSetConstColor(Request $request)
+    {
+        return $this->_setConst($request, Cnt::$COLOR);
+    }
 
     public function postSetConstPacketType(Request $request)
     {

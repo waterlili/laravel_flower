@@ -15,13 +15,18 @@ class CreateFlowerVasesTable extends Migration
         Schema::create('flower_vases', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->string('material')->nullable();
-            $table->string('quality')->nullable();
+            $table->tinyInteger('material')->nullable();
+            $table->integer('weight')->nullable();
+            $table->tinyInteger('size')->nullable();
+            $table->tinyInteger('quality')->nullable();
             $table->string('capacity')->nullable();
+            $table->integer('color_id')->unsigned()->nullable();
             $table->string('images', 500)->nullable();
             $table->double('price')->default(0);
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('color_id')->references('id')->on('consts');;
         });
     }
 

@@ -24,6 +24,7 @@ return [
     'last_orders'        => 'سفارش های جدید',
     'add_order'          => 'اضافه کردن سفارش جدید',
     'flowers'            => 'گل ها',
+    'messages' => 'پیام و نوتیفیکیشن',
     'flowers_vase' => 'گلدان ها',
     'add_flower'         => 'افزودن گل',
     'add_flower_vase' => 'افزودن گلدان',

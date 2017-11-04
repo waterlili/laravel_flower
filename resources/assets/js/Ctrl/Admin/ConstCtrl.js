@@ -64,6 +64,7 @@ app.controller('ConstCtrl', function ($scope, htp, notify, $mdDialog) {
         this.init();
     };
     _this.flower = new CONST('console/manage/set-const-flower', 'console/manage/get-const-flower');
+    _this.color = new CONST('console/manage/set-const-color', 'console/manage/get-const-color');
     _this.pack = new CONST('console/manage/set-const-pack', 'console/manage/get-const-pack');
     _this.cost = new CONST('console/manage/set-const-cost', 'console/manage/get-const-cost');
     _this.user_type = new CONST('console/manage/set-const-user-type', 'console/manage/get-const-user-type');

@@ -4525,3 +4525,53 @@ ul.ng-table-pagination {
   color: $dark-green;
   padding-right: 23px;
 }
+
+.thumb {
+  width: 100px;
+  margin: 5px;
+  float: left;
+}
+
+.uploader {
+  clear: both;
+}
+
+.progress {
+  display: flex;
+  height: 1rem;
+  overflow: hidden;
+  font-size: .75rem;
+  background-color: #e9ecef;
+  border-radius: .25rem;
+}
+
+.progress-bar {
+  display: flex;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: #fff;
+  background-color: #007bff;
+}
+
+.img-wrap {
+  position: relative;
+  display: inline-block;
+  font-size: 0;
+}
+
+.img-wrap .close {
+  position: absolute;
+  top: 57px;
+  right: 6px;
+  z-index: 100;
+  padding: 5px 2px 2px;
+  color: #DB2828;
+  font-weight: bold;
+  cursor: pointer;
+  opacity: .2;
+  text-align: center;
+  font-size: 22px;
+  line-height: 10px;
+  border-radius: 50%;
+}

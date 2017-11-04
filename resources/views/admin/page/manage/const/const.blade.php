@@ -1,5 +1,6 @@
 <?php
 $flower = App\View\Text::create('flower.title', 'نام گل')->export();
+$color = App\View\Text::create('color.title', 'عنوان رنگ')->export();
 $pack = App\View\Text::create('pack.title', 'نوع محصول')->export();
 $cost = App\View\Text::create('cost.title', 'نوع هزینه های جاری')->export();
 $user_type = App\View\Text::create('user_type.title', 'نوع مشتری')->export();
@@ -8,6 +9,21 @@ $packet_price = App\View\Text::create('packet_type.price', 'قیمت')->export()
 ?>
 <section>
     <div layout-gt-md="row" layout-align="start start" class="mt-md">
+        <div flex-gt-md="33" class="w-box p-md mh-md">
+            <header class="w-box-header h-md">رنگ</header>
+            <div layout="row" layout-align="start center">
+                @include('MD.input.text' , $color)
+                <md-button ng-click="color.add()" ng-disabled="!color.title">ثبت</md-button>
+            </div>
+            <fieldset>
+                <div>
+                    <div ng-repeat="item in color.items" class="const-item">
+                        {{item.title}}
+                    </div>
+                </div>
+            </fieldset>
+            @include('MD.Notice.notice' ,['type'=>'error' , 'repeat'=>'flower.errorItems'])
+        </div>
         <div flex-gt-md="33" class="w-box p-md mh-md">
             <header class="w-box-header h-md">نام گل</header>
             <div layout="row" layout-align="start center">

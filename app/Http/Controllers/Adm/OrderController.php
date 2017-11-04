@@ -34,9 +34,11 @@ class OrderController extends Controller {
     }
 
     public function getAdd() {
+        $a‫‪ddData‬‬ = array('expire_In' => 86400);
+        $‫‪AdditionalData = json_encode($a‫‪ddData‬‬);
+        print_r($‫‪AdditionalData);
         return view('admin.page.order.add-new');
     }
-
     public function getList() {
         return view('admin.page.order.list');
     }
@@ -911,6 +913,11 @@ class OrderController extends Controller {
         });
 
         return response()->json(['message' => 'Request completed']);
+    }
+
+    public function order_number()
+    {
+        return $six_digit_random_number = mt_rand(10000000, 99999999);
     }
 
 }

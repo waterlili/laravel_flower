@@ -80,50 +80,51 @@ return [
                 ]
             ]
         ],
-
-        'flowers' => [
-            'title'    => 'menu.flowers',
-            'icon'     => 'description',
-            'w'        => 2,
-            'children' => [
-                'list' => [
-                    'title' => 'menu.flowers',
-                    'url'   => 'console/flower/list',
-                    'ctrl'  => 'FlowerListCtrl',
-                    'rid'   => 100,
-                    'w'     => 11
-                ],
-                'add' => [
-                    'title' => 'menu.add_flower',
-                    'url'   => 'console/flower/add',
-                    'ctrl'  => 'FlowerAddCtrl',
-                    'rid'   => 100,
-                    'w'     => 11
-                ]
-            ]
-        ],
         'flowers_vase' => [
             'title' => 'menu.flowers_vase',
             'icon' => 'description',
             'w' => 2,
             'children' => [
+                'add' => [
+                    'title' => 'menu.add_flower_vase',
+                    'url' => 'console/flower_vase/add',
+                    'ctrl' => 'FlowerVaseAddCtrl',
+                    'rid' => 100,
+                    'w' => 11
+                ],
+                'list' => [
+                    'title' => 'menu.flowers_vase',
+                    'url' => 'console/flower_vase/list',
+                    'ctrl' => 'FlowerListCtrl',
+                    'rid' => 100,
+                    'w' => 11
+                ]
+
+            ]
+
+        ],
+        'flowers' => [
+            'title' => 'menu.flowers',
+            'icon' => 'description',
+            'w' => 2,
+            'children' => [
                 'list' => [
                     'title' => 'menu.flowers',
-                    'url' => 'console/flower_vase/list',
+                    'url' => 'console/flower/list',
                     'ctrl' => 'FlowerListCtrl',
                     'rid' => 100,
                     'w' => 11
                 ],
                 'add' => [
                     'title' => 'menu.add_flower',
-                    'url' => 'console/flower_vase/add',
-                    'ctrl' => 'FlowerVaseAddCtrl',
+                    'url' => 'console/flower/add',
+                    'ctrl' => 'FlowerAddCtrl',
                     'rid' => 100,
                     'w' => 11
                 ]
             ]
-
         ],
+
 
         'flower_packages' => [
             'title'    => 'menu.flower_packages',

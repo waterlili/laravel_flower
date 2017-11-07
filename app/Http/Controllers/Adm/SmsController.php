@@ -18,7 +18,7 @@ class SmsController extends Controller
             'Amount' => $ord_amount
         );
 //        $sender = "100065995";
-        $sender = "10000005005500";
+        $sender = "10004346";
         $receptor = $mobile;
         $query = http_build_query(array('aParam' => $data));
         $message = "لینک پرداخت بونیتا:)

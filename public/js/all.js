@@ -2140,7 +2140,6 @@ app.controller('FlowerPacketListCtrl', function ($scope, $mdDialog, htp) {
             });
     };
 });
-
 app.controller('FlowerVaseAddCtrl', function ($scope, htp, $http, Upload, $controller, notify) {
     // $controller('SubmitController', {$scope: $scope});
     var _this = $scope;
@@ -2405,9 +2404,9 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
             if (item.type == 1) {
                 var count = item.week * 4;
                 if (flag == 1 && item.flowerVase)
-                    price = prc_part[1] * count;
-                else
                     price = (prc_part[1] * count) + item.flowerVase;
+                else
+                    price = prc_part[1] * count;
                 return price;
             } else if (item.type == 2) {
                 return prc_part[1];

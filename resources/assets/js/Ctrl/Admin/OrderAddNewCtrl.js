@@ -113,6 +113,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     _this.calcPrice = function (item) {
         var flag = _this.flag;
         var price = '';
+
         if (item.pck_type) {
             prc_part = item.pck_type.split("|");
             if (item.type == 1) {
@@ -130,12 +131,12 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
             if (item.type == 1) {
                 var count = item.week * 4;
                 if (flag == 1 && item.flowerVase)
-                    price = prc_part[1] * item.total * count;
-                else
                     price = (prc_part[1] * item.total * count) + item.flowerVase;
+                else {
+                    price = prc_part[1] * item.total * count;
+                }
                 return price;
             } else if (item.type == 2) {
-
                 price = prc_part[1] * item.total;
                 return price;
             }

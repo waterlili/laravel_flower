@@ -8,6 +8,13 @@ class FlowerVase extends Model
 {
     protected $fillable = [
         'title',
+        'material',
+        'weight',
+        'size',
+        'quality',
+        'capacity',
+        'color_id',
+        'images',
         'price'
     ];
     public static $SIZE = [

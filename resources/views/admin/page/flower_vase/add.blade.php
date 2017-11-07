@@ -1,5 +1,5 @@
 <?php
-$name = \App\View\Text::create('data.title', 'نام گلدان')->setRequired(false)->form()->export();
+$name = \App\View\Text::create('data.title', 'نام گلدان')->setRequired(true)->form()->export();
 $material = \App\View\Text::create('data.material', 'جنس')->setRequired(false)->form()->export();
 $weight = \App\View\Text::create('data.weight', 'وزن')->setRequired(false)->form()->export();
 $size = \App\View\Select::create('data.size', 'سایز', \App\DB\FlowerVase::$SIZE)
@@ -7,7 +7,7 @@ $size = \App\View\Select::create('data.size', 'سایز', \App\DB\FlowerVase::$S
     ->form()
     ->export();
 $price = \App\View\Text::create('data.price', 'قیمت')
-    ->setRequired(false)
+    ->setRequired(true)
     ->form()
     ->export();
 $quality = \App\View\Select::create('data.quality', 'کیفیت', \App\DB\FlowerVase::$QUALITY)
@@ -76,7 +76,7 @@ $color = \App\View\Select::create('data.color', 'رنگ', \App\DB\Cnt::color())
                             </div>
                         </div>
 
-                        <i class="material-icons close" ng-click="removeElement($event)">close</i>
+                        <!--<i class="material-icons close" ng-click="removeElement($event,$index)">close</i>-->
 
                     </div>
                 </div>
@@ -89,9 +89,10 @@ $color = \App\View\Select::create('data.color', 'رنگ', \App\DB\Cnt::color())
                     'accept'=>"'image/*'",
                     'max_size'=>'500KB',
                     'types'=>'jpg',
-                    'model'=>'data.flower_vs_picture',
-                    'name'=>'flower_vs_picture',
+                    'model'=>'data.flower_picture',
+                    'name'=>'flower_picture',
                     ])
+
 
             </div>
         </div>

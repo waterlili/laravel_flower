@@ -34,9 +34,9 @@ class OrderController extends Controller {
     }
 
     public function getAdd() {
-        $a‫‪ddData‬‬ = array('expire_In' => 86400);
-        $‫‪AdditionalData = json_encode($a‫‪ddData‬‬);
-        print_r($‫‪AdditionalData);
+//        $a‫‪ddData‬‬ = array('expire_In' => 86400);
+//        $‫‪AdditionalData = json_encode($a‫‪ddData‬‬);
+//        print_r($‫‪AdditionalData);
         return view('admin.page.order.add-new');
     }
     public function getList() {
@@ -669,6 +669,7 @@ class OrderController extends Controller {
 
     public function submitOrder($input, $orders, $started_at)
     {
+
         $customer = $this->checkCustomer($input)->getData();
         $cid = $customer->customer_id;
         $mobile = $customer->customer_mobile;
@@ -688,7 +689,8 @@ class OrderController extends Controller {
         } else {
             if (!empty($input['customer']['id'])) {
                 for ($i = 0; $i <= $orders; $i++) {
-                    if ($flag == 0 && $input['new_orders'][$i]['flowerVase']) {
+//
+                    if ($flag == 0 && !empty($input['new_orders'][$i]['flowerVase'])) {
                         $flag = 2;
                         $vase = FlowerVase::first();
                         //for save in order take id
@@ -700,7 +702,8 @@ class OrderController extends Controller {
                         $vase_price = 1;
                     }
                     $start = clone $started_at;
-                    if ($input['new_orders'][$i]['type'] == 1) {
+
+                    if (!empty($input['new_orders'][$i]['type']) && $input['new_orders'][$i]['type'] == 1) {
                         $t = $input['new_orders'][$i]['w'] * 4;
                         $end = $started_at->modify('+' . --$t . 'week');
                     } else {
@@ -765,7 +768,7 @@ class OrderController extends Controller {
                         continue;
                     }
 
-
+                    return response()->json(array('success' => true, 'last_insert_id' => $id), 200);
                 }
 
 
@@ -908,7 +911,7 @@ class OrderController extends Controller {
             'Amount' => $ord_amount
         ));
         Mail::send('emails.send', $data1, function ($message) {
-            $message->from('nw.tahmasebi@gmail.com', 'Scotch.IO');
+            $message->from('info@ghoncheflowers.ir', 'بونیتا');
             $message->to('nw.tahmasebi@gmail.com');
         });
 

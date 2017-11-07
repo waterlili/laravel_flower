@@ -17,12 +17,13 @@ class SmsController extends Controller
             'orderId' => $id,
             'Amount' => $ord_amount
         );
-        $sender = "100065995";
+//        $sender = "100065995";
+        $sender = "10000005005500";
         $receptor = $mobile;
         $query = http_build_query(array('aParam' => $data));
         $message = "لینک پرداخت بونیتا:)
                     http://185.173.106.234/payment/$query/zarinpal";
-        $api = new KavenegarApi("6756677159634973344D706951593961467647486E673D3D");
+        $api = new KavenegarApi("707041326F734C485A346D5165672F616C656C4471413D3D");
         $res = $api->Send($sender, $receptor, $message);
         $code = $res->getCode();
         $message = $res->getMessage();

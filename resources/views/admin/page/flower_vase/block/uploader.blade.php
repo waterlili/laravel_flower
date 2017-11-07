@@ -2,31 +2,11 @@
     <h3 class="md-fg p-sm <% $class_color %>"><% $top_title %></h3>
     <md-divider></md-divider>
     <div layout-gt-md="row" layout-align="start center" ng-init="<% $model %>.init()">
-        <md-button class="md-raised <% $class_color %>" ng-click="<% $model %>.__submit()" ngf-select
-                   ng-model="<% $model %>.file"
-                   name="<% $name %>"
-                   ngf-pattern="<% $accept %>"
-                   ngf-accept="<% $accept %>"
-                   ngf-max-size="<% $max_size %>"
-                   ng-disabled="<% $model %>.success || <% $model %>.uploading"
-        >
-            <% $title %>
-        </md-button>
-        <span flex></span>
-        <input type="file" file="file" name="file" onchange="angular.element(this).scope().imageUpload(event)"
-               upload-files multiple/>
-        <!--<input type='file' input-files="files"  onchange="angular.element(this).scope().imageUpload(event)" multiple />-->
-        <!---<input type="file" id="file" name="file" multiple
-               onchange="angular.element(this).scope().getFileDetails(this)" />
 
-        <input type="button" ng-click="uploadFiles()" value="Upload" />-->
-        <!--ADD A PROGRESS BAR ELEMENT.-->
-        <p>
-            <progress id="pro" value="0"></progress>
-        </p>
-        <!--<md-button class="md-raised <% $class_color %>" ng-click="<% $model %>.__submit()"
-                   ng-disabled="!<% $model %>.file || <% $model %>.uploading">بارگذاری
-        </md-button>-->
+        <input id="fileInput" type='file' input-files="files" class="ng-hide"
+               onchange="angular.element(this).scope().imageUpload(event)" multiple/>
+        <label for="fileInput" class="md-button md-raised md-primary">انتخاب تصاویر</label>
+
 
     </div>
     <div class="ph-sm"

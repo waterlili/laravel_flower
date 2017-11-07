@@ -2140,98 +2140,89 @@ app.controller('FlowerPacketListCtrl', function ($scope, $mdDialog, htp) {
             });
     };
 });
-app.directive('uploadFiles', function () {
-    return {
-        scope: true,
-        link: function (scope, element, attrs) {
-            element.bind('change', function (event) {
-                var files = event.target.files;
-                for (var i = 0; i < files.length; i++) {
-                    scope.$emit("seletedFile", { file: files[i] });
-                }
-            });
-        }
-    };
-});
-app.controller('FlowerVaseAddCtrl', function ($scope,htp,$http,Upload,$controller) {
 
-    $controller('SubmitController', {$scope: $scope});
+app.controller('FlowerVaseAddCtrl', function ($scope, htp, $http, Upload, $controller, notify) {
+    // $controller('SubmitController', {$scope: $scope});
     var _this = $scope;
     _this.files = [];
+    _this.data = {};
+    _this.stepsModel = [];
     _this.submiterUrl = 'console/flower_vase/add';
     _this.submiterName = 'گل';
 
+    _this.submit = function () {
 
+        $http.post(home(_this.submiterUrl), _this.export())
+            .success(function (response) {
 
-    if (_this.edit_mode) {
-        _this.data = _this.dt;
+                notify('info', trans('message.set_record', {attr: _this.submiterName}));
+                if (_this.afterSuccess) {
+                    _this.afterSuccess.call(this, response);
+                }
+            })
+            .error(function (response, sts) {
+
+                notify('error', trans('message.unset_record', {attr: _this.submiterName}));
+                if (sts == 422) {
+                    _this.errorItem = response;
+                }
+            });
+    };
+    _this.export = function () {
+        return _this.data;
     }
-    _this.data = {};
-    _this.stepsModel = [];
-    _this.files=[];
-
-
-
-    _this.imageUpload = function(event){
+    _this.imageUpload = function (event, files, errFiles) {
         var files = event.target.files; //FileList object
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
             var reader = new FileReader();
             reader.onload = _this.imageIsLoaded;
             reader.readAsDataURL(file);
-
+            data: {
+                file: files[i]
+            }
+            ;
 
         }
+        _this.afterSuccess = function () {
+            Upload.upload({
+                url: home('console/flower_vase/add'),
+                data: {file: files, dt: _this.data}
+            });
 
+            file.upload.then(function (response) {
+                $timeout(function () {
+                    file.result = response.data;
+                });
+            }, function (response) {
+                if (response.status > 0)
+                    _this.errorMsg = response.status + ': ' + response.data;
+            }, function (evt) {
+                file.progress = Math.min(100, parseInt(100.0 *
+                    evt.loaded / evt.total));
+            });
+        }
 
-    };
-    _this.imageIsLoaded = function(e){
-        _this.$apply(function() {
+        _this.removeElement = function (event, index) {
+
+            var target = angular.element(event.target.parentNode.id);
+            var thenum = target['selector'].replace(/^\D+/g, '');
+            var elmn = angular.element(document.querySelector("#" + target['selector'] + ""));
+
+            // angular.element("input[type='file']").val(null);
+            elmn.remove();
+
+        };
+    }
+    _this.imageIsLoaded = function (e) {
+        _this.$apply(function () {
             _this.stepsModel.push(e.target.result);
 
         });
     };
-    _this.$on("seletedFile", function (event, args) {
 
-        console.log("event is ", event);
-        console.log("args is ", args);
 
-        _this.$apply(function () {
-            _this.files.push(args.file);
-        });
-         var files=_this.files;
-    });
-    _this.afterSuccess = function () {
-        var formData = new FormData();
-        formData.append('file', _this.name);
-        formData.append('file', _this.type);
-
-        // add files to form data.
-        for (var i = 0; i < _this.files.length; i++) {
-            formData.append('file'+i, _this.files[i]);
-        }
-        // Don't forget the config object below
-        htp(home('console/flower_vase/add'), formData, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': false},
-            data: { request: _this.request, files: _this.files }
-        }).then(function() {
-
-        });
-
-    };
-    _this.removeElement = function(event) {
-        var target = angular.element(event.target.parentNode.id);
-        var elmn = angular.element( document.querySelector( "#"+target['selector']+"") );
-        // angular.element("input[type='file']").val(null);
-        elmn.remove();
-    };
 });
-
-
-
-
-
 app.controller('CustomerGroupCtrl', function ($scope, htp , notify) {
     var _this = $scope;
     _this.chipOpt = {};
@@ -2408,6 +2399,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     _this.calcPrice = function (item) {
         var flag = _this.flag;
         var price = '';
+
         if (item.pck_type) {
             prc_part = item.pck_type.split("|");
             if (item.type == 1) {
@@ -2425,12 +2417,12 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
             if (item.type == 1) {
                 var count = item.week * 4;
                 if (flag == 1 && item.flowerVase)
-                    price = prc_part[1] * item.total * count;
-                else
                     price = (prc_part[1] * item.total * count) + item.flowerVase;
+                else {
+                    price = prc_part[1] * item.total * count;
+                }
                 return price;
             } else if (item.type == 2) {
-
                 price = prc_part[1] * item.total;
                 return price;
             }

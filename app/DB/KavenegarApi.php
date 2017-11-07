@@ -69,7 +69,7 @@ class KavenegarApi extends Model
                 $error = new ApiException($json_return->message, $json_return->status);
 
             }
-            if ($error)
+            if (!empty($error))
                 return $error;
             else
                 return $json_response->entries;

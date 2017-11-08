@@ -25,11 +25,13 @@ class SmsController extends Controller
         $api = new KavenegarApi("707041326F734C485A346D5165672F616C656C4471413D3D");
         $res = $api->Send($sender, $receptor, $message);
         $status = $res[0]->status;
+        $message1 = "خطا در ارسال";
+        $message2 = "در حال ارسال";
 
         if ($status != 1) {
-            return response()->json(['message', $message], 422);
+            return response()->json(['message', $message1], 422);
         } else {
-            return response()->json(['message', $message], 200);
+            return response()->json(['message', $message2], 200);
 
         }
 

@@ -762,7 +762,7 @@ class OrderController extends Controller {
                             return response()->json(array('success' => true, 'last_insert_id' => $id), 200);
 
                         }
-
+                        return response()->json(array('success' => true, 'last_insert_id' => $id), 200);
 
                     } else {
                         continue;

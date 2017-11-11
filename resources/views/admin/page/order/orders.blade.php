@@ -14,36 +14,30 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
          ng-repeat-start="item in data.orders.orders">
         <i class="icon edit"></i>
         سفارش
-        <span>{{$index + 1}}</span>
+        <span>{{$index + 1}}</span>&nbsp;
+
+        <span ng-if="item.type==1">&nbsp;اشتراک {{item.month_str}}</span>
+
+
         <div flex></div>
+        <span ng-if="item.type==1">ازتاریخ&nbsp;{{item.first_date}}</span>
+        <md-button class="md-icon-button pull-left" aria-label="More">
+            <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
+        </md-button>
     </div>
     <div class="content odr_style" ng-repeat-end>
         <div class="p-md">
+
+
             <div layout-gt-md="row" layout-align="start center">
                 <div class="form-group">
-                    <div ng-if="item.order_flowers.length > 0 && item.type==1">
-                        <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش گل از نوع
-                            اشتراکی {{item.month_str}}</h4>
-                        <p>{{item.week_str}} ها </p>
-                        <p><label class="lab_sty">نام گل:</label>{{item.order_flowers[0]['flower']['name']}}</p>
-                        تاریخ اولین ارسال: {{item.first_date}}
-                        <p>{{item.order_packets[0]['packet']['title']}}</p>
-                    </div>
+
                     <div ng-if="item.order_flowers.length > 0 && item.type==2">
                         <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش گل از نوع هدیه</h4>
                         <div><label class="lab_sty">نام گل:</label>{{item.order_flowers[0]['flower']['name']}}</div>
                         <p>
                             تاریخ اولین ارسال: {{item.first_date}}
                         </p>
-                    </div>
-                    <div ng-if="item.order_packets.length > 0 && item.type==1">
-                        <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش بسته ی گل از نوع
-                            اشتراکی {{item.month_str}}</h4>
-                        <span class="pull-left topic_pos">{{item.week_str}} ها </span>
-                        <div layout="column" layout-align="center end"> تاریخ اولین ارسال:{{item.first_date}}
-                        </div>
-
-                        <div><label class="lab_sty">نوع بسته:</label>{{item.order_packets[0]['packet']['title']}}</div>
                     </div>
                     <div ng-if="item.order_packets.length > 0 && item.type==2">
                         <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش بسته ی گل از نوع هدیه
@@ -53,19 +47,115 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 
 
                     </div>
+                    <div layout="row" layout-xs="column" ng-if="item.order_flowers.length > 0 && item.type==1">
+                        <div flex layout-align="start center" ng-repeat="item in item.orderCard">
+
+                            <md-card class="card_sty" id="card_poss" layout="row" ng-if="item.current < item.date"
+                                     layout-xs="column" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}"
+                                     md-theme-watch>
+                                <div flex>
+                                    <md-card-title>
+                                        <md-card-title-text>
+
+                                            <span>{{item.date}}</span>
+                                            <span>{{item.day}}</span>
+                                            <span>{{item.name}}</span>
+                                            <span>{{item.counter}}شاخه</span>
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                </div>
+                                <div flex>
+                                    <md-button class="md-icon-button pull-left" aria-label="More">
+                                        <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
+                                    </md-button>
+                                </div>
+                            </md-card>
+                            <md-card layout="row" class="card_sty" id="card_pass" ng-if="item.current >= item.date"
+                                     layout-xs="column" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}"
+                                     md-theme-watch>
+                                <div flex>
+                                    <md-card-title>
+                                        <md-card-title-text green>
+
+                                            <span>{{item.date}}</span>
+                                            <span>{{item.day}}</span>
+                                            <span>{{item.name}}</span>
+                                            <span>{{item.counter}}شاخه</span>
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                </div>
+                                <div flex>
+                                    <md-button class="md-icon-button pull-left" aria-label="More">
+                                        <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
+                                    </md-button>
+                                </div>
+                            </md-card>
+                        </div>
+
+
+                    </div>
+                    <div layout="row" layout-xs="column" ng-if="item.order_packets.length > 0 && item.type==1">
+                        <div flex layout-align="start center" ng-repeat="item in item.order_packets">
+                            <md-card class="card_sty" id="card_poss" layout="row" ng-if="item.current < item.sent"
+                                     layout="row" layout-xs="column"
+                                     md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+                                <div flex>
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <span>{{item.sent}}</span>
+                                            <span>{{item.day}}</span>
+                                            <span>{{item.combination}}</span>
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                </div>
+                                <div flex>
+                                    <md-button class="md-icon-button pull-left" aria-label="More">
+                                        <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
+                                    </md-button>
+                                </div>
+                            </md-card>
+                            <md-card class="card_sty" id="card_pass" layout="row" ng-if="item.current >= item.sent"
+                                     layout="row" layout-xs="column"
+                                     md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+                                <div flex>
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <span>{{item.sent}}</span>
+                                            <span>{{item.day}}</span>
+                                            <span>{{item.combination}}</span>
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                </div>
+                                <div flex>
+                                    <md-button class="md-icon-button pull-left" aria-label="More">
+                                        <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
+                                    </md-button>
+                                </div>
+                            </md-card>
+                        </div>
+                    </div>
+
+                    <div layout="row" layout-xs="column">
+                        <md-button class="md-raised md-primary" ng-show="item.order_payment.sts">اطلاعات پرداخت
+                        </md-button>
+                    </div>
                     <div>
-                        <label class="lab_sty">قیمت:</label> {{item.amount}}تومان
+                        <label class="lab_sty">هزینه سفارش</label> {{item.amount}}تومان
                     </div>
 
 
                 </div>
             </div>
+
+
         </div>
 
 
     </div>
 
 </div>
+
+
 
 
 

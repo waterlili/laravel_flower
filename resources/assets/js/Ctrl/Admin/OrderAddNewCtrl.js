@@ -31,13 +31,16 @@ app.controller('OrderPageCtrl', function ($scope, htp, $rootScope) {
 });
 
 
-app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
+app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $mdDialog) {
+
     var _this = $scope;
     _this.data = {};
     _this.prc = {};
     _this.pay = {};
     _this.data.new_orders = [];
     _this.data.orders = [];
+
+
     _this.init = function () {
         $('.ui.accordion').accordion();
     };
@@ -50,7 +53,10 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
     angular.module('tabsDemoDynamicHeight', ['ngMaterial']);
     $('.ui.accordion').accordion();
     $rootScope.$on('order:customer', function (data, dt) {
+
+
         _this.data.customer = dt;
+        _this.showAlert(_this.data.customer);
         htp(home('console/order/get-prc'), {cid: _this.data.customer.id}).then(function (res) {
             _this.data.orders = res;
             _this.flag = res.flag;
@@ -61,16 +67,6 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
 
     _this.payType = function (item, $index) {
         item.pay_type = $index;
-        // _this.loading = true;
-        // htp(home('console/order/send-email'), _this.data).then(function (res) {
-        //     notify('success', 'اطلاعات با موفقیت ثبت گردید')
-        // }).error(function (res, sts) {
-        //     if (sts == 422) {
-        //         _this.errorItems = res;
-        //     }
-        // }).after(function (res) {
-        //     _this.loading = false;
-        // });
     };
     _this.addOrder = function () {
         _this.data.new_orders.push({type: 1, week: 1, time: 1, w: 1, total: 1});
@@ -81,14 +77,6 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
         _this.data.new_orders = _.without(_this.data.new_orders, item);
     };
 
-
-    // _this.$watch('pay.type',function (n) {
-    //    if(n){
-    //        $rootScope.$emit('order:pay' , n);
-    //    } else{
-    //        $rootScope.$emit('order:pay:not' , n);
-    //    }
-    // });
 
 
     _this.weekChange = function (item, index) {
@@ -228,6 +216,31 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify) {
             _this.loading = false;
         });
     }
+    angular.module('dialogDemo1', ['ngMaterial']);
+
+    _this.status = '  ';
+    _this.customFullscreen = false;
+
+    _this.showAlert = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        // Modal dialogs should fully cover application
+        // to prevent interaction outside of dialog
+
+        $mdDialog.show(
+            $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .htmlContent('<h4><i class="material-icons">local_florist</i>لیست سفارشات مربوط به</h4>' + '</br>' +
+                    ' <span class="tpc">نام مشتری</span>' + ' ' + ev.title + '</br>' +
+                    '<span class="tpc">شماره موبایل</span>' + ' ' + ev.mobile + '</br>' +
+                    '<span class="tpc">آدرس ایمیل</span>' + ' ' + ev.email)
+                .ariaLabel('Alert Dialog Demo')
+                .ok('درسته')
+                .targetEvent(ev)
+        );
+    };
+
+
 
 
 });
@@ -326,6 +339,7 @@ app.directive('useSearch', function ($timeout) {
         },
         link: link
     };
+
 });
 
 app.controller('OrderListDayCtrl', function ($scope) {

@@ -186,6 +186,7 @@ class Order extends Model {
             return $date[0];
         }
     }
+
     public function getMonthStrAttribute($value)
     {
         if (is_null($value)) {
@@ -250,6 +251,11 @@ class Order extends Model {
     public function orderFlowers()
     {
         return $this->hasMany(OrderFlower::class);
+    }
+
+    public function orderPayment()
+    {
+        return $this->hasOne(OrderPayment::class, 'oid');
     }
 
 

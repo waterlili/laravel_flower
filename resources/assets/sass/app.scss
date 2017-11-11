@@ -6,8 +6,11 @@ html {
   box-sizing: inherit;
 }
 
-$light-green: #80A500;
+$light-green: #80A5;
+00
+;
 $dark_green: #004D40;
+$dark_grey: #616161;
 
 @media (min-width: 1280px) {
   .cn-md {
@@ -4574,4 +4577,20 @@ ul.ng-table-pagination {
   font-size: 22px;
   line-height: 10px;
   border-radius: 50%;
+}
+
+.tpc {
+  color: $light-green;
+}
+
+.card_sty {
+  border-radius: 22px;:22 px;
+}
+
+#card_pass {
+  background-color: #F2DEDE;
+}
+
+#card_poss {
+  background-color: $light-green;
 }

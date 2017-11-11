@@ -34,9 +34,6 @@ class OrderController extends Controller {
     }
 
     public function getAdd() {
-//        $a‫‪ddData‬‬ = array('expire_In' => 86400);
-//        $‫‪AdditionalData = json_encode($a‫‪ddData‬‬);
-//        print_r($‫‪AdditionalData);
         return view('admin.page.order.add-new');
     }
     public function getList() {
@@ -458,7 +455,7 @@ class OrderController extends Controller {
         $input = $request->all();
 
         $users = Customer::where('name', 'LIKE', '%' . $input['query'] . '%')
-            ->select(['id', 'name as title', 'mobile'])
+            ->select(['id', 'name as title', 'mobile', 'email', 'job'])
             ->get()
             ->toArray();
         return response()->json(['results' => $users]);
@@ -883,15 +880,64 @@ class OrderController extends Controller {
 
     public function postGetPrc(Request $request)
     {
+
         $input = $request->all();
         $orders = Order::whereCid($input['cid'])->select(['*', 'daysOfWeek as week_str', 'month as month_str', 'started_at as first_date'])->get();
+        $orders->load('orderPackets', 'orderFlowers', 'orderPayment');
+
+        $date = array();
+        foreach ($orders as $order) {
+            $relData = $order->getRelations();
+            $day = $order->week_str;
+
+            if ($order->type == 1 && !$relData['orderFlowers']->isEmpty()) {
+
+                $start_at = Carbon::parse($order->started_at);
+                $date[] = $start_at;
+                $date_first = explode(' ', $order->started_at);
+                $today = jDate::forge()->format('Y-m-d');
+
+
+                $flower_data = $relData['orderFlowers'][0]->toArray();
+                $flower_count = $flower_data['stalk_counter'];
+                $flower_name = $flower_data['flower']['name'];
+                $date_rep[] = array('date' => $date_first[0], 'day' => $day, 'name' => $flower_name
+                , 'counter' => $flower_count, 'current' => $today);
+                $weekCounter = $order->month * 4;
+                for ($i = 1; $i < $weekCounter; $i++) {
+
+                    $last_date = array_last($date);
+                    $date[] = Carbon::parse($last_date)->addWeeks(1);
+                    $date_rep[] = array('date' => Carbon::parse($last_date)->addWeeks(1)->format('Y-m-d')
+                    , 'day' => $day
+                    , 'name' => $flower_name
+                    , 'counter' => $flower_count
+                    , 'current' => $today);
+
+                }
+
+                $order->setAttribute('orderCard', $date_rep);
+
+            } else if ($order->type == 1 && !$relData['orderPackets']->isEmpty()) {
+                $flower_packet = $relData['orderPackets'];
+                foreach ($flower_packet as $packet) {
+                    $date_sent = explode(' ', $packet->sent_at);
+                    $packet->setAttribute('day', $day);
+                    $packet->setAttribute('sent', $date_sent[0]);
+                    $today = jDate::forge()->format('Y-m-d');
+                    $packet->setAttribute('current', $today);
+                }
+            }
+
+
+        }
         $order_packet = Order::where([['cid', '=', $input['cid']], ['type', '=', 1]])->first();
         if (empty($order_packet))
             $flag = 1;
         else
             $flag = 0;
-        $orders->load('orderPackets', 'orderFlowers');
-//        return $orders;
+
+
         return response()->json(['orders' => $orders, 'flag' => $flag], 200);
 
     }

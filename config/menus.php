@@ -37,13 +37,13 @@ return [
                 'add' => [
                     'title' => 'افزودن سفارش ',
                     'url' => 'console/order/add',
-
                     'ctrl' => 'OrderPageCtrl',
                     'rid' => 101
                 ],
                 'orders' => [
                     'title' => 'menu.orders',
                     'url' => 'console/order/list',
+                    'ctrl' => 'OrderListCtrl',
                     'rid' => 101
                 ],
                 'orders-day' => [

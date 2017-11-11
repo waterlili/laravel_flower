@@ -84,34 +84,37 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
             </div>
         <div class="flexbox-parent">
             <div layout-gt-md="row" ng-if="item.type == 1">
-                <div flex-gt-md="66" class="ml-md-md pos_plate">
+                <div flex-gt-md="100" class="ml-md-md pos_plate">
                     <div class="ui buttons mb-md ml-md-md" flex-gt-md="66">
                         <button class="ui button" ng-click="wChange(item , r.id)"
                                 ng-class="{'active blue':item.w == r.id}"
                                 ng-repeat="r in w">{{r.title}}</button>
                     </div>
                 </div>
-                <div flex-gt-md="66" class="ml-md-md pos_plate">
+            </div>
+            <div layout-gt-md="row" ng-if="item.type == 1">
+                <div flex-gt-md="100" class="ml-md-md pos_plate">
                     <div class="ui buttons mb-md ml-md-md" flex-gt-md="66">
                         <button class="ui button" ng-click="weekChange(item , w.id)"
                                 ng-class="{'active red':item.week == w.id}"
                                 ng-repeat="w in week">{{w.title}}</button>
                     </div>
                 </div>
-                <div flex-gt-md="66" class="ml-md-md pos_plate">
+            </div>
+            <div layout-gt-md="row" ng-if="item.type == 1">
+                <div flex-gt-md="100" class="ml-md-md pos_plate">
                     <div class="ui buttons mb-md" flex-gt-md="33">
                         <button class="ui button" ng-click="timeChange(item,t.id)"
                                 ng-class="{'active green':item.time == t.id}"
                                 ng-repeat="t in time">{{t.title}}</button>
                     </div>
                 </div>
-
             </div>
         </div>
 
 
             <div layout-gt-md="row" ng-if="item.type == 1">
-                <div flex-gt-md="66">
+                <div flex-gt-md="100">
                     @include('MD.input.text-sm' , $first)
                 </div>
             </div>

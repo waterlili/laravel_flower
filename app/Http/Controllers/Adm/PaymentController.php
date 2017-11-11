@@ -44,7 +44,7 @@ class PaymentController extends Controller
 
         $client = new SoapClient('https://www.zarinpal.com/pg/services/WebGate/wsdl', ['encoding' => 'UTF-8']);
 
-        $result = $client->‫‪PaymentRequest‬‬(
+        $result = $client->PaymentVerification(
             [
                 'MerchantID' => $MerchantID,
                 'Amount' => $Amount[1],

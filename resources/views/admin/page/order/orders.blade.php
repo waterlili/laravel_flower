@@ -53,7 +53,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                             <md-card class="card_sty" id="card_poss" layout="row" ng-if="item.current < item.date"
                                      layout-xs="column" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}"
                                      md-theme-watch>
-                                <div flex>
+                                <div flex style="width:275px">
                                     <md-card-title>
                                         <md-card-title-text>
 
@@ -73,7 +73,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                             <md-card layout="row" class="card_sty" id="card_pass" ng-if="item.current >= item.date"
                                      layout-xs="column" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}"
                                      md-theme-watch>
-                                <div flex>
+                                <div flex style="width:275px">
                                     <md-card-title>
                                         <md-card-title-text green>
 
@@ -99,7 +99,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                             <md-card class="card_sty" id="card_poss" layout="row" ng-if="item.current < item.sent"
                                      layout="row" layout-xs="column"
                                      md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
-                                <div flex>
+                                <div flex style="width:275px">
                                     <md-card-title>
                                         <md-card-title-text>
                                             <span>{{item.sent}}</span>
@@ -117,7 +117,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                             <md-card class="card_sty" id="card_pass" layout="row" ng-if="item.current >= item.sent"
                                      layout="row" layout-xs="column"
                                      md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
-                                <div flex>
+                                <div flex style="width:275px">
                                     <md-card-title>
                                         <md-card-title-text>
                                             <span>{{item.sent}}</span>

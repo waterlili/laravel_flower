@@ -50,7 +50,6 @@ class PaymentController extends Controller
                 'Amount' => $Amount[1],
                 'orderId' => $OrderId[1],
                 'Description' => $Description,
-//                '‫‪AdditionalData' => $additionalData,
                 'CallbackURL' => $CallbackURL,
             ]
         );

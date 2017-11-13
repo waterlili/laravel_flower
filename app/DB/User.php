@@ -22,7 +22,7 @@ class User extends Authenticatable {
     'last_login',
     'active',
     'gender',
-    'remember_token',
+      'rememberToken',
     'personal_picture',
     'sts'
   );

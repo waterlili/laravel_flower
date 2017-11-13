@@ -37,18 +37,21 @@ class PaymentController extends Controller
         $Amount=explode("=",$arr[1]);
         $MerchantID = 'cb4e1e9c-84e1-11e6-bd64-000c295eb8fc'; //Required
         $Description = 'just due'; // Required
+        $Info = ['expire_In' => 86400];
+        $‫‪AdditionalData‬‬ = json_encode($Info);
         $CallbackURL = 'http://185.173.106.234/payment/'.$qu.'/zarinpal-response'; // Required
 
 
 
         $client = new SoapClient('https://www.zarinpal.com/pg/services/WebGate/wsdl', ['encoding' => 'UTF-8']);
 
-        $result = $client->PaymentRequest(
+        $result = $client->‫‪PaymentRequestWithExtra‬‬(
             [
                 'MerchantID' => $MerchantID,
                 'Amount' => $Amount[1],
                 'orderId' => $OrderId[1],
                 'Description' => $Description,
+                '‫‪AdditionalData‬‬' => $‫‪AdditionalData‬‬,
                 'CallbackURL' => $CallbackURL,
             ]
         );

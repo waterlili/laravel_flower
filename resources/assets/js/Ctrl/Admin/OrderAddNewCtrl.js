@@ -56,7 +56,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
 
 
         _this.data.customer = dt;
-        _this.showAlert(_this.data.customer);
+        // _this.showAlert(_this.data.customer);
         htp(home('console/order/get-prc'), {cid: _this.data.customer.id}).then(function (res) {
             _this.data.orders = res;
             _this.flag = res.flag;

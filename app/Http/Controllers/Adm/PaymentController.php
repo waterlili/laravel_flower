@@ -36,15 +36,14 @@ class PaymentController extends Controller
         $OrderId=explode("=",$arr[0]);
         $Amount=explode("=",$arr[1]);
         $MerchantID = 'cb4e1e9c-84e1-11e6-bd64-000c295eb8fc'; //Required
-        $Description = 'پرداخت هزینه ی سفارش '; // Required
+        $Description = 'just due'; // Required
         $CallbackURL = 'http://185.173.106.234/payment/'.$qu.'/zarinpal-response'; // Required
-        $Info = ['expire_In' => 86400];
-        $additionalData = json_encode($Info);
+
 
 
         $client = new SoapClient('https://www.zarinpal.com/pg/services/WebGate/wsdl', ['encoding' => 'UTF-8']);
 
-        $result = $client->PaymentVerification(
+        $result = $client->PaymentRequest(
             [
                 'MerchantID' => $MerchantID,
                 'Amount' => $Amount[1],
@@ -64,7 +63,6 @@ class PaymentController extends Controller
             echo 'ERR: ' . $result->Status;
         }
     }
-
     public function getZarinpalResponse($query){
 
         $Authority = $_GET['Authority'];

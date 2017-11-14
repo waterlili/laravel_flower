@@ -56,7 +56,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
 
 
         _this.data.customer = dt;
-        // _this.showAlert(_this.data.customer);
+
         htp(home('console/order/get-prc'), {cid: _this.data.customer.id}).then(function (res) {
             _this.data.orders = res;
             _this.flag = res.flag;
@@ -216,29 +216,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
             _this.loading = false;
         });
     }
-    angular.module('dialogDemo1', ['ngMaterial']);
 
-    _this.status = '  ';
-    _this.customFullscreen = false;
-
-    _this.showAlert = function (ev) {
-        // Appending dialog to document.body to cover sidenav in docs app
-        // Modal dialogs should fully cover application
-        // to prevent interaction outside of dialog
-
-        $mdDialog.show(
-            $mdDialog.alert()
-                .parent(angular.element(document.querySelector('#popupContainer')))
-                .clickOutsideToClose(true)
-                .htmlContent('<h4><i class="material-icons">local_florist</i>لیست سفارشات مربوط به</h4>' + '</br>' +
-                    ' <span class="tpc">نام مشتری</span>' + ' ' + ev.title + '</br>' +
-                    '<span class="tpc">شماره موبایل</span>' + ' ' + ev.mobile + '</br>' +
-                    '<span class="tpc">آدرس ایمیل</span>' + ' ' + ev.email)
-                .ariaLabel('Alert Dialog Demo')
-                .ok('درسته')
-                .targetEvent(ev)
-        );
-    };
 
 
 
@@ -345,3 +323,4 @@ app.directive('useSearch', function ($timeout) {
 app.controller('OrderListDayCtrl', function ($scope) {
     $scope.tbl = {};
 });
+

@@ -1,7 +1,7 @@
 <?php
 $link = (isset($unver)) ? 'console/order/order-unverified' : 'console/order/order-list';
 ?>
-<div ng-controller="OrderAddNewCtrl">
+<div ng-controller="OrderListCtrl">
     <section class="w-box p-md">
         <form name="Form">
             @yield('form')
@@ -21,7 +21,7 @@ $link = (isset($unver)) ? 'console/order/order-unverified' : 'console/order/orde
                     </md-button>
                 </div>-->
             </div>
-            @include('admin.page.order.orders')
+            @include('admin.page.order.orders_list')
         </form>
 
     </section>

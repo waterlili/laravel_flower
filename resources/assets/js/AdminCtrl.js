@@ -487,7 +487,7 @@ app.controller('AddOrderCtrl', function ($scope, htp, $controller, Upload) {
 
 app.controller('OrderListCtrl', function ($scope, htp) {
     var _this = $scope;
-    console.log('_this', _this);
+
     _this.tbl = {};
     _this.proceed = function (row) {
         row.preloader = true;

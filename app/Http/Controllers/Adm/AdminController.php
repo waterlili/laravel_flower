@@ -106,7 +106,7 @@ class AdminController extends Controller {
 
   protected function desCustomer(Request $request) {
     $input = $request->all();
-    User::find($input['id'])->delete();
+      Customer::find($input['id'])->delete();
     return response()->json(TRUE);
   }
 

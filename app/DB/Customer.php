@@ -26,7 +26,8 @@ class Customer extends Model
         'type',
         'sts'
     ];
-
+    public static $SELECT_STS_STR = 'sts as sts_str';
+    public static $SELECT_Gender_STR = 'gender as gender_str';
 
     public static $Gender = [
         1 => 'آقا',
@@ -49,13 +50,14 @@ class Customer extends Model
         -1 => 'غیر فعال'
     ];
 
+
     public function getStsStrAttribute($value)
     {
-        return $value;
+
         if (is_null($value)) {
             return NULL;
         }
-        return array_get(User::$STATUS, $value, 'تعریف نشده');
+        return array_get(self::$STATUS, $value, 'تعریف نشده');
 
     }
 
@@ -74,5 +76,6 @@ class Customer extends Model
         }
         return array_get(User::$Gender, $value, 'تعریف نشده');
     }
+
 
 }

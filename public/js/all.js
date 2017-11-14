@@ -1066,7 +1066,7 @@ app.controller('AddOrderCtrl', function ($scope, htp, $controller, Upload) {
 
 app.controller('OrderListCtrl', function ($scope, htp) {
     var _this = $scope;
-    console.log('_this', _this);
+
     _this.tbl = {};
     _this.proceed = function (row) {
         row.preloader = true;
@@ -2341,7 +2341,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
 
 
         _this.data.customer = dt;
-        _this.showAlert(_this.data.customer);
+
         htp(home('console/order/get-prc'), {cid: _this.data.customer.id}).then(function (res) {
             _this.data.orders = res;
             _this.flag = res.flag;
@@ -2501,29 +2501,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
             _this.loading = false;
         });
     }
-    angular.module('dialogDemo1', ['ngMaterial']);
 
-    _this.status = '  ';
-    _this.customFullscreen = false;
-
-    _this.showAlert = function (ev) {
-        // Appending dialog to document.body to cover sidenav in docs app
-        // Modal dialogs should fully cover application
-        // to prevent interaction outside of dialog
-
-        $mdDialog.show(
-            $mdDialog.alert()
-                .parent(angular.element(document.querySelector('#popupContainer')))
-                .clickOutsideToClose(true)
-                .htmlContent('<h4><i class="material-icons">local_florist</i>لیست سفارشات مربوط به</h4>' + '</br>' +
-                    ' <span class="tpc">نام مشتری</span>' + ' ' + ev.title + '</br>' +
-                    '<span class="tpc">شماره موبایل</span>' + ' ' + ev.mobile + '</br>' +
-                    '<span class="tpc">آدرس ایمیل</span>' + ' ' + ev.email)
-                .ariaLabel('Alert Dialog Demo')
-                .ok('درسته')
-                .targetEvent(ev)
-        );
-    };
 
 
 
@@ -2630,96 +2608,57 @@ app.directive('useSearch', function ($timeout) {
 app.controller('OrderListDayCtrl', function ($scope) {
     $scope.tbl = {};
 });
-app.controller('OrderListCtrl', function ($scope, htp, $mdDialog, NgTableParams) {
+
+
+app.controller('OrderListCtrl', function ($scope, htp, $mdDialog, NgTableParams, $rootScope) {
     var _this = $scope;
-    _this.tbl = {};
-
-
-    _this.setVisitor = function (row) {
-        row.visitor_loading = true;
-        htp(home('console/order/set-visitor'), {id: row.id}).then(function (response) {
-            _this.tbl.reload();
-        }).after(function () {
-            row.visitor_loading = false;
-        });
+    _this.data = {};
+    _this.data.orders = [];
+    _this.init = function () {
+        $('.ui.accordion').accordion();
     };
 
-    _this.setSender = function (row) {
-        row.sender_loading = true;
-        htp(home('console/order/set-sender'), {id: row.id}).then(function (response) {
-            _this.tbl.reload();
-        }).after(function () {
-            row.sender_loading = false;
-        });
+
+    angular.module('tabsDemoDynamicHeight', ['ngMaterial']);
+
+    $('.ui.accordion').accordion();
+
+    $rootScope.$on('order:customer', function (data, dt) {
+        _this.data.customer = dt;
+        _this.cache = false;
+
+        htp(home('console/order/get-prc'), {cid: _this.data.customer.id}).then(function (res) {
+            _this.data.orders = res;
+            _this.flag = res.flag;
+
+        }).afterSuccess(
+            _this.showAlert(_this.data.customer)
+        );
+
+    });
+    angular.module('dialogDemo1', ['ngMaterial']);
+
+    _this.status = '  ';
+    _this.customFullscreen = false;
+
+    _this.showAlert = function (ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        // Modal dialogs should fully cover application
+        // to prevent interaction outside of dialog
+
+        $mdDialog.show(
+            $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .htmlContent('<h4><i class="material-icons">local_florist</i>لیست سفارشات مربوط به</h4>' + '</br>' +
+                    ' <span class="tpc">نام مشتری</span>' + ' ' + ev.title + '</br>' +
+                    '<span class="tpc">شماره موبایل</span>' + ' ' + ev.mobile + '</br>' +
+                    '<span class="tpc">آدرس ایمیل</span>' + ' ' + ev.email)
+                .ariaLabel('Alert Dialog Demo')
+                .ok('درسته')
+                .targetEvent(ev)
+        );
     };
-
-    _this.setSts = function (row) {
-        row.sts_loading = true;
-        htp(home('console/order/set-sts'), {id: row.id, sts: row.sts}).then(function (response) {
-            _this.tbl.reload();
-        }).after(function () {
-            row.sts_loading = false;
-        });
-    };
-
-    _this.init = function (row) {
-        row.extra_loading = true;
-        row.order_items = undefined;
-        htp(home('console/order/get-order-items'), {id: row.id}).then(function (response) {
-            row.order_items = response;
-        }).after(function () {
-            row.extra_loading = false;
-        });
-    };
-    _this.editProductListDialog = function (ev, row) {
-        var dialog = $mdDialog.show({
-                controller: function ($scope, $controller, row, id) {
-                    $scope.data = row;
-                    $scope.edit_mode = true;
-                    $scope.hide = function () {
-                        $mdDialog.hide();
-                    };
-                    $scope.cancel = function () {
-                        $mdDialog.cancel();
-                    };
-                    $scope.editBtnDialog = function () {
-                        $scope.preloader = true;
-                        htp(home('console/order/edit-product-list'), {
-                            id: id,
-                            data: $scope.data
-                        }).then(function (response) {
-                            $scope.preloader = false;
-                            $mdDialog.hide();
-                            _this.init(row);
-                            _this.tbl.reload();
-                        });
-                    };
-                    var __this = $scope;
-                    __this.data.order_item = [];
-                    _.each(__this.data.order_items, function (item) {
-                        __this.data.order_item.push(angular.extend(item, {value: item.product_name.title}));
-                    });
-                    $controller('OrderProductTable', {$scope: $scope});
-                    __this.$watch('data.order_item', function (n) {
-                        console.log('n', n);
-                    }, true);
-
-                },
-                templateUrl: home('console/order/product-list-edit'),
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                clickOutsideToClose: true,
-                locals: {
-                    row: row,
-                    id: row.id
-                },
-                fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-            })
-            .then(function (answer) {
-
-            });
-    };
-
 });
 
 app.controller('OrderProductTable', function ($scope, htp, NgTableParams) {

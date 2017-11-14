@@ -45,15 +45,42 @@ class CustomerController extends Controller {
 
 
   public function postList(Request $request) {
-    $record = User::customer()->with('user_info');
-    $record = $record->select(array_merge([
-      '*',
-      User::$SELECT__GENDER_STR,
-      User::$SELECT__ACTIVE_STR,
-      User::$SELECT__CUS_TYPE_STR,
-      User::$SELECT__STS_STR,
-    ], UserInfo::$selectCUJ));
-    return $this->tableEngine($record, $request->all());
+//    $record = User::customer()->with('user_info');
+//    $record = $record->select(array_merge([
+//      '*',
+//      User::$SELECT__GENDER_STR,
+//      User::$SELECT__ACTIVE_STR,
+//      User::$SELECT__CUS_TYPE_STR,
+//      User::$SELECT__STS_STR,
+//    ], UserInfo::$selectCUJ));
+//    return $this->tableEngine($record, $request->all());
+      $records = Customer::select([
+          '*',
+          Customer::$SELECT_STS_STR,
+          Customer::$SELECT_Gender_STR
+      ]);
+
+      $input = $request->all();
+      $this->tableFilter($records, $input);
+      $this->tableBtnFilter($records, $input);
+
+      if (isset($input['excelExport'])) {
+          return $this->tableExcel($records, $input);
+      }
+
+
+      if (isset($input['exportPrint'])) {
+          return $this->tablePrint($records, $input);
+      }
+
+      $count = $records->count();
+      $this->tablePaginate($records, $input);
+
+
+      return response()->json([
+          'rows' => $records->get()->toArray(),
+          'total' => $count
+      ]);
   }
 
 

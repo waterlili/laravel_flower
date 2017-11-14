@@ -14,6 +14,6 @@ class OrderFlower extends Model
 
     public function flower()
     {
-        return $this->belongsTo(Flower::class, 'order_id');
+        return $this->belongsTo(Flower::class);
     }
 }

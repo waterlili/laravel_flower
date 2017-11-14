@@ -17,36 +17,37 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
         <span>{{$index + 1}}</span>&nbsp;
 
         <span ng-if="item.type==1">&nbsp;اشتراک {{item.month_str}}</span>
-
+        <span ng-if="item.type==2">&nbsp;هدیه </span>
 
         <div flex></div>
         <span ng-if="item.type==1">ازتاریخ&nbsp;{{item.first_date}}</span>
+        <span ng-if="item.type==2">تاریخ ارسال&nbsp;{{item.first_date}}</span>
         <md-button class="md-icon-button pull-left" aria-label="More">
             <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
         </md-button>
     </div>
-    <div class="content odr_style" ng-repeat-end>
+    <div class="content " ng-repeat-end>
         <div class="p-md">
             <div layout-gt-md="row" layout-align="start center">
                 <div class="form-group">
 
                     <div ng-if="item.order_flowers.length > 0 && item.type==2">
-                        <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش گل از نوع هدیه</h4>
-                        <div><label class="lab_sty">نام گل:</label>{{item.order_flowers[0]['flower']['name']}}</div>
-                        <p>
-                            تاریخ اولین ارسال: {{item.first_date}}
-                        </p>
+                        <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش گل</h4>
+                        <div><label class="lab_sty">نام گل:</label>{{item.order_flowers[0]['flower']['name']}} <span>{{item.order_flowers[0]['stalk_counter']}}
+                                شاخه</span></div>
+
                     </div>
                     <div ng-if="item.order_packets.length > 0 && item.type==2">
-                        <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش بسته ی گل از نوع هدیه
+                        <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش بسته ی گل
                         </h4>
                         <div><label class="lab_sty">نوع بسته:</label>{{item.order_packets[0]['packet']['title']}}</div>
-                        <div> تاریخ ارسال: {{item.first_date}}</div>
+
 
 
                     </div>
                     <div layout="row" layout-xs="column" ng-if="item.order_flowers.length > 0 && item.type==1">
-                        <div flex layout-align="start center" ng-repeat="item in item.orderCard">
+                        <div flex-gt-md="25" layout-align="start center"
+                             ng-repeat="item in item.orderCard | limitTo:quantity">
 
                             <md-card class="card_sty" id="card_poss" layout="row" ng-if="item.current < item.date"
                                      layout-xs="column" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}"
@@ -93,7 +94,8 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 
                     </div>
                     <div layout="row" layout-xs="column" ng-if="item.order_packets.length > 0 && item.type==1">
-                        <div flex layout-align="start center" ng-repeat="item in item.order_packets">
+                        <div flex-gt-md="25" layout-align="start center"
+                             ng-repeat="item in item.order_packets | limitTo:quantity">
                             <md-card class="card_sty" id="card_poss" layout="row" ng-if="item.current < item.sent"
                                      layout="row" layout-xs="column"
                                      md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>

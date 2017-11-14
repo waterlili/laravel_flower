@@ -45,15 +45,7 @@ class CustomerController extends Controller {
 
 
   public function postList(Request $request) {
-//    $record = User::customer()->with('user_info');
-//    $record = $record->select(array_merge([
-//      '*',
-//      User::$SELECT__GENDER_STR,
-//      User::$SELECT__ACTIVE_STR,
-//      User::$SELECT__CUS_TYPE_STR,
-//      User::$SELECT__STS_STR,
-//    ], UserInfo::$selectCUJ));
-//    return $this->tableEngine($record, $request->all());
+
       $records = Customer::select([
           '*',
           Customer::$SELECT_STS_STR,
@@ -108,7 +100,6 @@ class CustomerController extends Controller {
 
   public function postAdd(Request $request) {
     $input = $request->all();
-    $input['name'] = $input['fname'] . ' ' . $input['lname'];
     $input['sts'] = 1;
     if (isset($input['id'])) {
       $user = Customer::find($input['id'])->update($input);

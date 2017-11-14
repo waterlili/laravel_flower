@@ -8,21 +8,19 @@ app.controller('OrderListCtrl', function ($scope, htp, $mdDialog, NgTableParams,
 
 
     angular.module('tabsDemoDynamicHeight', ['ngMaterial']);
-
+    $scope.quantity = 4;
     $('.ui.accordion').accordion();
 
-    $rootScope.$on('order:customer', function (data, dt) {
-        _this.data.customer = dt;
-        _this.cache = false;
-
-        htp(home('console/order/get-prc'), {cid: _this.data.customer.id}).then(function (res) {
-            _this.data.orders = res;
-            _this.flag = res.flag;
-
-        }).afterSuccess(
-            _this.showAlert(_this.data.customer)
-        );
-
+    $scope.$watch('customer', function (n, o) {
+        if (n) {
+            _this.data.customer = n;
+            _this.cache = false;
+            htp(home('console/order/get-prc'), {cid: _this.data.customer.id}).then(function (res) {
+                _this.data.orders = res;
+                _this.flag = res.flag;
+                _this.showAlert(_this.data.customer);
+            });
+        }
     });
     angular.module('dialogDemo1', ['ngMaterial']);
 

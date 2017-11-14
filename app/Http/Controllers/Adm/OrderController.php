@@ -454,8 +454,11 @@ class OrderController extends Controller {
 
         $input = $request->all();
 
-        $users = Customer::where('name', 'LIKE', '%' . $input['query'] . '%')
-            ->select(['id', 'name as title', 'mobile', 'email', 'job'])
+        $users = Customer::where(function ($q) use ($input) {
+            $q->where('fname', 'LIKE', '%' . $input['query'] . '%')
+                ->orWhere('lname', 'LIKE', '%' . $input['query'] . '%');
+        })
+            ->select(['id', DB::raw('CONCAT(fname , " " , lname) as title'), 'mobile', 'email', 'job'])
             ->get()
             ->toArray();
         return response()->json(['results' => $users]);

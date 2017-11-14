@@ -7,7 +7,7 @@ $link = (isset($unver)) ? 'console/order/order-unverified' : 'console/order/orde
             @yield('form')
             @include('MD.Notice.notice' , ['type'=>'info' , 'repeat'=>'submit.infoItem'])
             @include('MD.Notice.notice' , ['type'=>'error' , 'repeat'=>'submit.errorItem'])
-            <div layout="row" layout-align="start center" ng-controller="CustomerAddCtrl">
+            <div layout="row" layout-align="start center">
                 <div class="ui search" use-search="cus" ng-model="customer">
                     <div class="ui icon input">
                         <input class="prompt" type="text" placeholder="جستجو مشتری" ng-model="cus.search">

@@ -19,6 +19,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
         <span ng-if="item.type==1">&nbsp;اشتراک {{item.month_str}}</span>
 
 
+
         <div flex></div>
         <span ng-if="item.type==1">ازتاریخ&nbsp;{{item.first_date}}</span>
         <md-button class="md-icon-button pull-left" aria-label="More">
@@ -29,11 +30,12 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
         <div class="p-md">
             <div class="form-group">
                 <div ng-if="item.order_flowers.length > 0 && item.type==1">
-                    <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش گل از نوع
-                        اشتراکی {{item.month_str}}</h4>
-                    <p>{{item.week_str}} ها </p>
+                    <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش گل
+                    </h4>
+                    <span class="pull-left topic_pos">{{item.week_str}} ها </span>
+                    <div layout="column" layout-align="center end"> تاریخ اولین ارسال:{{item.first_date}}
+                    </div>
                     <p><label class="lab_sty">نام گل:</label>{{item.order_flowers[0]['flower']['name']}}</p>
-                    تاریخ اولین ارسال: {{item.first_date}}
                     <p>{{item.order_packets[0]['packet']['title']}}</p>
                 </div>
                 <div ng-if="item.order_flowers.length > 0 && item.type==2">
@@ -44,8 +46,8 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     </p>
                 </div>
                 <div ng-if="item.order_packets.length > 0 && item.type==1">
-                    <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش بسته ی گل از نوع
-                        اشتراکی {{item.month_str}}</h4>
+                    <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش بسته ی گل
+                    </h4>
                     <span class="pull-left topic_pos">{{item.week_str}} ها </span>
                     <div layout="column" layout-align="center end"> تاریخ اولین ارسال:{{item.first_date}}
                     </div>

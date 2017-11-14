@@ -36,7 +36,8 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                         هدیه
                     </button>
                 </div>
-                <div flex></div>
+            </div>
+            <div layout-gt-md="row" layout-align="start center">
                 <div class="ui checkbox mb-md">
                     <input type="checkbox" ng-model="Flower">
                     <label>انتخاب گل</label>
@@ -49,7 +50,9 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     <input type="hidden" ng-model="flag"/>
                     <label>گلدان</label>
                 </div>
-            </div>
+                </div>
+
+
             <div layout-gt-md="row" layout-align="start center" ng-hide="Flower">
                 <div class="ui fluid search selection dropdown ml-md-md mb-xl" use-dropdown ng-model="item.pck_type">
                     <i class="dropdown icon"></i>
@@ -66,7 +69,8 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                 <input type="hidden" value="<% $item['price'] %>" ng-model="item.price">
             </div>
             <div layout-gt-md="row" layout-align="start center" ng-if="Flower">
-                <div class="ui fluid search selection dropdown ml-md-md mb-xl" use-dropdown ng-model="item.flw_type">
+                <div flex-gt-md="50" class="ui fluid search selection dropdown ml-md-md mb-xl" use-dropdown
+                     ng-model="item.flw_type">
                     <input type="hidden" name="country">
                     <i class="dropdown icon"></i>
                     <div class="default text">انتخاب گل</div>
@@ -78,7 +82,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                         @endforeach
                     </div>
                 </div>
-                <div>
+                <div flex-gt-md="50">
                     @include('MD.input.text-sm' , $total)
                 </div>
             </div>
@@ -126,7 +130,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                 ng-repeat="t in time">{{t.title}}</button>
                     </div>
                 </div>
-                <div flex-gt-md="66">
+                <div flex-gt-md="100">
                     @include('MD.input.text-sm' , $first2)
                 </div>
             </div>

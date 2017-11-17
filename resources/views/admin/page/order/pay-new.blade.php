@@ -13,14 +13,14 @@ $date2 = \App\View\Text::create('item.pay_date', 'تاریخ واریز')->dateI
         <div class="title" layout="row" layout-align="start center" ng-repeat-start="item in data.new_orders">
             <i class="icon edit"></i>
             سفارش
-            <span>{{data.orders.length+1}}</span>
+            <span>{{data.orders.orders.length+1}}</span>
 
             <div flex></div>
             <div>
                 <i class="icon trash red color  " ng-click="removenewOrder(item)"></i>
             </div>
         </div>
-        <div class="content" ng-repeat-end>
+        <div class="content active" ng-repeat-end>
             <div layout-gt-md="row" layout-align="start start">
                 <div class="ui label large blue mb-md">
                     <span>مبلغ قابل پرداخت</span>

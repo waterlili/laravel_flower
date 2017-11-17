@@ -670,6 +670,7 @@ class OrderController extends Controller {
     public function submitOrder($input, $orders, $started_at)
     {
 
+
         $customer = $this->checkCustomer($input)->getData();
         $cid = $customer->customer_id;
         $mobile = $customer->customer_mobile;
@@ -688,6 +689,8 @@ class OrderController extends Controller {
             return response()->json(array('error' => false), 422);
         } else {
             if (!empty($input['customer']['id'])) {
+                $number = $this->order_number();
+
                 for ($i = 0; $i <= $orders; $i++) {
 //
                     if ($flag == 0 && !empty($input['new_orders'][$i]['flowerVase'])) {
@@ -696,7 +699,6 @@ class OrderController extends Controller {
                         //for save in order take id
                         $vase_id = $vase->id;
                         $vase_price = $vase->price;
-
 
                     } else {
                         $vase_price = 1;
@@ -714,6 +716,7 @@ class OrderController extends Controller {
                         $amount = $this->postGetCaulateAmount($i, $input, $flag, $vase_price)->getData();
                         $obj = [
                             'cid' => $cid,
+                            'number' => $number,
                             'vid' => $vase_id,
                             'amount' => $amount->amount,
                             'type' => array_get($input['new_orders'][$i], 'type', NULL),
@@ -789,7 +792,7 @@ class OrderController extends Controller {
         } elseif (!empty($input['email'])) {
             $exist_customer = Customer::where('email', $input['email'])->first();
             if (empty($exist_customer)) {
-                $input['name'] = $input['fname'] . ' ' . $input['lname'];
+//                $input['name'] = $input['fname'] . ' ' . $input['lname'];
                 $input['sts'] = 1;
                 $customer = Customer::create($input);
                 $cid = $customer->id;
@@ -806,19 +809,18 @@ class OrderController extends Controller {
 
     public function postGetCaulateAmount($i, $input, $flag, $vase_price)
     {
+
         if ($i == -1) {
+            $month = $input['new_orders'][$i]['w'];
             if (!empty($input['pck_type'])) {
                 $pkt_id = $input['pck_type'];
                 $price = FlowerPacket::where('id', $pkt_id)->pluck('price');
-                if ($input['type'] == 1)
-                    $count = (int)$input['w'] * 4;
-                else
-                    $count = 1;
+
                 if ($flag == 2 && !empty($vase_price)) {
-                    $amount = ($price[0] * $count) + $vase_price;
+                    $amount = ($price[0] * $month) + $vase_price;
                 } else {
 
-                    $amount = $price[0] * $count;
+                    $amount = $price[0] * $month;
                 }
                 return response()->json(array('success' => true, 'amount' => $amount), 200);
             } elseif (empty($input['pck_type'])) {
@@ -829,9 +831,9 @@ class OrderController extends Controller {
                 if ($input['type'] == 1) {
                     $weeks = (int)$input['w'] * 4;
                     if ($flag == 2 && !empty($vase_price)) {
-                        $total_price = ($prc_stalks * $weeks) + $vase_price;
+                        $total_price = ($prc_stalks * $month) + $vase_price;
                     } else {
-                        $total_price = $prc_stalks * $weeks;
+                        $total_price = $prc_stalks * $month;
                     }
                 } else
                     if ($flag == 2 && !empty($vase_price)) {
@@ -844,16 +846,13 @@ class OrderController extends Controller {
         }
         if (!empty($input['new_orders'][$i]['pck_type'])) {
             $pkt_id = $input['new_orders'][$i]['pck_type'];
+            $month = $input['new_orders'][$i]['w'];
             $price = FlowerPacket::where('id', $pkt_id)->pluck('price');
-            if ($input['new_orders'][$i]['type'] == 1)
-                $count = (int)$input['new_orders'][$i]['w'] * 4;
-            else
-                $count = 1;
             if ($flag == 2 && !empty($vase_price)) {
-                $amount = ($price[0] * $count) + $vase_price;
+                $amount = ($price[0] * $month) + $vase_price;
             } else {
 
-                $amount = $price[0] * $count;
+                $amount = ($price[0] * $month);
             }
             return response()->json(array('success' => true, 'amount' => $amount), 200);
         } elseif (empty($input['new_orders'][$i]['pck_type'])) {
@@ -861,14 +860,15 @@ class OrderController extends Controller {
             $flw_id = $fl_type[0];
             $flw_id = $flw_id;
             $stalk = $input['new_orders'][$i]['total'];
+            $month = $input['new_orders'][$i]['w'];
             $price = Flower::where('id', $flw_id)->pluck('price');
             $prc_stalks = $price[0] * $stalk;
             if ($input['new_orders'][$i]['type'] == 1) {
-                $weeks = (int)$input['new_orders'][$i]['w'] * 4;
+//                $weeks = (int)$input['new_orders'][$i]['w'] * 4;
                 if ($flag == 2 && !empty($vase_price)) {
-                    $total_price = ($prc_stalks * $weeks) + $vase_price;
+                    $total_price = ($prc_stalks * $month) + $vase_price;
                 } else {
-                    $total_price = $prc_stalks * $weeks;
+                    $total_price = $prc_stalks * $month;
                 }
             } else
                 if ($flag == 2 && !empty($vase_price)) {
@@ -969,7 +969,22 @@ class OrderController extends Controller {
 
     public function order_number()
     {
-        return $six_digit_random_number = mt_rand(10000000, 99999999);
+        $code = $six_digit_random_number = mt_rand(10000000, 99999999);
+        $number = 'BNT-' . $code;
+        // call the same function if the barcode exists already
+        if ($this->barcodeNumberExists($number)) {
+            return order_number();
+        }
+
+        // otherwise, it's valid and can be used
+        return $number;
+    }
+
+    function barcodeNumberExists($number)
+    {
+        // query the database and return a boolean
+        // for instance, it might look like this in Laravel
+        return Order::where('number', $number)->first();
     }
 
 }

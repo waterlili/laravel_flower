@@ -5,10 +5,11 @@ app.controller('OrderListCtrl', function ($scope, htp, $mdDialog, NgTableParams,
     _this.init = function () {
         $('.ui.accordion').accordion();
     };
-
+    $scope.items = [];
+    for (var i = 0; i < 100; i++) $scope.items.push(i);
 
     angular.module('tabsDemoDynamicHeight', ['ngMaterial']);
-    $scope.quantity = 4;
+
     $('.ui.accordion').accordion();
 
     $scope.$watch('customer', function (n, o) {

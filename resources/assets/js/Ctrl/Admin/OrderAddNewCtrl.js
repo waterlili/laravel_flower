@@ -50,6 +50,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
 
     };
 
+
     angular.module('tabsDemoDynamicHeight', ['ngMaterial']);
     $('.ui.accordion').accordion();
     $rootScope.$on('order:customer', function (data, dt) {
@@ -61,7 +62,6 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
             _this.data.orders = res;
             _this.flag = res.flag;
 
-
         });
     });
 
@@ -70,7 +70,7 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
     };
     _this.addOrder = function () {
         _this.data.new_orders.push({type: 1, week: 1, time: 1, w: 1, total: 1});
-        $('.ui.accordion').accordion();
+
     };
 
     _this.removenewOrder = function (item) {
@@ -93,10 +93,6 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
         item.time = index;
 
     };
-    // _this.v.Dt = Date.parse(item.order_packets[0]['send_at']);
-    // _this.changeCheck =function (item) {
-    //     console.log("s");
-    // };
 
     _this.calcPrice = function (item) {
         var flag = _this.flag;
@@ -105,27 +101,44 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
         if (item.pck_type) {
             prc_part = item.pck_type.split("|");
             if (item.type == 1) {
-                var count = item.week * 4;
-                if (flag == 1 && item.flowerVase)
-                    price = (prc_part[1] * count) + item.flowerVase;
-                else
-                    price = prc_part[1] * count;
+                if (flag == 1) {
+                    price = prc_part[1] * item.w;
+                }
+                else {
+                    if (item.flowerVase != undefined)
+                        price = parseInt(prc_part[1] * item.w) + item.flowerVase;
+                    else
+                        price = parseInt(prc_part[1] * item.w);
+                }
+
                 return price;
             } else if (item.type == 2) {
-                return prc_part[1];
+                if (item.flowerVase != undefined)
+                    price = parseInt(prc_part[1]) + item.flowerVase;
+                else
+                    price = parseInt(prc_part[1]);
+
+                return price;
             }
         } else if (item.flw_type) {
             var prc_part = item.flw_type.split("|");
             if (item.type == 1) {
                 var count = item.week * 4;
-                if (flag == 1 && item.flowerVase)
-                    price = (prc_part[1] * item.total * count) + item.flowerVase;
+                if (flag == 1) {
+                    price = prc_part[1] * item.w * item.total * count;
+                }
                 else {
-                    price = prc_part[1] * item.total * count;
+                    if (item.flowerVase != undefined)
+                        price = parseInt(prc_part[1] * item.w * item.total * count) + item.flowerVase;
+                    else
+                        price = parseInt(prc_part[1] * item.w * item.total * count);
                 }
                 return price;
             } else if (item.type == 2) {
-                price = prc_part[1] * item.total;
+                if (item.flowerVase != undefined)
+                    price = parseInt(prc_part[1] * item.total) + item.flowerVase;
+                else
+                    price = parseInt(prc_part[1] * item.total);
                 return price;
             }
         }

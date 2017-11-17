@@ -26,6 +26,7 @@ class Order extends Model {
   protected $dates = ['deleted_at'];
   protected $fillable = array(
       'cid',
+      'number',
       'vid',
       'type',
       'amount',

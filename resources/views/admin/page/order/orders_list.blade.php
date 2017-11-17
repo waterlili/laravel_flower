@@ -9,7 +9,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 ?>
 
 <div class="ui styled accordion" style="width: 100%">
-    <div ng-if="item" flex layout="column" layout-align="center center" class="text-center">لیست سفارشات مشتری</div>
+    <div ng-if="item" flex layout="column" layout-align="center center" class="text-c enter">لیست سفارشات مشتری</div>
     <div class="title" layout="row" layout-align="start center" data-ng-init="init()"
          ng-repeat-start="item in data.orders.orders">
         <i class="icon edit"></i>
@@ -45,9 +45,10 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 
 
                     </div>
-                    <div layout="row" layout-xs="column" ng-if="item.order_flowers.length > 0 && item.type==1">
+                    <div layout="row" layout-wrap layout-xs="column"
+                         ng-if="item.order_flowers.length > 0 && item.type==1">
                         <div flex-gt-md="25" layout-align="start center"
-                             ng-repeat="item in item.orderCard | limitTo:quantity">
+                             ng-repeat="item in item.orderCard">
 
                             <md-card class="card_sty" id="card_poss" layout="row" ng-if="item.current < item.date"
                                      layout-xs="column" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}"
@@ -93,9 +94,12 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 
 
                     </div>
-                    <div layout="row" layout-xs="column" ng-if="item.order_packets.length > 0 && item.type==1">
+
+                    <div layout="row" layout-wrap layout-xs="column"
+                         ng-if="item.order_packets.length > 0 && item.type==1">
+
                         <div flex-gt-md="25" layout-align="start center"
-                             ng-repeat="item in item.order_packets | limitTo:quantity">
+                             ng-repeat="item in item.order_packets">
                             <md-card class="card_sty" id="card_poss" layout="row" ng-if="item.current < item.sent"
                                      layout="row" layout-xs="column"
                                      md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
@@ -136,12 +140,12 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     </div>
 
 
-                </div>
 
 
             </div>
 
         </div>
+
 
 
 

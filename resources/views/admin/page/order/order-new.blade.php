@@ -12,10 +12,10 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 <div class="ui styled accordion" style="width: 100%">
 
     <div class="title" layout="row" layout-align="start center" data-ng-init="init()"
-         ng-repeat-start="item in data.new_orders">
-        <!--TODO check how-->
+         ng-repeat-start="item in data.new_orders" is-open="$first">
+
         <span><?php
-            $value = "{{data.orders.length+1}}";
+            $value = "{{data.orders.orders.length+1}}";
             ?></span>
         <i class="icon edit"></i>
         سفارش
@@ -25,7 +25,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
             <i class="icon trash red color  " ng-click="removenewOrder(item)"></i>
         </div>
     </div>
-    <div class="content" ng-repeat-end>
+    <div class="content active" ng-repeat-end>
         <div class="p-md">
             <div layout-gt-md="row" layout-align="start center">
                 <div class="ui buttons mb-md">
@@ -50,7 +50,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     <input type="hidden" ng-model="flag"/>
                     <label>گلدان</label>
                 </div>
-                </div>
+            </div>
 
 
             <div layout-gt-md="row" layout-align="start center" ng-hide="Flower">
@@ -62,7 +62,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                             <div class="item" ng-click="item.flw_type= ''"
                                  data-value="<% $item['id'] %>|<% $item['price'] %>"><% $item['title'] %>
 
-                    </div>
+                            </div>
                         @endforeach
                     </div>
                 </div>
@@ -86,35 +86,35 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     @include('MD.input.text-sm' , $total)
                 </div>
             </div>
-        <div class="flexbox-parent">
-            <div layout-gt-md="row" ng-if="item.type == 1">
-                <div flex-gt-md="100" class="ml-md-md pos_plate">
-                    <div class="ui buttons mb-md ml-md-md" flex-gt-md="66">
-                        <button class="ui button" ng-click="wChange(item , r.id)"
-                                ng-class="{'active blue':item.w == r.id}"
-                                ng-repeat="r in w">{{r.title}}</button>
+            <div class="flexbox-parent">
+                <div layout-gt-md="row" ng-if="item.type == 1">
+                    <div flex-gt-md="100" class="ml-md-md pos_plate">
+                        <div class="ui buttons mb-md ml-md-md" flex-gt-md="66">
+                            <button class="ui button" ng-click="wChange(item , r.id)"
+                                    ng-class="{'active blue':item.w == r.id}"
+                                    ng-repeat="r in w">{{r.title}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div layout-gt-md="row" ng-if="item.type == 1">
+                    <div flex-gt-md="100" class="ml-md-md pos_plate">
+                        <div class="ui buttons mb-md ml-md-md" flex-gt-md="66">
+                            <button class="ui button" ng-click="weekChange(item , w.id)"
+                                    ng-class="{'active red':item.week == w.id}"
+                                    ng-repeat="w in week">{{w.title}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div layout-gt-md="row" ng-if="item.type == 1">
+                    <div flex-gt-md="100" class="ml-md-md pos_plate">
+                        <div class="ui buttons mb-md" flex-gt-md="33">
+                            <button class="ui button" ng-click="timeChange(item,t.id)"
+                                    ng-class="{'active green':item.time == t.id}"
+                                    ng-repeat="t in time">{{t.title}}</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div layout-gt-md="row" ng-if="item.type == 1">
-                <div flex-gt-md="100" class="ml-md-md pos_plate">
-                    <div class="ui buttons mb-md ml-md-md" flex-gt-md="66">
-                        <button class="ui button" ng-click="weekChange(item , w.id)"
-                                ng-class="{'active red':item.week == w.id}"
-                                ng-repeat="w in week">{{w.title}}</button>
-                    </div>
-                </div>
-            </div>
-            <div layout-gt-md="row" ng-if="item.type == 1">
-                <div flex-gt-md="100" class="ml-md-md pos_plate">
-                    <div class="ui buttons mb-md" flex-gt-md="33">
-                        <button class="ui button" ng-click="timeChange(item,t.id)"
-                                ng-class="{'active green':item.time == t.id}"
-                                ng-repeat="t in time">{{t.title}}</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
             <div layout-gt-md="row" ng-if="item.type == 1">

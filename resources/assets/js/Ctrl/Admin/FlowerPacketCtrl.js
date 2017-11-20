@@ -6,6 +6,7 @@ app.controller('FlowerPacketAddCtrl', function ($scope, htp, $controller) {
 
     if (_this.edit_mode) {
         _this.data = _this.dt;
+        console.log(_this.data);
     }
     _this.data = {};
     _this.data.composit = [];

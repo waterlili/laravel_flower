@@ -14,12 +14,10 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
     <div class="title" layout="row" layout-align="start center" data-ng-init="init()"
          ng-repeat-start="item in data.new_orders" is-open="$first">
 
-        <span><?php
-            $value = "{{data.orders.orders.length+1}}";
-            ?></span>
+
         <i class="icon edit"></i>
         سفارش
-        <span><?php echo $value; ?></span>
+        <span>{{$index+1}}</span>
         <div flex></div>
         <div>
             <i class="icon trash red color  " ng-click="removenewOrder(item)"></i>

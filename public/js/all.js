@@ -1601,6 +1601,7 @@ app.directive('useNgTable', function (NgTableParams, $http, $window) {
 });
 app.controller('ConstCtrl', function ($scope, htp, notify, $mdDialog) {
     var _this = $scope;
+
     var CONST = function ($set, $get) {
         var that = this;
         this.items = [];
@@ -1624,7 +1625,8 @@ app.controller('ConstCtrl', function ($scope, htp, notify, $mdDialog) {
         };
         this.add = function () {
             that.errorItems = undefined;
-            htp(home(this.set), {name: this.name, title: this.title, price: this.price}).then(function (res) {
+            // console.log(this.name);
+            htp(home(this.set), {name: this.name, title: this.name, price: this.price}).then(function (res) {
                 that.init();
                 that.title = undefined;
                 that.name = undefined;
@@ -1798,95 +1800,170 @@ app.controller('CustomerListCtrl', function ($scope) {
     _this.tbl = {};
 
 });
+app.controller('EditorCtrl', function ($scope, htp, $mdDialog, notify, $rootScope) {
+    var _this = $scope;
+    _this.destroy = function (ngTable) {
+        if (ngTable && ngTable != 'null') {
+            _this.$parent[ngTable].tableParams.reload();
+        }
+    };
+
+    if (!_this.editor) {
+        _this.editor = {}
+    }
+
+    $rootScope.$on('modal:init', function (data, elm) {
+        _this.editor.modal = elm;
+        _this.editor.modal.modal({
+            onHide: function (res) {
+                $mdDialog.hide();
+            }
+        });
+    });
+
+    _this.editor.submit = function () {
+        _this.editor.loading = true;
+        _this.errorItems = undefined;
+        _this.Form.$setValidity('loading', false);
+        htp(home(_this.editor.url), (_this.editor.send) ? _this.editor.send.call(this) : _this.data, _this.editor.method || 'put').then(function (res) {
+            if (_this.editor.modal) {
+                _this.editor.modal.modal('hide');
+            }
+        }).after(function () {
+            _this.editor.loading = false;
+            _this.Form.$setValidity('loading', true);
+        }).error(function (res, sts) {
+            if (sts == 422) {
+                _this.errorItems = res;
+            }
+        })
+    };
+
+    _this.before = function (id, cb) {
+        _this.beforePreloader = true;
+        htp(home(_this.getter), {id: id}).then(function (res) {
+            cb(res);
+        }).error(function () {
+            notify.error('خطا در اجرای ویرایش');
+        }).after(function () {
+            _this.beforePreloader = false;
+        });
+    };
+    _this.showConfirm = function (ev, id, link, ctrl, ngTable) {
+        if (_this.getter) {
+            _this.before(id._id, function (res) {
+                $mdDialog.show({
+                    controller: ctrl || 'AdminCtrl',
+                    templateUrl: home(link),
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    hasBackdrop: false,
+                    locals: {data: res},
+                    clickOutsideToClose: true,
+                    onComplete: function () {
+                        // $mdDialog.hide();
+                    },
+                    fullscreen: true // Only for -xs, -sm breakpoints.
+                }).then(function (answer) {
+                    // _this.destroy(id, where, ngTable);
+                    _this.destroy(ngTable);
+                }, function () {
+
+                });
+            });
+
+        } else {
+            $mdDialog.show({
+                controller: ctrl || 'AdminCtrl',
+                templateUrl: home(link),
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                hasBackdrop: false,
+                onComplete: function () {
+                    $mdDialog.hide();
+                },
+                clickOutsideToClose: true,
+                fullscreen: true // Only for -xs, -sm breakpoints.
+            }).then(function (answer) {
+                _this.destroy(id, where, ngTable);
+            }, function () {
+
+            });
+        }
+    };
+});
+
 app.controller('FlowerAddCtrl', function ($scope, htp, $controller) {
     $controller('SubmitController', {$scope: $scope});
     var _this = $scope;
+    _this.data = {};
+    _this.stepsModel = [];
+    _this.data.new_case = [];
     _this.submiterUrl = 'console/flower/add';
     _this.submiterName = 'گل';
 
     if (_this.edit_mode) {
         _this.data = _this.dt;
     }
-    _this.data = {};
-    _this.data.composit = [];
-    var COMP = function () {
-        this.disabled = false;
-        this.flower = this.image = undefined;
-        this.add = function () {
-            _this.data.composit.push({
-                flower: this.flower,
-                image: this.image
+    _this.init = function () {
+        $('.ui.accordion').accordion();
+    };
+
+    angular.module('tabsDemoDynamicHeight', ['ngMaterial']);
+    $('.ui.accordion').accordion();
+
+
+    _this.imageUpload = function (item, event, files, errFiles) {
+
+
+        var files = item.files; //FileList object
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+            reader.onload = _this.imageIsLoaded;
+            reader.readAsDataURL(file);
+            data: {
+                file: files[i]
+            }
+            ;
+
+        }
+        _this.afterSuccess = function () {
+            Upload.upload({
+                url: home('console/flower/add'),
+                data: {file: files, dt: _this.data}
             });
-            this.flower = this.image = undefined;
-            this.flowerOpt.searchText = undefined;
-            this.flowerOpt.selectedItem = undefined;
-        };
 
-        this.remove = function ($index) {
-            _this.data.composit = _.without(_this.data.composit, _this.data.composit[$index]);
-        };
-    };
-    _this.afterSuccess = function () {
-        _this.data = {};
-        _this.data.composit = [];
-        _this.comp = new COMP();
-    };
-    _this.comp = new COMP();
-
-    var Fls = function ($name) {
-        this.errorUploading = undefined;
-        this.file = undefined;
-        this.success = undefined;
-        this.readyUpload = undefined;
-        this.progress = undefined;
-        this.name = $name;
-        this.has = undefined;
-        this.finish = true;
-        this.url = undefined;
-        this.clear = function () {
-            this.errorUploading = this.readyUpload = this.file = this.success = this.progress = undefined;
-        };
-
-        this.clearError = function () {
-            this.errorUploading = undefined;
-        };
-
-        this.__submit = function () {
-            _this._upload(this);
-        };
-
-        this.init = function () {
-            this.has = true;
-            this.finish = false;
-        };
-    };
+            file.upload.then(function (response) {
+                $timeout(function () {
+                    file.result = response.data;
+                });
+            }, function (response) {
+                if (response.status > 0)
+                    _this.errorMsg = response.status + ': ' + response.data;
+            }, function (evt) {
+                file.progress = Math.min(100, parseInt(100.0 *
+                    evt.loaded / evt.total));
+            });
+        }
 
 
-    _this._upload = function (fls) {
-        fls.clearError();
-        fls.uploading = true;
-        Upload.upload({
-            url: home('console/flower/upload-flower-image'),
-            data: {file: fls.file, type: fls.name}
-        }).then(function (resp) {
-            fls.uploading = false;
-            fls.clear();
-            fls.success = true;
-            fls.finish = true;
-            fls.url = resp.data.url;
-            var d = new Date();
-            _this.data.personal.url = resp.data.url + '?ver=' + d.getTime();
-        }, function (resp) {
-            fls.errorUploading = true;
-            fls.file = undefined;
-            fls.uploading = false;
-            fls.progress = undefined;
-        }, function (evt) {
-            fls.progress = parseInt(100.0 * evt.loaded / evt.total);
+    }
+    _this.imageIsLoaded = function (e) {
+
+        _this.$apply(function () {
+            _this.stepsModel.push(e.target.result);
+
         });
     };
+    _this.addVariety = function () {
+        _this.data.new_case.push({});
 
-    _this.data.flower_picture = new Fls('flower_picture');
+    }
+    _this.removenewVariety = function (item) {
+        _this.data.new_case = _.without(_this.data.new_case, item);
+    };
+
 
 });
 
@@ -1935,6 +2012,7 @@ app.controller('FlowerEditCtrl', function ($scope, htp, $controller) {
 
     });
 });
+
 app.controller('FlowerPackageAddCtrl', function ($scope, htp, $controller) {
     $controller('SubmitController', {$scope: $scope});
     var _this = $scope;
@@ -2057,6 +2135,7 @@ app.controller('FlowerPacketAddCtrl', function ($scope, htp, $controller) {
 
     if (_this.edit_mode) {
         _this.data = _this.dt;
+        console.log(_this.data);
     }
     _this.data = {};
     _this.data.composit = [];
@@ -2148,7 +2227,9 @@ app.controller('FlowerVaseAddCtrl', function ($scope, htp, $http, Upload, $contr
     _this.stepsModel = [];
     _this.submiterUrl = 'console/flower_vase/add';
     _this.submiterName = 'گل';
-
+    _this.init = function () {
+        $('.ui.accordion').accordion();
+    };
     _this.submit = function () {
 
         $http.post(home(_this.submiterUrl), _this.export())
@@ -2171,6 +2252,7 @@ app.controller('FlowerVaseAddCtrl', function ($scope, htp, $http, Upload, $contr
         return _this.data;
     }
     _this.imageUpload = function (event, files, errFiles) {
+        console.log("tea");
         var files = event.target.files; //FileList object
         for (var i = 0; i < files.length; i++) {
             var file = files[i];

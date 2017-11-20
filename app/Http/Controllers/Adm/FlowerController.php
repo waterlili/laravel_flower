@@ -31,8 +31,6 @@ class FlowerController extends Controller
     {
         return view('admin.page.flower.list');
     }
-
-
     public function postList(Request $request)
     {
         $records = Flower::select([
@@ -71,17 +69,22 @@ class FlowerController extends Controller
     public function postAdd(Request $request)
     {
         $input = $request->all();
-        $flower = Flower::create($input);
-        if (isset($input['composit']) && is_array($input['composit'])) {
-            foreach ($input['composit'] as $item) {
-                FlowerVariation::create([
-                    'flower_id' => $flower->id,
-                    'color' => $item['flower'],
-                    'image' => $item['image'],
-                ]);
+        if (isset($input['id'])) {
+            Flower::find($input['id'])->update($input);
+            return response()->json(['result' => TRUE]);
+        } else {
+            $flower = Flower::create($input);
+            if (isset($input['composit']) && is_array($input['composit'])) {
+                foreach ($input['composit'] as $item) {
+                    FlowerVariation::create([
+                        'flower_id' => $flower->id,
+                        'color' => $item['flower'],
+                        'image' => $item['image'],
+                    ]);
+                }
             }
+            return response()->json(['result' => TRUE]);
         }
-        return response()->json(['result' => TRUE]);
     }
 
     public function getData(Request $request)
@@ -111,6 +114,7 @@ class FlowerController extends Controller
 
     public function postGetEditFlowerData(Request $request)
     {
+
         $response = Flower::whereId($request->id)->first();
 
         return $response;

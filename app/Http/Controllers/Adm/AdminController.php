@@ -157,30 +157,14 @@ class AdminController extends Controller {
 
   protected function editCustomer(Request $request) {
     $input = $request->all();
-//    $input['data']['user_info'] = NULL;
-    User::find($input['id'])->update($input['data']);
+      Customer::find($input['id'])->update($input['data']);
+      return response()->json(TRUE);
+  }
 
-    $ui = [];
-    foreach ([
-               'job',
-               'job_type',
-               'skill',
-               'address',
-               'address2',
-               'zip_code',
-               'phone',
-               'mobile',
-               'sts',
-               'att_type',
-               'attraction',
-               'description',
-             ] as $item) {
-      if (!is_null($input['data'][$item])) {
-        $ui[$item] = $input['data'][$item];
-      }
-    }
-    UserInfo::whereUid($input['id'])->update($ui);
-
+    protected function editFlowers(Request $request)
+    {
+        $input = $request->all();
+        Flower::find($input['id'])->update($input['data']);
     return response()->json(TRUE);
   }
 

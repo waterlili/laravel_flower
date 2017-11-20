@@ -1,5 +1,6 @@
 app.controller('ConstCtrl', function ($scope, htp, notify, $mdDialog) {
     var _this = $scope;
+
     var CONST = function ($set, $get) {
         var that = this;
         this.items = [];
@@ -23,7 +24,8 @@ app.controller('ConstCtrl', function ($scope, htp, notify, $mdDialog) {
         };
         this.add = function () {
             that.errorItems = undefined;
-            htp(home(this.set), {name: this.name, title: this.title, price: this.price}).then(function (res) {
+            // console.log(this.name);
+            htp(home(this.set), {name: this.name, title: this.name, price: this.price}).then(function (res) {
                 that.init();
                 that.title = undefined;
                 that.name = undefined;

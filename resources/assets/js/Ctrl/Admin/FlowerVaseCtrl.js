@@ -6,7 +6,9 @@ app.controller('FlowerVaseAddCtrl', function ($scope, htp, $http, Upload, $contr
     _this.stepsModel = [];
     _this.submiterUrl = 'console/flower_vase/add';
     _this.submiterName = 'گل';
-
+    _this.init = function () {
+        $('.ui.accordion').accordion();
+    };
     _this.submit = function () {
 
         $http.post(home(_this.submiterUrl), _this.export())
@@ -29,6 +31,7 @@ app.controller('FlowerVaseAddCtrl', function ($scope, htp, $http, Upload, $contr
         return _this.data;
     }
     _this.imageUpload = function (event, files, errFiles) {
+        console.log("tea");
         var files = event.target.files; //FileList object
         for (var i = 0; i < files.length; i++) {
             var file = files[i];

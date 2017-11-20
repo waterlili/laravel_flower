@@ -29,7 +29,7 @@ class Cnt extends Model {
 
     public function scopeColor($q)
     {
-        return $q->where('w', self::$COLOR)->pluck('title', 'id')->toArray();
+        return $q->where('w', self::$COLOR);
     }
 
   public function scopePack($q) {

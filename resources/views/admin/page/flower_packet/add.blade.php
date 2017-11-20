@@ -1,6 +1,5 @@
 <?php
 $types = \App\View\Select::create('data.type', 'نوع پکیج گل', \App\DB\FlowerPacket::pluck('title', 'id')->toArray())->form()->export();
-
 $comp_package = \App\View\Select::create('comp.package', 'ترکیب', \App\DB\FlowerPackage::pluck('name', 'id')->toArray())->form()->export();
 ?>
 @extends('admin.block.form')

@@ -102,7 +102,7 @@ class CustomerController extends Controller {
     $input = $request->all();
     $input['sts'] = 1;
     if (isset($input['id'])) {
-      $user = Customer::find($input['id'])->update($input);
+        Customer::find($input['id'])->update($input);
       return response()->json(['result' => TRUE]);
     }
     else {

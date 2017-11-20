@@ -25,8 +25,8 @@ $mandegari = \App\View\Select::create('data.mandegari', 'ماندگاری', \App
     ->setRequired(true)
     ->form()
     ->export();
-$comp_flower = \App\View\Text::create('comp.flower', 'رنگ')->setRequired(false)->form()->export();
-$comp_image = \App\View\Text::create('comp.image', 'تصویر')->setRequired(false)->form()->export();
+$color = \App\View\Select::create('color', 'رنگ', \App\DB\Cnt::where('w', 5)->pluck('title', 'id')->toArray())->setRequired(false)->form()->export();
+
 ?>
 @extends('admin.block.form')
 @section('form')
@@ -63,49 +63,54 @@ $comp_image = \App\View\Text::create('comp.image', 'تصویر')->setRequired(fa
     </div>
 
     <fieldset>
-        <legend>تنوع گل</legend>
-        <div layout-gt-md="row" layout-align="start center">
-            <div flex-gt-md="35">
-                @include('MD.input.text-sm' , $comp_flower)
-            </div>
-            <div flex-gt-md="35">
-                <div class="image-thumb">
-                    <img src="{{data.personal.url}}" alt="">
-                </div>
-                @include('register.block.uploader' , [
-                    'class_color'=>'md-primary',
-                    'top_title'=>'بارگذاری تصویر گل',
-                    'top_description'=>'فایل می بایست از نوع تصویر بوده و حداکثر 500 کیلوبایت باشد.',
-                    'title'=> 'انتخاب فایل',
-                    'accept'=>"'image/*'",
-                    'max_size'=>'500KB',
-                    'types'=>'jpg',
-                    'model'=>'data.flower_picture',
-                    'name'=>'flower_picture',
-                    ])
-                @include('MD.input.text-sm' , $comp_image)
-            </div>
-            <div flex></div>
+        <legend>تنوع گل
             <div>
-                <md-button class="md-icon-button md-raised md-primary" ng-click="comp.add()" layout="row"
-                           layout-align="center center" ng-disabled="!(comp.flower && comp.image)">
+                <md-button class="md-icon-button md-raised md-primary" ng-click="addVariety()" layout="row"
+                           layout-align="center center">
                     <i class="material-icons md-18">add</i>
                     <md-tooltip>اضافه کردن ردیف</md-tooltip>
                 </md-button>
             </div>
-        </div>
-        <md-divider class="mv-md"></md-divider>
-        <div layout="row">
-            <div ng-repeat="item in data.composit">
-                <fieldset class="mv-sm chip-item">
-                    <div layout-gt-md="row" layout-align="start center">
-                        <i class="material-icons md-18 md-warn" ng-click="comp.remove($index)">close</i>
+        </legend>
+        <div class="ui styled accordion" style="width: 100%">
 
-                        <h3>{{item.flower}} </h3>
-                        <i class="md-fg md-warn"> ({{item.image}})</i>
+            <div class="title" layout="row" layout-align="start center" data-ng-init="init()"
+                 ng-repeat-start="item in data.new_case" is-open="$first">
+
+
+                <i class="material-icons">add_a_photo</i><i class="material-icons">color_lens</i>
+
+
+                <div flex></div>
+                <div>
+                    <i class="icon trash red color  " ng-click="removenewVariety(item)"></i>
+                </div>
+            </div>
+            <div class="content active" ng-repeat-end>
+                <div class="p-md">
+                    <div layout-gt-md="row" layout-align="start center">
+                        <div flex-gt-md="35">
+                            @include('MD.input.select-sm' , $color)
+                        </div>
+                        <div class="button select_multi" ngf-select ng-model="item.files" ngf-multiple="true"
+                             ng-change="imageUpload(item,event)" style="position: relative">
+                            <i class="material-icons">cloud_upload</i> &nbsp;انتخاب تصاویر مربوط به گل
+                            <div id="myDiv{{$index}}" class="image-thumb img-wrap pull-left"
+                                 ng-repeat="step in stepsModel">
+
+                                <img ngf-thumbnail="step">
+
+                            </div>
+                        </div>
                     </div>
-                </fieldset>
+
+
+                </div>
             </div>
         </div>
     </fieldset>
+
+
+
+
 @endsection

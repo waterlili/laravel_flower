@@ -132,18 +132,18 @@ foreach ($mm as $key => $item) {
 }
 
 //Dashboard
-UiRoute::menu('dashboard', trans('menu.dashboard'), 'console/dashboard', 102, [
-  'icon' => 'dashboard',
-//  'ctrl' => 'DashboardCtrl',
-  'w' => 0
-]);
+//UiRoute::menu('dashboard', trans('menu.dashboard'), 'console/dashboard', 102, [
+//  'icon' => 'dashboard',
+////  'ctrl' => 'DashboardCtrl',
+//  'w' => 0
+//]);
 
 //Dashboard
-UiRoute::menu('dashboard', ' هزینه های جاری', 'console/cost', 102, [
-  'icon' => 'toc',
-  'ctrl' => 'CostCtrl',
-  'w' => 10
-]);
+//UiRoute::menu('dashboard', ' هزینه های جاری', 'console/cost', 102, [
+//  'icon' => 'toc',
+//  'ctrl' => 'CostCtrl',
+//  'w' => 10
+//]);
 
 
 UiRoute::setUrl('console/order/order-list', 'consoleorderlist.list', 'order/list', 'OrderListCtrl');

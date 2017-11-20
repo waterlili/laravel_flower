@@ -20,12 +20,6 @@ return [
                     'url'   => 'console/customer/add',
                     'ctrl'  => 'CustomerAddCtrl',
                     'rid'   => 101
-                ],
-                'customer_group' => [
-                    'title' => 'گروه بندی مشتریان',
-                    'url'   => 'console/customer/group',
-                    'ctrl'  => 'CustomerGroupCtrl',
-                    'rid'   => 101
                 ]
             ]
         ],
@@ -45,41 +39,42 @@ return [
                     'url' => 'console/order/list',
                     'ctrl' => 'OrderListCtrl',
                     'rid' => 101
-                ],
-                'orders-day' => [
-                    'title' => 'سفارش روز',
-                    'url' => 'console/order/list-day',
-                    'ctrl' => 'OrderListDayCtrl',
-                    'rid' => 101
-                ],
-                'menu' => [
-                    'title' => 'گزارش',
-                    'url' => 'console/order/report',
-                    'ctrl' => 'OrderReportCtrl',
-                    'rid' => 101
                 ]
+//                ,
+//                'orders-day' => [
+//                    'title' => 'سفارش روز',
+//                    'url' => 'console/order/list-day',
+//                    'ctrl' => 'OrderListDayCtrl',
+//                    'rid' => 101
+//                ],
+//                'menu' => [
+//                    'title' => 'گزارش',
+//                    'url' => 'console/order/report',
+//                    'ctrl' => 'OrderReportCtrl',
+//                    'rid' => 101
+//                ]
             ]
         ],
-        'node' => [
-            'title'    => 'menu.product',
-            'icon'     => 'description',
-            'w'        => 2,
-            'children' => [
-                'node' => [
-                    'title' => 'menu.product',
-                    'url'   => 'console/product/list',
-                    'ctrl'  => 'ProductListCtrl',
-                    'rid'   => 100,
-                    'w'     => 11
-                ],
-                'add'  => [
-                    'title' => 'menu.add_product',
-                    'url'   => 'console/product/add',
-                    'ctrl'  => 'ProductAddCtrl',
-                    'rid'   => 101
-                ]
-            ]
-        ],
+//        'node' => [
+//            'title'    => 'menu.product',
+//            'icon'     => 'description',
+//            'w'        => 2,
+//            'children' => [
+//                'node' => [
+//                    'title' => 'menu.product',
+//                    'url'   => 'console/product/list',
+//                    'ctrl'  => 'ProductListCtrl',
+//                    'rid'   => 100,
+//                    'w'     => 11
+//                ],
+//                'add'  => [
+//                    'title' => 'menu.add_product',
+//                    'url'   => 'console/product/add',
+//                    'ctrl'  => 'ProductAddCtrl',
+//                    'rid'   => 101
+//                ]
+//            ]
+//        ],
         'flowers_vase' => [
             'title' => 'menu.flowers_vase',
             'icon' => 'description',

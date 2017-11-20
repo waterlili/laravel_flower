@@ -67,22 +67,19 @@ $select = \App\View\UiSelect::create('group.parent', 'گروه پدر', 'group.a
                     </div>
                 </div>
 
-                <div layout-gt-md="row" layout-align="start center">
-                    <div flex-gt-md="25">
+                <div layout-gt-md="row" layout-align="start start">
+                    <div flex-gt-md="33">
                         @include('MD.input.text-sm' , $mobile)
-
                     </div>
-                    <div flex-gt-md="25" class="mh-md-md">
+                    <div flex-gt-md="33" class="mh-md-md">
                         @include('MD.input.text-sm' , $phone)
                     </div>
-                    <div flex-gt-md="50">
+                    <div flex-gt-md="33" class="mr-md-md">
                         @include('MD.input.text-sm' , $email)
 
                     </div>
                 </div>
-                <div>
-                    @include('MD.input.text-sm' , $address)
-                </div>
+
                 <div layout-gt-md="row">
                     <div flex-gt-md="33" class="ml-md-md">
 
@@ -95,8 +92,14 @@ $select = \App\View\UiSelect::create('group.parent', 'گروه پدر', 'group.a
                         @include('MD.input.select-sm' , $type)
                     </div>
                 </div>
-
-                @include('MD.input.text-sm' , $description)
+                <div layout-gt-md="row">
+                    <div flex-gt-md="33" class="ml-md-md">
+                        @include('MD.input.text-sm' , $address)
+                    </div>
+                    <div flex-gt-md="33" class="ml-md-md">
+                        @include('MD.input.text-sm' , $description)
+                    </div>
+                </div>
             </fieldset>
         </div>
 

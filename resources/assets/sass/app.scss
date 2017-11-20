@@ -6,9 +6,7 @@ html {
   box-sizing: inherit;
 }
 
-$light-green: #80A5;
-00
-;
+$light-green: #80A500;
 $dark_green: #004D40;
 $dark_grey: #616161;
 
@@ -3763,6 +3761,7 @@ ar-toolbar.shadow {
   color: white;
   transition: all 0.2s ease;
   outline: none;
+  cursor: pointer;
 }
 
 .menu-item:hover, .menu-item.active {
@@ -4584,7 +4583,7 @@ ul.ng-table-pagination {
 }
 
 .card_sty {
-  border-radius: 22px;:22 px;
+  border-radius: 22px;
 }
 
 #card_pass {
@@ -4593,4 +4592,12 @@ ul.ng-table-pagination {
 
 #card_poss {
   background-color: $light-green;
+}
+
+.select_multi {
+  border: 1px solid #B1B2B3;
+  height: 150px;
+  text-align: center;
+  line-height: 9;
+  color: #B1B2B3;
 }

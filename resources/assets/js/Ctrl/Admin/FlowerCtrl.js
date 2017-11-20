@@ -1,92 +1,74 @@
 app.controller('FlowerAddCtrl', function ($scope, htp, $controller) {
     $controller('SubmitController', {$scope: $scope});
     var _this = $scope;
+    _this.data = {};
+    _this.stepsModel = [];
+    _this.data.new_case = [];
     _this.submiterUrl = 'console/flower/add';
     _this.submiterName = 'گل';
 
     if (_this.edit_mode) {
         _this.data = _this.dt;
     }
-    _this.data = {};
-    _this.data.composit = [];
-    var COMP = function () {
-        this.disabled = false;
-        this.flower = this.image = undefined;
-        this.add = function () {
-            _this.data.composit.push({
-                flower: this.flower,
-                image: this.image
+    _this.init = function () {
+        $('.ui.accordion').accordion();
+    };
+
+    angular.module('tabsDemoDynamicHeight', ['ngMaterial']);
+    $('.ui.accordion').accordion();
+
+
+    _this.imageUpload = function (item, event, files, errFiles) {
+
+
+        var files = item.files; //FileList object
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+            reader.onload = _this.imageIsLoaded;
+            reader.readAsDataURL(file);
+            data: {
+                file: files[i]
+            }
+            ;
+
+        }
+        _this.afterSuccess = function () {
+            Upload.upload({
+                url: home('console/flower/add'),
+                data: {file: files, dt: _this.data}
             });
-            this.flower = this.image = undefined;
-            this.flowerOpt.searchText = undefined;
-            this.flowerOpt.selectedItem = undefined;
-        };
 
-        this.remove = function ($index) {
-            _this.data.composit = _.without(_this.data.composit, _this.data.composit[$index]);
-        };
-    };
-    _this.afterSuccess = function () {
-        _this.data = {};
-        _this.data.composit = [];
-        _this.comp = new COMP();
-    };
-    _this.comp = new COMP();
-
-    var Fls = function ($name) {
-        this.errorUploading = undefined;
-        this.file = undefined;
-        this.success = undefined;
-        this.readyUpload = undefined;
-        this.progress = undefined;
-        this.name = $name;
-        this.has = undefined;
-        this.finish = true;
-        this.url = undefined;
-        this.clear = function () {
-            this.errorUploading = this.readyUpload = this.file = this.success = this.progress = undefined;
-        };
-
-        this.clearError = function () {
-            this.errorUploading = undefined;
-        };
-
-        this.__submit = function () {
-            _this._upload(this);
-        };
-
-        this.init = function () {
-            this.has = true;
-            this.finish = false;
-        };
-    };
+            file.upload.then(function (response) {
+                $timeout(function () {
+                    file.result = response.data;
+                });
+            }, function (response) {
+                if (response.status > 0)
+                    _this.errorMsg = response.status + ': ' + response.data;
+            }, function (evt) {
+                file.progress = Math.min(100, parseInt(100.0 *
+                    evt.loaded / evt.total));
+            });
+        }
 
 
-    _this._upload = function (fls) {
-        fls.clearError();
-        fls.uploading = true;
-        Upload.upload({
-            url: home('console/flower/upload-flower-image'),
-            data: {file: fls.file, type: fls.name}
-        }).then(function (resp) {
-            fls.uploading = false;
-            fls.clear();
-            fls.success = true;
-            fls.finish = true;
-            fls.url = resp.data.url;
-            var d = new Date();
-            _this.data.personal.url = resp.data.url + '?ver=' + d.getTime();
-        }, function (resp) {
-            fls.errorUploading = true;
-            fls.file = undefined;
-            fls.uploading = false;
-            fls.progress = undefined;
-        }, function (evt) {
-            fls.progress = parseInt(100.0 * evt.loaded / evt.total);
+    }
+    _this.imageIsLoaded = function (e) {
+
+        _this.$apply(function () {
+            _this.stepsModel.push(e.target.result);
+
         });
     };
+    _this.addVariety = function () {
+        _this.data.new_case.push({});
 
-    _this.data.flower_picture = new Fls('flower_picture');
+    }
+    _this.removenewVariety = function (item) {
+        _this.data.new_case = _.without(_this.data.new_case, item);
+    };
+
 
 });
 

@@ -14,7 +14,7 @@ class FlowerPacket extends Model
 
     public static function GetPckt()
     {
-        return FlowerPacket::select(['id', 'title', 'priphpce'])->get()->toArray();
+        return FlowerPacket::select(['id', 'title', 'price'])->get()->toArray();
     }
 
     public function flowerPackets()

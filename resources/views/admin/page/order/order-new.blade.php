@@ -45,7 +45,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                 <label for="vase1">
 
                     <img class="vase-pos" src="img/Vase-icon.png" width="50px" height="50px"
-                         onclick="this.src = ((this.src === 'http://localhost:8000/img/Vase-icon.png') ? 'http://localhost:8000/img/aVase.png' : 'img/Vase-icon.png');"/>
+                         onclick="this.src = ((this.src === 'http://185.173.106.234/img/Vase-icon.png') ? 'http://185.173.106.234/img/aVase.png' : 'img/Vase-icon.png');"/>
                     <md-tooltip
                             md-direction="{{demo.tipDirection}}">
                         افزودن گلدان

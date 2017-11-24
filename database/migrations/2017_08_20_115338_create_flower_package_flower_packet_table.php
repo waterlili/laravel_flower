@@ -19,8 +19,10 @@ class CreateFlowerPackageFlowerPacketTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('flower_package_id')->references('id')->on('flower_packages');
-            $table->foreign('flower_packet_id')->references('id')->on('flower_packets');
+            $table->foreign('flower_package_id')->references('id')->on('flower_packages')->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->foreign('flower_packet_id')->references('id')->on('flower_packets')->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

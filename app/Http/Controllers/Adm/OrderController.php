@@ -483,6 +483,7 @@ class OrderController extends Controller {
             if (!empty($input['new_orders'][$i]['first'])) {
 
                 if (!empty($input['new_orders'][$i]['pck_type'])) {
+
                     if (!empty($input['new_orders'][$i]['w'])) {
                         //get start date and save it database
                         $started_at = $input['new_orders'][$i]['first'];
@@ -492,6 +493,7 @@ class OrderController extends Controller {
                         //first of all submit order in orders
                         $start_order = clone $started_at;
                         $order = $this->submitOrder($input, $orders, $started_at)->getData();
+
                         if (empty($order->last_insert_id)) {
                             $message = "خطا در ارسال لینک پرداخت";
                             return response()->json(array('error' => false, 'msg' => $message), 422);
@@ -505,6 +507,8 @@ class OrderController extends Controller {
                     $pk_type = explode('|', $input['new_orders'][$i]['pck_type']);
                     $pk_id = $pk_type[0];
                     $packages = FlowerPacket::find($pk_id)->packages()->distinct()->get();
+                    dd($pk_id);
+
                     foreach ($packages as $package) {
                         $packets_rand[] = $package;
                     }

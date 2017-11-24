@@ -62,7 +62,9 @@ class ManageController extends Controller {
                 'title' => 'required',
                 'price' => 'required',
             ]);
-            FlowerPacket::create(['title' => $request->input('title'), 'price' => $request->input('price')]);
+            if (!empty($request->price))
+                $price = Cnt::convert($request->price);
+            FlowerPacket::create(['title' => $request->input('title'), 'price' => $price]);
             return response()->json(['result' => TRUE]);
         }
     }

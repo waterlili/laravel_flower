@@ -76,39 +76,39 @@ app.controller('FlowerAddCtrl', function ($scope, htp, $controller) {
 app.controller('FlowerListCtrl', function ($scope, $mdDialog, htp) {
     var _this = $scope;
     _this.tbl = {};
-    // _this.showDialog = function (row, ev) {
-    //     console.log(row);
-    //     var dialog = $mdDialog.show({
-    //         controller: function ($scope, $controller, dt, $mdDialog) {
-    //             $scope.dt = dt;
-    //             $scope.edit_mode = true;
-    //             $scope.data = row;
-    //             $scope.hide = function () {
-    //                 $mdDialog.hide();
-    //             };
-    //             $scope.cancel = function () {
-    //                 $mdDialog.cancel();
-    //             };
-    //             $scope.tbl = {};
-    //             $scope.tbl.postData = function () {
-    //                 return {
-    //                     uid: dt.id
-    //                 }
-    //             };
-    //         },
-    //         templateUrl: home('console/flower/data'),
-    //         parent: angular.element(document.body),
-    //         targetEvent: ev,
-    //         clickOutsideToClose: true,
-    //         locals: {
-    //             dt: row
-    //         },
-    //         fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-    //     })
-    //         .then(function (answer) {
-    //
-    //         });
-    // };
+    _this.showDialog = function (row, ev) {
+
+        var dialog = $mdDialog.show({
+            controller: function ($scope, $controller, dt, $mdDialog) {
+                $scope.dt = dt;
+                $scope.edit_mode = true;
+                $scope.data = row;
+                $scope.hide = function () {
+                    $mdDialog.hide();
+                };
+                $scope.cancel = function () {
+                    $mdDialog.cancel();
+                };
+                $scope.tbl = {};
+                $scope.tbl.postData = function () {
+                    return {
+                        uid: dt.id
+                    }
+                };
+            },
+            templateUrl: home('console/flower/data'),
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true,
+            locals: {
+                dt: row
+            },
+            fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        })
+            .then(function (answer) {
+
+            });
+    };
 });
 app.controller('FlowerEditCtrl', function ($scope, htp, $controller) {
     var _this = $scope;

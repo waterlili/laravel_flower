@@ -20,6 +20,11 @@ class FlowerVaseController extends Controller
         return view('admin.page.flower_vase.add');
     }
 
+    public function getList()
+    {
+        return view('admin.page.flower_vase.list');
+    }
+
     public function postAdd(Request $request)
     {
         $info = $request->dt;
@@ -66,5 +71,37 @@ class FlowerVaseController extends Controller
 
 
         return response()->json(['result' => TRUE]);
+    }
+
+    public function postList(Request $request)
+    {
+//        dd("here");
+        $records = FlowerVase::select([
+            '*'
+        ]);
+
+        $input = $request->all();
+        $this->tableFilter($records, $input);
+        $this->tableBtnFilter($records, $input);
+
+        if (isset($input['excelExport'])) {
+            return $this->tableExcel($records, $input);
+        }
+
+
+        if (isset($input['exportPrint'])) {
+            return $this->tablePrint($records, $input);
+        }
+
+        $count = $records->count();
+        $this->tablePaginate($records, $input);
+
+
+        return response()->json([
+            'rows' => $records->get()->toArray(),
+            'total' => $count
+        ]);
+
+//        return $this->tableEngine($record, $request->all());
     }
 }

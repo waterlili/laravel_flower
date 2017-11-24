@@ -1,4 +1,4 @@
-app.controller('OrderPageCtrl', function ($scope, htp, $rootScope) {
+app.controller('OrderPageCtrl', function ($element, $scope, htp, $rootScope) {
     var _this = $scope;
     // _this.elm = $('#acrd');
     // _this.elm.فشذ();
@@ -67,6 +67,9 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
 
     _this.payType = function (item, $index) {
         item.pay_type = $index;
+    };
+    _this.orderType = function (item, $index) {
+        item.order_type = $index;
     };
     _this.addOrder = function () {
         _this.data.new_orders.push({type: 1, week: 1, time: 1, w: 1, total: 1});
@@ -228,6 +231,11 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
         }).after(function (res) {
             _this.loading = false;
         });
+    }
+
+    _this.toggleImage = function () {
+        var elementResult = angular.element(document.querySelector('#box'));
+        console.log(elementResult);
     }
 
 

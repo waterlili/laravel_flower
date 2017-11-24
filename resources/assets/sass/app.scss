@@ -6,7 +6,8 @@ html {
   box-sizing: inherit;
 }
 
-$light-green: #80A500;
+$light-spa-green: #689F38;
+$light-green: #DFF0D8;
 $dark_green: #004D40;
 $dark_grey: #616161;
 
@@ -4582,6 +4583,10 @@ ul.ng-table-pagination {
   color: $light-green;
 }
 
+#tpc-bk {
+  background-color: $light-spa-green;
+  color: white;
+}
 .card_sty {
   border-radius: 22px;
 }
@@ -4597,7 +4602,134 @@ ul.ng-table-pagination {
 .select_multi {
   border: 1px solid #B1B2B3;
   height: 150px;
+  width: 100px;
   text-align: center;
   line-height: 9;
   color: #B1B2B3;
+}
+
+.autocomplete-custom-template li {
+  border-bottom: 1px solid #ccc;
+  height: auto;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  white-space: normal;
+}
+
+.autocomplete-custom-template li:last-child {
+  border-bottom-width: 0;
+}
+
+.autocomplete-custom-template .item-title,
+.autocomplete-custom-template .item-metadata {
+  display: block;
+  line-height: 2;
+}
+
+.autocomplete-custom-template .item-title md-icon {
+  height: 18px;
+  width: 18px;
+}
+
+.gen-pos {
+  margin-top: 14px;
+}
+
+#md-bg {
+  background-color: #FFFFFF !important;
+}
+
+.txt-tyle {
+  width: 100% !important;
+  padding: 7px;
+}
+
+div#vase {
+  //content:url(http://localhost:8000/img/Vase-icon.png);
+
+  position: absolute;
+  left: 0;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+}
+
+//div#vase:active {
+//  content:url(http://localhost:8000/img/mail-profile.png);
+//}
+#vase input[type=checkbox] {
+  display: none;
+}
+
+#vase input[type=checkbox] + label {
+  user-select: none;
+}
+
+div#vase label:before {
+  display: none;
+}
+
+md-radio-button#flower1 .md-container {
+  display: none;
+}
+
+md-radio-button#flower1 .md-label {
+  margin-right: 0px !important;
+}
+
+md-radio-button#box1 .md-container {
+  display: none;
+}
+
+md-radio-button#box1 .md-label {
+  margin-right: 0px !important;
+}
+
+div#vase label:after {
+  display: none;
+}
+
+div#flower label {
+  padding-right: 0px !important;
+}
+
+div#box label {
+  padding-right: 0px !important;
+}
+
+.vase-pos {
+  position: absolute;
+  right: 0px;
+  cursor: pointer;
+}
+
+.vase-pos:hover {
+  transform: scale(1.1);
+}
+
+.bord-sty {
+  border-bottom: 3px solid #ff7e94;
+}
+
+.btn-time {
+  font-size: 13px !important;
+}
+
+.ng-jalaali-flat-datepicker {
+  margin-top: -200px;
+  margin-right: 199px;
+
+}
+
+.ng-jalaali-flat-datepicker {
+  left: -300px !important;
+}
+
+#date-du {
+  border: 1px solid #aba3a3;
+  border-radius: 10px;
+}
+
+.mp {
+  padding: 5px;
 }

@@ -11,19 +11,13 @@ class Customer extends Model
         'name',
         'gender',
         'mobile',
-        'mobile2',
-        'mobile3',
         'phone',
-        'phone2',
-        'phone3',
         'address',
-        'address2',
-        'address3',
         'email',
-        'job',
-        'skill',
+        'job_id',
+        'skill_id',
         'description',
-        'type',
+        'type_attraction_id',
         'sts'
     ];
     public static $SELECT_STS_STR = 'sts as sts_str';

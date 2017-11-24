@@ -14,7 +14,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
          ng-repeat-start="item in data.orders.orders">
         <i class="icon edit"></i>
         سفارش
-        <span>{{$index + 1}}</span>&nbsp;
+        <span>{{item.number}}</span>&nbsp;
 
         <span ng-if="item.type==1">&nbsp;اشتراک {{item.month_str}}</span>
         <span ng-if="item.type==2">&nbsp;هدیه </span>

@@ -92,6 +92,9 @@ $color = \App\View\Select::create('color', 'رنگ', \App\DB\Cnt::where('w', 5)-
                         <div flex-gt-md="35">
                             @include('MD.input.select-sm' , $color)
                         </div>
+
+                    </div>
+                    <div layout-gt-md="row" layout-align="start center">
                         <div class="button select_multi" ngf-select ng-model="item.files" ngf-multiple="true"
                              ng-change="imageUpload(item,event)" style="position: relative">
                             <i class="material-icons">cloud_upload</i> &nbsp;انتخاب تصاویر مربوط به گل

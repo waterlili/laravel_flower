@@ -1,5 +1,5 @@
 <section class="w-box p-md">
-    <form name="Form">
+    <form name="Form" ng-submit="$event.preventDefault()">
         @yield('form')
         @include('MD.Notice.notice' , ['type'=>'info' , 'repeat'=>'submit.infoItem'])
         @include('MD.Notice.notice' , ['type'=>'error' , 'repeat'=>'submit.errorItem'])

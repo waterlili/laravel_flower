@@ -15,11 +15,12 @@ $comp_count = \App\View\Text::create('comp.count', 'تعداد')->form()->export
 
         <fieldset>
             <legend>افزودن گل</legend>
-            <div layout-gt-md="row" layout-align="start center">
-                <div flex-gt-md="35">
+            <div layout-gt-md="row">
+
+                <div flex-gt-md="33" class="ml-md-md">
                     @include('MD.input.select-sm' , $comp_flower)
                 </div>
-                <div flex-gt-md="35">
+                <div flex-gt-md="33" class="ml-md-md">
                     @include('MD.input.text-sm' , $comp_count)
                 </div>
                 <div flex></div>

@@ -18,6 +18,9 @@ class Cnt extends Model {
   public static $COST = 3;
   public static $USERTYPE = 4;
     public static $COLOR = 5;
+    public static $JOB = 6;
+    public static $ATR = 7;
+    public static $SKILL = 8;
 
 
 
@@ -26,6 +29,27 @@ class Cnt extends Model {
       $query->where('w', self::$FLOWER);
     });
   }
+
+    public function scopeJob($q)
+    {
+        return $q->where(function ($query) {
+            $query->where('w', self::$JOB);
+        });
+    }
+
+    public function scopeAttraction($q)
+    {
+        return $q->where(function ($query) {
+            $query->where('w', self::$ATR);
+        });
+    }
+
+    public function scopeSkill($q)
+    {
+        return $q->where(function ($query) {
+            $query->where('w', self::$SKILL);
+        });
+    }
 
     public function scopeColor($q)
     {
@@ -50,7 +74,7 @@ class Cnt extends Model {
     });
   }
 
-    public function convert($string)
+    public static function convert($string)
     {
         $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
         $arabic = ['٩', '٨', '٧', '٦', '٥', '٤', '٣', '٢', '١', '٠'];

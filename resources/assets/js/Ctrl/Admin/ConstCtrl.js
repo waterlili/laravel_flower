@@ -1,16 +1,19 @@
 app.controller('ConstCtrl', function ($scope, htp, notify, $mdDialog) {
     var _this = $scope;
+    _this.tbl = {};
+    _this.tbl.tableParams = {};
+    var CONST = function ($which) {
 
-    var CONST = function ($set, $get) {
         var that = this;
         this.items = [];
         this.errorItems = undefined;
         this.loading = false;
-        this.set = $set;
-        this.get = $get;
+        this.set = 'console/manage/set-const';
+        this.get = 'console/manage/get-const';
+        this.save_url = 'console/manage/save-const';
         this.init = function () {
             this.loading = true;
-            htp(home(this.get)).then(function (res) {
+            htp(home(this.get), {w: $which}).then(function (res) {
                 if (res && res.result == true) {
                     that.items = res.data;
                 }
@@ -18,14 +21,14 @@ app.controller('ConstCtrl', function ($scope, htp, notify, $mdDialog) {
                 if (sts == 422) {
                     that.errorItems = res;
                 }
+
             }).after(function () {
                 that.loading = false;
             });
         };
         this.add = function () {
             that.errorItems = undefined;
-            // console.log(this.name);
-            htp(home(this.set), {name: this.name, title: this.name, price: this.price}).then(function (res) {
+            htp(home(this.set), {name: this.name, title: this.name, price: this.price, w: $which}).then(function (res) {
                 that.init();
                 that.title = undefined;
                 that.name = undefined;
@@ -38,37 +41,35 @@ app.controller('ConstCtrl', function ($scope, htp, notify, $mdDialog) {
                 that.loading = false;
             });
         };
-        this.remove = function (ev, item, tbl_name) {
-            var id = item.id;
-            var index = _this.packet_type.items.indexOf(item);
-            _this.destroy = function (id, where) {
-                htp(home('console/destroy'), {id: id, where: where})
-                    .then(function (response) {
-                        _this.packet_type.items.splice(index, 1);
-                        notify('warning', 'رکورد مورد نظر با موفقیت حذف شد');
+        this.init();
 
-                    });
-            };
-            var desc = trans('message.desc_delete');
-            var confirm = $mdDialog.confirm()
-                .title(trans('message.title_delete'))
-                .textContent(desc)
-                .ariaLabel('حدف رکورد')
-                .targetEvent(ev)
-                .ok('بلی')
-                .cancel('خیر');
-            $mdDialog.show(confirm).then(function () {
-                _this.destroy(id, tbl_name);
-            }, function () {
+        this.rename = function (item) {
+            item._edit_mode = true;
+        };
 
+        this.save = function (item) {
+            htp(home(this.save_url), item).then(function (response) {
+                item._edit_mode = false;
             });
         };
         this.init();
     };
-    _this.flower = new CONST('console/manage/set-const-flower', 'console/manage/get-const-flower');
-    _this.color = new CONST('console/manage/set-const-color', 'console/manage/get-const-color');
-    _this.pack = new CONST('console/manage/set-const-pack', 'console/manage/get-const-pack');
-    _this.cost = new CONST('console/manage/set-const-cost', 'console/manage/get-const-cost');
-    _this.user_type = new CONST('console/manage/set-const-user-type', 'console/manage/get-const-user-type');
-    _this.packet_type = new CONST('console/manage/set-const-packet-type', 'console/manage/get-const-packet-type');
+    _this.packet_type = new CONST();
+    _this.flower = new CONST(1);
+    _this.job = new CONST(6);
+    _this.attraction = new CONST(7);
+    _this.skill = new CONST(8);
+    _this.color = new CONST(5);
+
+    _this.tbl.tableParams.reload = function () {
+        _this.flower.init();
+        _this.job.init();
+        _this.attraction.init();
+        _this.skill.init();
+        _this.color.init();
+        _this.packet_type.init();
+
+
+    };
+
 });

@@ -75,6 +75,7 @@ var _trans_en = {
         'consolecost': 'هزینه های جاری',
         'consolefloweradd': 'افزودن گل جدید',
         'consoleflower_vaseadd': 'افزودن گلدان جدید',
+        'consoleflower_vaselist': 'لیست گلدان ها',
         'consoleflowerlist': 'لیست گل ها',
         'consoleflower_packageadd': 'افزودن ترکیب گل جدید',
         'consoleflower_packagelist': 'لیست ترکیب گل ها',

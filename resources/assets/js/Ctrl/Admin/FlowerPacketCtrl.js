@@ -57,7 +57,6 @@ app.controller('FlowerPacketListCtrl', function ($scope, $mdDialog, htp) {
     var _this = $scope;
     _this.tbl = {};
     _this.showDialog = function (row, ev) {
-        console.log(row);
         var dialog = $mdDialog.show({
             controller: function ($scope, $controller, dt, $mdDialog) {
                 $scope.dt = dt;

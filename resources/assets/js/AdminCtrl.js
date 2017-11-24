@@ -214,6 +214,7 @@ app.controller('SubmitController', function ($scope, $http, notify) {
         _this.clearError();
         $http.post(home(_this.submiterUrl), _this.export())
             .success(function (response) {
+
                 _this.clearError();
                 _this.loading(false);
                 _this.clear();
@@ -598,6 +599,7 @@ app.controller('UserCtrl', function ($scope, htp, $controller, Upload) {
 
 app.controller('DeleteCtrl', function ($scope, htp, $mdDialog, notify) {
     var _this = $scope;
+
     _this.destroy = function (id, where, ngTable) {
         htp(home('console/destroy'), {id: id, where: where})
             .then(function (response) {
@@ -623,10 +625,12 @@ app.controller('DeleteCtrl', function ($scope, htp, $mdDialog, notify) {
             .cancel('خیر');
         $mdDialog.show(confirm).then(function () {
             _this.destroy(id, where, ngTable);
+
         }, function () {
 
         });
     };
+
 });
 app.controller('DeleteItemCtrl', function ($scope, htp, $mdDialog, notify) {
     var _this = $scope;

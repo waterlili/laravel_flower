@@ -75,6 +75,7 @@ var _trans_en = {
         'consolecost': 'هزینه های جاری',
         'consolefloweradd': 'افزودن گل جدید',
         'consoleflower_vaseadd': 'افزودن گلدان جدید',
+        'consoleflower_vaselist': 'لیست گلدان ها',
         'consoleflowerlist': 'لیست گل ها',
         'consoleflower_packageadd': 'افزودن ترکیب گل جدید',
         'consoleflower_packagelist': 'لیست ترکیب گل ها',
@@ -793,6 +794,7 @@ app.controller('SubmitController', function ($scope, $http, notify) {
         _this.clearError();
         $http.post(home(_this.submiterUrl), _this.export())
             .success(function (response) {
+
                 _this.clearError();
                 _this.loading(false);
                 _this.clear();
@@ -1177,6 +1179,7 @@ app.controller('UserCtrl', function ($scope, htp, $controller, Upload) {
 
 app.controller('DeleteCtrl', function ($scope, htp, $mdDialog, notify) {
     var _this = $scope;
+
     _this.destroy = function (id, where, ngTable) {
         htp(home('console/destroy'), {id: id, where: where})
             .then(function (response) {
@@ -1202,10 +1205,12 @@ app.controller('DeleteCtrl', function ($scope, htp, $mdDialog, notify) {
             .cancel('خیر');
         $mdDialog.show(confirm).then(function () {
             _this.destroy(id, where, ngTable);
+
         }, function () {
 
         });
     };
+
 });
 app.controller('DeleteItemCtrl', function ($scope, htp, $mdDialog, notify) {
     var _this = $scope;
@@ -1601,17 +1606,20 @@ app.directive('useNgTable', function (NgTableParams, $http, $window) {
 });
 app.controller('ConstCtrl', function ($scope, htp, notify, $mdDialog) {
     var _this = $scope;
+    _this.tbl = {};
+    _this.tbl.tableParams = {};
+    var CONST = function ($which) {
 
-    var CONST = function ($set, $get) {
         var that = this;
         this.items = [];
         this.errorItems = undefined;
         this.loading = false;
-        this.set = $set;
-        this.get = $get;
+        this.set = 'console/manage/set-const';
+        this.get = 'console/manage/get-const';
+        this.save_url = 'console/manage/save-const';
         this.init = function () {
             this.loading = true;
-            htp(home(this.get)).then(function (res) {
+            htp(home(this.get), {w: $which}).then(function (res) {
                 if (res && res.result == true) {
                     that.items = res.data;
                 }
@@ -1619,14 +1627,14 @@ app.controller('ConstCtrl', function ($scope, htp, notify, $mdDialog) {
                 if (sts == 422) {
                     that.errorItems = res;
                 }
+
             }).after(function () {
                 that.loading = false;
             });
         };
         this.add = function () {
             that.errorItems = undefined;
-            // console.log(this.name);
-            htp(home(this.set), {name: this.name, title: this.name, price: this.price}).then(function (res) {
+            htp(home(this.set), {name: this.name, title: this.name, price: this.price, w: $which}).then(function (res) {
                 that.init();
                 that.title = undefined;
                 that.name = undefined;
@@ -1639,39 +1647,37 @@ app.controller('ConstCtrl', function ($scope, htp, notify, $mdDialog) {
                 that.loading = false;
             });
         };
-        this.remove = function (ev, item, tbl_name) {
-            var id = item.id;
-            var index = _this.packet_type.items.indexOf(item);
-            _this.destroy = function (id, where) {
-                htp(home('console/destroy'), {id: id, where: where})
-                    .then(function (response) {
-                        _this.packet_type.items.splice(index, 1);
-                        notify('warning', 'رکورد مورد نظر با موفقیت حذف شد');
+        this.init();
 
-                    });
-            };
-            var desc = trans('message.desc_delete');
-            var confirm = $mdDialog.confirm()
-                .title(trans('message.title_delete'))
-                .textContent(desc)
-                .ariaLabel('حدف رکورد')
-                .targetEvent(ev)
-                .ok('بلی')
-                .cancel('خیر');
-            $mdDialog.show(confirm).then(function () {
-                _this.destroy(id, tbl_name);
-            }, function () {
+        this.rename = function (item) {
+            item._edit_mode = true;
+        };
 
+        this.save = function (item) {
+            htp(home(this.save_url), item).then(function (response) {
+                item._edit_mode = false;
             });
         };
         this.init();
     };
-    _this.flower = new CONST('console/manage/set-const-flower', 'console/manage/get-const-flower');
-    _this.color = new CONST('console/manage/set-const-color', 'console/manage/get-const-color');
-    _this.pack = new CONST('console/manage/set-const-pack', 'console/manage/get-const-pack');
-    _this.cost = new CONST('console/manage/set-const-cost', 'console/manage/get-const-cost');
-    _this.user_type = new CONST('console/manage/set-const-user-type', 'console/manage/get-const-user-type');
-    _this.packet_type = new CONST('console/manage/set-const-packet-type', 'console/manage/get-const-packet-type');
+    _this.packet_type = new CONST();
+    _this.flower = new CONST(1);
+    _this.job = new CONST(6);
+    _this.attraction = new CONST(7);
+    _this.skill = new CONST(8);
+    _this.color = new CONST(5);
+
+    _this.tbl.tableParams.reload = function () {
+        _this.flower.init();
+        _this.job.init();
+        _this.attraction.init();
+        _this.skill.init();
+        _this.color.init();
+        _this.packet_type.init();
+
+
+    };
+
 });
 app.controller('CostCtrl', function ($scope, htp, notify) {
     var _this = $scope;
@@ -1702,7 +1708,14 @@ app.controller('CostCtrl', function ($scope, htp, notify) {
 });
 app.controller('CustomerAddCtrl', function ($scope, htp, $controller, notify, $rootScope) {
     $controller('SubmitController', {$scope: $scope});
+
+
     var _this = $scope;
+
+    _this.data = {};
+    _this.information = [];
+    _this.information1 = [];
+    _this.information2 = [];
     _this.submiterUrl = 'console/customer/add';
     _this.submiterName = 'مشتری';
 
@@ -1714,53 +1727,101 @@ app.controller('CustomerAddCtrl', function ($scope, htp, $controller, notify, $r
             }
         });
     }
+
+    $scope.$on('child1', function (event, data) {
+        // _this.lastAddress = [];
+        // console.log(data);
+
+        _this.arr = [];
+        _this.arr = data;
+        _this.information.push(_this.arr);
+        _this.lastAddress = _this.information[_this.information.length - 1];
+
+
+    });
+    $scope.$on('child2', function (event, data) {
+        // _this.lastAddress = [];
+        // console.log(data);
+
+        _this.arr1 = [];
+        _this.arr1 = data;
+        _this.information1.push(_this.arr1);
+        _this.lastAddress1 = _this.information1[_this.information1.length - 1];
+
+
+    });
+    $scope.$on('child3', function (event, data) {
+        // _this.lastAddress = [];
+        // console.log(data);
+
+        _this.arr2 = [];
+        _this.arr2 = data;
+        _this.information2.push(_this.arr2);
+        _this.lastAddress2 = _this.information2[_this.information2.length - 1];
+
+
+    });
+    // $scope.$on('child1', function (event, data) {
+    //     // var $export = [];
+    //     _this.information.push(data);
+    //     console.log(_this.information);
+    //
+    // });
+    // $scope.$on('child2', function (event, data) {
+    //     // var $export = [];
+    //     _this.information.push(data);
+    //     console.log(_this.information);
+    //
+    // });
+
     _this.afterSuccess = function (response) {
+
         if (response.id)
             notify('info', 'کد مشتری ثبت شده :' + response.id);
     };
 
 
-    var GROUP = function () {
-        this.text = undefined;
-        this.parent = undefined;
-        this.all = [];
-        var that = this;
-        this.init = function () {
-            htp(home('console/customer/get-groups')).then(function (response) {
-                if (response && response.result == true) {
-                    that.all = response.data;
-                }
-            });
-        };
-        this.add = function () {
-            this.loading = true;
-            var that = this;
-            that.errorItem = undefined;
-            htp(home('console/customer/add-group'), {
-                title: this.text,
-                parent: (this.parent) ? this.parent.id : null
-            }).then(function (response) {
-                that.text = '';
-                that.init();
-            }).error(function (response, sts) {
-                if (sts == 422) {
-                    that.errorItem = response;
-                }
-            }).after(function (response) {
-                that.loading = false;
-            });
-        };
-        this.init();
-    };
-    _this.group = new GROUP();
-
-    _this.export = function () {
-        var arr = _this.findDeep(_this.group.all);
-        _this.data.groups = _.map(arr, function (val) {
-            return val.id;
-        });
-        return _this.data;
-    };
+    // var GROUP = function () {
+    //     this.text = undefined;
+    //     this.parent = undefined;
+    //     this.all = [];
+    //     var that = this;
+    //     this.init = function () {
+    //         htp(home('console/customer/get-groups')).then(function (response) {
+    //             if (response && response.result == true) {
+    //                 that.all = response.data;
+    //             }
+    //         });
+    //     };
+    //     this.add = function () {
+    //         this.loading = true;
+    //         var that = this;
+    //         that.errorItem = undefined;
+    //         htp(home('console/customer/add-group'), {
+    //             title: this.text,
+    //             parent: (this.parent) ? this.parent.id : null
+    //         }).then(function (response) {
+    //             that.text = '';
+    //             that.init();
+    //         }).error(function (response, sts) {
+    //             if (sts == 422) {
+    //                 that.errorItem = response;
+    //             }
+    //         }).after(function (response) {
+    //             that.loading = false;
+    //         });
+    //     };
+    //     this.init();
+    // };
+    // _this.group = new GROUP();
+    //
+    // _this.export = function () {
+    //     var arr = _this.findDeep(_this.group.all);
+    //     _this.data.groups = _.map(arr, function (val) {
+    //         return val.id;
+    //     });
+    //     return _this.data;
+    // };
 
     _this.findDeep = function (items) {
         var $export = [];
@@ -1785,6 +1846,7 @@ app.controller('CustomerAddCtrl', function ($scope, htp, $controller, notify, $r
             $rootScope.$emit('order:customer', n);
         }
     });
+
 
     _this.getData = function () {
         _this.data = undefined;
@@ -1971,39 +2033,39 @@ app.controller('FlowerAddCtrl', function ($scope, htp, $controller) {
 app.controller('FlowerListCtrl', function ($scope, $mdDialog, htp) {
     var _this = $scope;
     _this.tbl = {};
-    // _this.showDialog = function (row, ev) {
-    //     console.log(row);
-    //     var dialog = $mdDialog.show({
-    //         controller: function ($scope, $controller, dt, $mdDialog) {
-    //             $scope.dt = dt;
-    //             $scope.edit_mode = true;
-    //             $scope.data = row;
-    //             $scope.hide = function () {
-    //                 $mdDialog.hide();
-    //             };
-    //             $scope.cancel = function () {
-    //                 $mdDialog.cancel();
-    //             };
-    //             $scope.tbl = {};
-    //             $scope.tbl.postData = function () {
-    //                 return {
-    //                     uid: dt.id
-    //                 }
-    //             };
-    //         },
-    //         templateUrl: home('console/flower/data'),
-    //         parent: angular.element(document.body),
-    //         targetEvent: ev,
-    //         clickOutsideToClose: true,
-    //         locals: {
-    //             dt: row
-    //         },
-    //         fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-    //     })
-    //         .then(function (answer) {
-    //
-    //         });
-    // };
+    _this.showDialog = function (row, ev) {
+
+        var dialog = $mdDialog.show({
+            controller: function ($scope, $controller, dt, $mdDialog) {
+                $scope.dt = dt;
+                $scope.edit_mode = true;
+                $scope.data = row;
+                $scope.hide = function () {
+                    $mdDialog.hide();
+                };
+                $scope.cancel = function () {
+                    $mdDialog.cancel();
+                };
+                $scope.tbl = {};
+                $scope.tbl.postData = function () {
+                    return {
+                        uid: dt.id
+                    }
+                };
+            },
+            templateUrl: home('console/flower/data'),
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true,
+            locals: {
+                dt: row
+            },
+            fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        })
+            .then(function (answer) {
+
+            });
+    };
 });
 app.controller('FlowerEditCtrl', function ($scope, htp, $controller) {
     var _this = $scope;
@@ -2186,7 +2248,6 @@ app.controller('FlowerPacketListCtrl', function ($scope, $mdDialog, htp) {
     var _this = $scope;
     _this.tbl = {};
     _this.showDialog = function (row, ev) {
-        console.log(row);
         var dialog = $mdDialog.show({
             controller: function ($scope, $controller, dt, $mdDialog) {
                 $scope.dt = dt;
@@ -2365,7 +2426,7 @@ app.controller('LogCtrl', function ($scope, htp) {
     var _this = $scope;
     _this.tbl = {};
 });
-app.controller('OrderPageCtrl', function ($scope, htp, $rootScope) {
+app.controller('OrderPageCtrl', function ($element, $scope, htp, $rootScope) {
     var _this = $scope;
     // _this.elm = $('#acrd');
     // _this.elm.فشذ();
@@ -2434,6 +2495,9 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
 
     _this.payType = function (item, $index) {
         item.pay_type = $index;
+    };
+    _this.orderType = function (item, $index) {
+        item.order_type = $index;
     };
     _this.addOrder = function () {
         _this.data.new_orders.push({type: 1, week: 1, time: 1, w: 1, total: 1});
@@ -2595,6 +2659,11 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
         }).after(function (res) {
             _this.loading = false;
         });
+    }
+
+    _this.toggleImage = function () {
+        var elementResult = angular.element(document.querySelector('#box'));
+        console.log(elementResult);
     }
 
 
@@ -2854,6 +2923,7 @@ app.controller('OrderEditCtrl', function ($scope, htp) {
 
         });
 });
+
 app.controller('OrderReportCtrl', function ($scope, htp) {
     var _this = $scope;
     var REPORT = function (url) {
@@ -3157,6 +3227,323 @@ app.directive('member', function ($compile) {
         }
     }
 });
+
+app.controller('JobController', function ($element, $timeout, htp, $q, $log, $scope) {
+    // app.module('autocompleteCustomTemplateDemo', ['ngMaterial']);
+    var self = this;
+
+    self.data = {};
+    self.detail = [];
+
+
+    self.simulateQuery = false;
+    self.isDisabled = false;
+
+    self.repos = loadAll();
+    self.querySearch = querySearch;
+    self.selectedItemChange = selectedItemChange;
+    self.searchTextChange = searchTextChange;
+
+    // ******************************
+    // Internal methods
+    // ******************************
+
+    /**
+     * Search for repos... use $timeout to simulate
+     * remote dataservice call.
+     */
+
+
+
+
+    function querySearch(query) {
+
+        htp(home('console/manage/get-const'), {w: 6}).then(function (response) {
+
+            if (response && response.result == true) {
+                self.detail = response;
+
+
+            }
+
+        });
+
+        var results = query ? self.detail.data.filter(createFilterFor(query)) : self.detail.data,
+            deferred;
+        if (self.simulateQuery) {
+            deferred = $q.defer();
+            $timeout(function () {
+                deferred.resolve(results);
+            }, Math.random() * 1000, false);
+            return deferred.promise;
+        } else {
+            return results;
+        }
+
+
+    }
+
+    self.txt = [];
+
+    function searchTextChange(text) {
+        // $log.info('Text changed to ' + text);
+
+        self.txt.push(text);
+        self.one = self.txt[self.txt.length - 1]
+        $scope.$emit('child1', self.one);
+    }
+
+    function selectedItemChange(item) {
+        // $log.info('Item changed to ' + JSON.stringify(item));
+        $scope.$emit('child1', {'txt': item});
+
+    }
+
+    /**
+     * Build `components` list of key/value pairs
+     */
+
+    function loadAll() {
+        htp(home('console/manage/get-const'), {w: 6}).then(function (response) {
+            if (response && response.result == true) {
+                self.detail = response;
+
+
+            }
+            var repos = self.detail.data;
+            return repos.map(function (repo) {
+                repo.value = repo.title.toLowerCase();
+                return repo;
+            });
+
+        });
+
+    }
+
+    /**
+     * Create filter function for a query string
+     */
+    function createFilterFor(query) {
+        var lowercaseQuery = angular.lowercase(query);
+
+        return function filterFn(item) {
+            return (item.value.indexOf(lowercaseQuery) === 0);
+        };
+
+    }
+
+
+});
+app.controller('SkillCtrl', function ($scope, $element, $timeout, htp, $q, $log) {
+    // app.module('autocompleteCustomTemplateDemo', ['ngMaterial']);
+    var self = this;
+
+    angular.module('firstApplication', ['ngMaterial']);
+    self.data = {};
+    self.detail1 = [];
+
+
+    self.simulateQuery = false;
+    self.isDisabled = false;
+
+    self.repos = loadAll();
+    self.querySearch = querySearch;
+    self.selectedItemChange = selectedItemChange;
+    self.searchTextChange = searchTextChange;
+
+    // ******************************
+    // Internal methods
+    // ******************************
+
+    /**
+     * Search for repos... use $timeout to simulate
+     * remote dataservice call.
+     */
+
+
+
+
+    function querySearch(query) {
+
+        htp(home('console/manage/get-const'), {w: 8}).then(function (response) {
+
+            if (response && response.result == true) {
+                self.detail1 = [];
+                self.detail1 = response;
+
+            }
+        });
+
+        var results = query ? self.detail1.data.filter(createFilterFor(query)) : self.detail1.data,
+            deferred;
+        if (self.simulateQuery) {
+            deferred = $q.defer();
+            $timeout(function () {
+                deferred.resolve(results);
+            }, Math.random() * 1000, false);
+            return deferred.promise;
+        } else {
+            return results;
+        }
+
+
+    }
+
+    self.txt = [];
+
+    function searchTextChange(text) {
+        // $log.info('Text changed to ' + text);
+
+        self.txt.push(text);
+        self.one = self.txt[self.txt.length - 1]
+
+
+        $scope.$emit('child2', self.one);
+    }
+
+
+    function selectedItemChange(item) {
+        // $log.info('Item changed to ' + JSON.stringify(item));
+        $scope.$emit('child2', {'txt1': item});
+    }
+
+    /**
+     * Build `components` list of key/value pairs
+     */
+
+    function loadAll() {
+        htp(home('console/manage/get-const'), {w: 8}).then(function (response) {
+            if (response && response.result == true) {
+                self.detail1 = response;
+
+            }
+            var repos = self.detail1.data;
+            return repos.map(function (repo) {
+                repo.value = repo.title.toLowerCase();
+                return repo;
+            });
+
+        });
+
+    }
+
+    /**
+     * Create filter function for a query string
+     */
+    function createFilterFor(query) {
+        var lowercaseQuery = angular.lowercase(query);
+
+        return function filterFn(item) {
+            return (item.value.indexOf(lowercaseQuery) === 0);
+        };
+
+    }
+
+});
+app.controller('AttractionCtrl', function ($scope, $element, $timeout, htp, $q, $log) {
+    // app.module('autocompleteCustomTemplateDemo', ['ngMaterial']);
+    var self = this;
+
+    self.data = {};
+    self.detail2 = [];
+
+
+    self.simulateQuery = false;
+    self.isDisabled = false;
+
+    self.repos = loadAll();
+    self.querySearch = querySearch;
+    self.selectedItemChange = selectedItemChange;
+    self.searchTextChange = searchTextChange;
+
+    // ******************************
+    // Internal methods
+    // ******************************
+
+    /**
+     * Search for repos... use $timeout to simulate
+     * remote dataservice call.
+     */
+
+
+
+
+    function querySearch(query) {
+
+        htp(home('console/manage/get-const'), {w: 7}).then(function (response) {
+
+            if (response && response.result == true) {
+                self.detail2 = response;
+
+            }
+        });
+
+        var results = query ? self.detail2.data.filter(createFilterFor(query)) : self.detail2.data,
+            deferred;
+        if (self.simulateQuery) {
+            deferred = $q.defer();
+            $timeout(function () {
+                deferred.resolve(results);
+            }, Math.random() * 1000, false);
+            return deferred.promise;
+        } else {
+            return results;
+        }
+
+
+    }
+
+    self.txt = [];
+
+    function searchTextChange(text) {
+        // $log.info('Text changed to ' + text);
+
+        self.txt.push(text);
+        self.one = self.txt[self.txt.length - 1]
+
+
+        $scope.$emit('child3', self.one);
+    }
+
+    function selectedItemChange(item) {
+        // $log.info('Item changed to ' + JSON.stringify(item));
+        $scope.$emit('child3', {'txt2': item});
+    }
+
+    /**
+     * Build `components` list of key/value pairs
+     */
+
+    function loadAll() {
+        htp(home('console/manage/get-const'), {w: 7}).then(function (response) {
+            if (response && response.result == true) {
+                self.detail2 = response;
+
+            }
+            var repos = self.detail2.data;
+            return repos.map(function (repo) {
+                repo.value = repo.title.toLowerCase();
+                return repo;
+            });
+
+        });
+
+    }
+
+    /**
+     * Create filter function for a query string
+     */
+    function createFilterFor(query) {
+        var lowercaseQuery = angular.lowercase(query);
+
+        return function filterFn(item) {
+            return (item.value.indexOf(lowercaseQuery) === 0);
+        };
+
+    }
+
+});
+
 
 app.directive('useChartJs', function (htp) {
     function link(s, elem, attr) {

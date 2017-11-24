@@ -16,7 +16,8 @@ class Text extends InputObject {
   public function __construct($ngModel, $label) {
     parent::__construct($ngModel, $label);
     $this->type = 'text';
-    $this->name = join('', explode('.', $ngModel));
+      $this->placeholder = $label;
+      $this->name = join('', explode('.', $ngModel));
   }
 
   public static function create($ngModel, $label) {

@@ -873,11 +873,11 @@ class OrderController extends Controller {
             $price = Flower::where('id', $flw_id)->pluck('price');
             $prc_stalks = $price[0] * $stalk;
             if ($input['new_orders'][$i]['type'] == 1) {
-//                $weeks = (int)$input['new_orders'][$i]['w'] * 4;
+                $weeks = (int)$input['new_orders'][$i]['w'] * 4;
                 if ($flag == 2 && !empty($vase_price)) {
-                    $total_price = ($prc_stalks * $month) + $vase_price;
+                    $total_price = ($prc_stalks * $weeks) + $vase_price;
                 } else {
-                    $total_price = $prc_stalks * $month;
+                    $total_price = $prc_stalks * $weeks;
                 }
             } else
                 if ($flag == 2 && !empty($vase_price)) {

@@ -507,7 +507,7 @@ class OrderController extends Controller {
                     $pk_type = explode('|', $input['new_orders'][$i]['pck_type']);
                     $pk_id = $pk_type[0];
                     $packages = FlowerPacket::find($pk_id)->packages()->distinct()->get();
-                    dd($pk_id);
+
 
                     foreach ($packages as $package) {
                         $packets_rand[] = $package;

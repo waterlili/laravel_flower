@@ -840,9 +840,9 @@ class OrderController extends Controller {
                 if ($input['type'] == 1) {
                     $weeks = (int)$input['w'] * 4;
                     if ($flag == 2 && !empty($vase_price)) {
-                        $total_price = ($prc_stalks * $month) + $vase_price;
+                        $total_price = ($prc_stalks * $weeks) + $vase_price;
                     } else {
-                        $total_price = $prc_stalks * $month;
+                        $total_price = $prc_stalks * $weeks;
                     }
                 } else
                     if ($flag == 2 && !empty($vase_price)) {

@@ -20,8 +20,9 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
         <span ng-if="item.type==2">&nbsp;هدیه </span>
 
         <div flex></div>
-        <span ng-if="item.type==1">ازتاریخ&nbsp;{{item.first_date}}</span>
-        <span ng-if="item.type==2">تاریخ ارسال&nbsp;{{item.first_date}}</span>
+        <span ng-if="item.type==1">ازتاریخ&nbsp;<label ng-bind="item.first_date |  date:'yyyy/MM/dd'"></label></span>
+        <span ng-if="item.type==2">تاریخ ارسال&nbsp;<label
+                    ng-bind="item.first_date |  date:'yyyy/MM/dd'"></label></span>
         <md-button class="md-icon-button pull-left" aria-label="More">
             <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
         </md-button>

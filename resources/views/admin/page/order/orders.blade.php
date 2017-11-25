@@ -11,7 +11,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 <div class="ui styled accordion" style="width: 100%">
     <div ng-if="item" flex layout="column" layout-align="center center" class="text-center">لیست سفارشات مشتری</div>
     <div class="title" layout="row" layout-align="start center" data-ng-init="init()"
-         ng-repeat-start="item in data.orders.orders">
+         ng-repeat-start="item in data.orders.orders | limitTo:3">
         <i class="icon edit"></i>
         سفارش
         <span>{{item.number}}</span>&nbsp;
@@ -21,7 +21,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 
 
         <div flex></div>
-        <span ng-if="item.type==1">ازتاریخ&nbsp;{{item.first_date}}</span>
+        <span ng-if="item.type==1">ازتاریخ&nbsp;<label ng-bind="item.first_date |  date:'yyyy/MM/dd'"></label></span>
         <md-button class="md-icon-button pull-left" aria-label="More">
             <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
         </md-button>
@@ -33,7 +33,8 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش گل
                     </h4>
                     <span class="pull-left topic_pos">{{item.week_str}} ها </span>
-                    <div layout="column" layout-align="center end"> تاریخ اولین ارسال:{{item.first_date}}
+                    <div layout="column" layout-align="center end"><span> تاریخ اولین ارسال:</span><span
+                                ng-bind="item.first_date |  date:'yyyy/MM/dd'"></span>
                     </div>
                     <p><label class="lab_sty">نام گل:</label>{{item.order_flowers[0]['flower']['name']}}</p>
                     <p>{{item.order_packets[0]['packet']['title']}}</p>
@@ -42,14 +43,15 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش گل از نوع هدیه</h4>
                     <div><label class="lab_sty">نام گل:</label>{{item.order_flowers[0]['flower']['name']}}</div>
                     <p>
-                        تاریخ اولین ارسال: {{item.first_date}}
+                        <span> تاریخ اولین ارسال:</span> <span ng-bind="item.first_date |  date:'yyyy/MM/dd'"></span>
                     </p>
                 </div>
                 <div ng-if="item.order_packets.length > 0 && item.type==1">
                     <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش بسته ی گل
                     </h4>
                     <span class="pull-left topic_pos">{{item.week_str}} ها </span>
-                    <div layout="column" layout-align="center end"> تاریخ اولین ارسال:{{item.first_date}}
+                    <div layout="column" layout-align="center end"><span> تاریخ اولین ارسال:</span><span
+                                ng-bind="item.first_date |  date:'yyyy/MM/dd'"></span>
                     </div>
 
                     <div><label class="lab_sty">نوع بسته:</label>{{item.order_packets[0]['packet']['title']}}</div>
@@ -58,12 +60,10 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش بسته ی گل از نوع هدیه
                     </h4>
                     <div><label class="lab_sty">نوع بسته:</label>{{item.order_packets[0]['packet']['title']}}</div>
-                    <div> تاریخ ارسال: {{item.first_date}}</div>
+                    <div><span> تاریخ اولین ارسال:</span><span ng-bind="item.first_date |  date:'yyyy/MM/dd'"></span>
+                    </div>
 
 
-                </div>
-                <div>
-                    <label class="lab_sty">قیمت:</label> {{item.amount}}تومان
                 </div>
 
 

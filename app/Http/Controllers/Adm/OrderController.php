@@ -898,7 +898,7 @@ class OrderController extends Controller {
     {
 
         $input = $request->all();
-        $orders = Order::whereCid($input['cid'])->select(['*', 'daysOfWeek as week_str', 'month as month_str', 'started_at as first_date'])->get();
+        $orders = Order::whereCid($input['cid'])->select(['*', 'daysOfWeek as week_str', 'month as month_str', 'started_at as first_date'])->orderBy('id', 'desc')->get();
         $orders->load('orderPackets', 'orderFlowers', 'orderPayment');
 
         $date = array();

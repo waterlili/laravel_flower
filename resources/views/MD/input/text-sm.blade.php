@@ -1,5 +1,5 @@
 <div class="mb-xl">
-    <div class="ui left labeled input">
+    <div class="ui left labeled input" layout-fill>
         @if(!isset($noLabel))
             <div class="ui basic label">
                 <% $label %>

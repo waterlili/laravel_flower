@@ -1,5 +1,5 @@
 <?php
-$name = \App\View\Select::create('data.name', 'نام', \App\DB\Cnt::where('w', 1)->pluck('title', 'id')->toArray())->setRequired(true)->form()->export();
+$name = \App\View\Text::create('data.name', 'نام')->setRequired(true)->form()->export();
 $nemad = \App\View\Text::create('data.nemad', 'نماد گل')->setRequired(true)->form()->export();
 $vahed = \App\View\Select::create('data.vahed', 'واحد', \App\DB\Flower::vahed())
     ->setRequired(true)
@@ -31,34 +31,39 @@ $color = \App\View\Select::create('data.color', 'رنگ', \App\DB\Cnt::where('w'
 @extends('admin.block.form')
 @section('form')
     <div layout-gt-md="row">
-        <div flex-gt-md="33">
-            @include('MD.input.select-sm' ,  $name)
+        <div flex layout-margin>
+            @include('MD.input.text-sm' ,  $name)
         </div>
-        <div flex-gt-md="33">
+        <div flex layout-margin>
             @include('MD.input.text-sm' ,  $nemad)
+        </div>
+        <div flex layout-margin>
+            @include('MD.input.text-sm' , $price)
         </div>
     </div>
 
     <div layout-gt-md="row">
-        <div flex-gt-md="33">
+        <div flex-gt-md="33" layout-margin>
             @include('MD.input.select-sm' ,  $vahed)
         </div>
-        <div flex-gt-md="33">
-            @include('MD.input.text-sm' , $price)
-        </div>
-        <div flex-gt-md="33">
+
+        <div flex-gt-md="33" layout-margin>
             @include('MD.input.select-sm' ,  $rade)
+        </div>
+        <div flex-gt-md="33" layout-margin>
+            @include('MD.input.select-sm' ,  $has_boo)
         </div>
     </div>
     <div layout-gt-md="row">
-        <div flex-gt-md="33">
-            @include('MD.input.select-sm' ,  $has_boo)
-        </div>
-        <div flex-gt-md="33">
+
+        <div flex-gt-md="33" layout-margin>
             @include('MD.input.select-sm' , $saghe)
         </div>
-        <div flex-gt-md="33">
+        <div flex-gt-md="33" layout-margin>
             @include('MD.input.select-sm' , $mandegari)
+        </div>
+        <div flex-gt-md="33" layout-margin>
+
         </div>
     </div>
 

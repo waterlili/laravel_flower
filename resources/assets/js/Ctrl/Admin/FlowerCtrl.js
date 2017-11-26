@@ -64,7 +64,8 @@ app.controller('FlowerAddCtrl', function ($scope, htp, $controller) {
     _this.addVariety = function () {
         _this.data.new_case.push({});
 
-    }
+
+    };
     _this.removenewVariety = function (item) {
         _this.data.new_case = _.without(_this.data.new_case, item);
     };

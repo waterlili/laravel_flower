@@ -3515,7 +3515,7 @@ ul.ng-table-pagination {
 .select_multi {
   border: 1px solid #B1B2B3;
   height: 150px;
-  width: 100px;
+    width: 100%;
   text-align: center;
   line-height: 9;
   color: #B1B2B3; }

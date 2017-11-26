@@ -74,12 +74,13 @@ class FlowerController extends Controller
             return response()->json(['result' => TRUE]);
         } else {
             $flower = Flower::create($input);
-            if (isset($input['composit']) && is_array($input['composit'])) {
-                foreach ($input['composit'] as $item) {
+
+            if (isset($input['new_case']) && is_array($input['new_case'])) {
+                foreach ($input['new_case'] as $item) {
                     FlowerVariation::create([
                         'flower_id' => $flower->id,
-                        'color' => $item['flower'],
-                        'image' => $item['image'],
+                        'color' => $item['color'],
+//                        'image' => $item['image'],
                     ]);
                 }
             }

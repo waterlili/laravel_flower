@@ -35,7 +35,6 @@ class FlowerVaseController extends Controller
         $names = array();
 
         if (!empty($info)) {
-
             foreach ($files as $file) {
                 foreach ($file as $key => $result) {
 

@@ -101,6 +101,7 @@ class CustomerController extends Controller {
 
     public function postAdd(Request $request) {
         $input = $request->all();
+        dd($input);
         $input['sts'] = 1;
         if (isset($input['id'])) {
             Customer::find($input['id'])->update($input);

@@ -1,12 +1,14 @@
 <?php
 $fname = \App\View\Text::create('data.fname', 'نام')->form()->setRequired(true)->export();
 $lname = \App\View\Text::create('data.lname', 'نام خانوادگی')->form()->setRequired(true)->export();
+$customer = \App\View\Text::create('data.reagent', 'معرف')->form()->setRequired(true)->export();
 $email = \App\View\Text::create('data.email', 'ایمیل')->form()->setRequired(false)->setType('email')->export();
 $skill = \App\View\Select::create('data.skill_id', 'مهارت', \App\DB\Cnt::whereW(8)->pluck('title', 'id')->toArray())->export();
 $address = \App\View\Text::create('data.address', 'آدرس')->export();
 $mobile = \App\View\Text::create('data.mobile', 'موبایل')->setRequired(true)->form()->export();
 $description = \App\View\Text::create('data.description', 'توضیح خاص مشتری')->form()->export();
 $phone = \App\View\Text::create('data.phone', 'تلفن')->form()->export();
+$phone2 = \App\View\Text::create('data.phone2', 'تلفن')->form()->export();
 $job_type = \App\View\Select::create('data.job_id', 'شغل', \App\DB\Cnt::whereW(6)->pluck('title', 'id')->toArray())->export();
 $sts = \App\View\Select::create('data.sts', 'وضعیت کاربر', \App\DB\User::$STATUS)->setRequired(true)->form()->export();
 $attraction = \App\View\Select::create('data.type_attraction_id', 'نحوه جذب', \App\DB\Cnt::whereW(7)->pluck('title', 'id')->toArray())
@@ -64,30 +66,36 @@ $attraction = \App\View\Select::create('data.type_attraction_id', 'نحوه جذ
                 </div>
 
                 <div layout-gt-md="row" layout-align="start start">
-                    <div flex-gt-md="33">
+                    <div flex layout-margin>
                         @include('MD.input.text-md' , $mobile)
                     </div>
-                    <div flex-gt-md="33" class="mh-md-md">
+                    <div flex layout-margin>
                         @include('MD.input.text-md' , $phone)
                     </div>
-                    <div flex-gt-md="33" class="mr-md-md">
+                    <div flex layout-margin>
+                        @include('MD.input.text-md' , $phone2)
+                    </div>
+                    <div flex layout-margin>
                         @include('MD.input.text-md' , $email)
 
                     </div>
                 </div>
 
-                <div layout-gt-md="row">
-
-                    <div flex-gt-md="33" class="ml-md-md">
+                <div layout-gt-md="row" id="reagent">
+                    <div flex layout-margin>
+                        @include('MD.input.search-md' , $customer)
+                    </div>
+                    <div flex layout-margin>
 
                         @include('MD.input.select-sm' , $job_type)
                     </div>
-                    <div flex-gt-md="33" class="ml-md-md">
+                    <div flex layout-margin>
                         @include('MD.input.select-sm' , $skill)
                     </div>
-                    <div flex-gt-md="33">
+                    <div flex layout-margin>
                         @include('MD.input.select-sm' , $attraction)
                     </div>
+
                 </div>
                 <div layout-gt-md="row">
 

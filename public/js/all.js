@@ -1728,6 +1728,7 @@ app.controller('CustomerAddCtrl', function ($scope, htp, $controller, notify, $r
         });
     }
 
+
     $scope.$on('child1', function (event, data) {
         // _this.lastAddress = [];
         // console.log(data);
@@ -2716,6 +2717,7 @@ app.directive('useDropdown', function ($timeout) {
 app.directive('useSearch', function ($timeout) {
     function link(scope, elm, attr, ngModel) {
         var xsrf = $('meta[name="csrf-token"]').attr('content');
+
         $(elm).search({
             apiSettings: {
                 method: 'POST',
@@ -2739,6 +2741,9 @@ app.directive('useSearch', function ($timeout) {
                     ngModel.$setViewValue(result[attr.key]);
                 } else {
                     ngModel.$setViewValue(result);
+                    ngModel.$name = 'reagent';
+                    ngModel.$modelValue = result.title;
+                    scope.ngModel = result.title;
                 }
             },
             templates: {
@@ -2751,6 +2756,8 @@ app.directive('useSearch', function ($timeout) {
             },
 
         });
+
+
         ngModel.$render = function () {
             $timeout(function () {
                 $(elm).search('set value', ngModel.$viewValue);
@@ -2769,6 +2776,7 @@ app.directive('useSearch', function ($timeout) {
     };
 
 });
+
 
 app.controller('OrderListDayCtrl', function ($scope) {
     $scope.tbl = {};

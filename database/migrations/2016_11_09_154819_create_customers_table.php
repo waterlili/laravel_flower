@@ -14,11 +14,14 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('code');
+            $table->integer('reagent_code')->unsigned()->nullable();
             $table->string('fname', 25);
             $table->string('lname', 25);
             $table->tinyInteger('gender')->nullable();
             $table->string('mobile', 15)->nullable();
             $table->string('phone', 15)->nullable();
+            $table->string('phone2', 15)->nullable();
             $table->string('address')->nullable();
             $table->string('email', 100)->nullable();
             $table->integer('job_id')->nullable()->unsigned();
@@ -28,6 +31,8 @@ class CreateCustomersTable extends Migration
             $table->tinyInteger('sts');
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('reagent_code')->references('id')->on('customers')
+                ->onUpdate('customers');
             $table->foreign('job_id')->references('id')->on('consts')
                 ->onUpdate('cascade');
             $table->foreign('skill_id')->references('id')->on('consts')

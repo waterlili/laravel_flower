@@ -1,4 +1,4 @@
-<div layout="row" layout-align="start center" ng-controller="FlowerPackageListCtrl">
+<div layout="row" layout-align="start center">
     <md-button class="md-icon-button md-accent" ng-click="showDialog(row , $event)">
         <i class="material-icons ">remove_red_eye</i>
         <md-tooltip>نمایش اطلاعات</md-tooltip>

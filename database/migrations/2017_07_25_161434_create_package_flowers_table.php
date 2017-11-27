@@ -18,8 +18,10 @@ class CreatePackageFlowersTable extends Migration
             $table->unsignedInteger('flower_id');
             $table->unsignedInteger('count');
 
-            $table->foreign('package_id')->references('id')->on('flower_packages');
-            $table->foreign('flower_id')->references('id')->on('flowers');
+            $table->foreign('package_id')->references('id')->on('flower_packages')->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->foreign('flower_id')->references('id')->on('flowers')->onDelete('cascade')
+                ->onUpdate('cascade');
 
         });
     }

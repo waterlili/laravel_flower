@@ -20,6 +20,7 @@ app.controller('CustomerAddCtrl', function ($scope, htp, $controller, notify, $r
         });
     }
 
+
     $scope.$on('child1', function (event, data) {
         // _this.lastAddress = [];
         // console.log(data);

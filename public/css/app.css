@@ -3515,7 +3515,7 @@ ul.ng-table-pagination {
 .select_multi {
   border: 1px solid #B1B2B3;
   height: 150px;
-    width: 100%;
+  width: 100%;
   text-align: center;
   line-height: 9;
   color: #B1B2B3; }
@@ -3616,5 +3616,8 @@ div#box label {
 
 .mp {
   padding: 5px; }
+
+#reagent input {
+  border-radius: 0.285714rem !important; }
 
 /*# sourceMappingURL=app.css.map */

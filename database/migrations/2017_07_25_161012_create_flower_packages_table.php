@@ -16,6 +16,7 @@ class CreateFlowerPackagesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->boolean('has_leaf')->default('1');
+            $table->text('combination_flowers')->nullable();
             $table->timestamps();
         });
     }

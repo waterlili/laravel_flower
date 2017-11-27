@@ -1,6 +1,13 @@
 <md-input-container class="md-block">
     @if(!isset($noLabel))
         <label><% $label %></label>
+        @if($ngModel=='data.phone' || $ngModel=='data.phone2')
+            <md-icon><i class="material-icons">settings_phone</i></md-icon>
+        @elseif($ngModel=='data.mobile')
+            <md-icon><i class="material-icons">smartphone</i></md-icon>
+        @elseif($ngModel=='data.email')
+            <md-icon><i class="material-icons">email</i></md-icon>
+        @endif
     @endif
 
     <input type="<% $type %>"
@@ -16,6 +23,7 @@
     <% (isset($_max))?"md-maxlength=$_max":'' %>
 
     >
+
 
     <div ng-messages="projectForm.description.$error">
         <div ng-message="required">پر کردن فیلد الزامی است</div>

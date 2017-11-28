@@ -457,7 +457,7 @@ class OrderController extends Controller {
             $q->where('fname', 'LIKE', '%' . $input['query'] . '%')
                 ->orWhere('lname', 'LIKE', '%' . $input['query'] . '%');
         })
-            ->select(['id', DB::raw('CONCAT(fname , " " , lname) as title'), 'mobile', 'email', 'job_id'])
+            ->select(['id', DB::raw('CONCAT(fname , " " , lname) as title'), 'mobile', 'email', 'job_id', 'code'])
             ->get()
             ->toArray();
         return response()->json(['results' => $users]);
@@ -701,8 +701,10 @@ class OrderController extends Controller {
         if (empty($cid)) {
             return response()->json(array('error' => false), 422);
         } else {
+            $type = "order";
             if (!empty($input['customer']['id'])) {
-                $number = $this->order_number();
+                $number = Cnt::random_number($type);
+
 
                 for ($i = 0; $i <= $orders; $i++) {
 //
@@ -980,24 +982,6 @@ class OrderController extends Controller {
         return response()->json(['message' => 'Request completed']);
     }
 
-    public function order_number()
-    {
-        $code = $six_digit_random_number = mt_rand(10000000, 99999999);
-        $number = 'BNT-' . $code;
-        // call the same function if the barcode exists already
-        if ($this->barcodeNumberExists($number)) {
-            return order_number();
-        }
 
-        // otherwise, it's valid and can be used
-        return $number;
-    }
-
-    function barcodeNumberExists($number)
-    {
-        // query the database and return a boolean
-        // for instance, it might look like this in Laravel
-        return Order::where('number', $number)->first();
-    }
 
 }

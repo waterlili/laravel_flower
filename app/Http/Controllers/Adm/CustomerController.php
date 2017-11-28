@@ -101,7 +101,7 @@ class CustomerController extends Controller {
 
     public function postAdd(Request $request) {
         $input = $request->all();
-        dd($input);
+
         $input['sts'] = 1;
         if (isset($input['id'])) {
             Customer::find($input['id'])->update($input);
@@ -110,10 +110,21 @@ class CustomerController extends Controller {
             $mobile = Cnt::convert($input['mobile']);
             if (!empty($input['phone']))
                 $phone = Cnt::convert($input['phone']);
+            if (!empty($input['phone2']))
+                $phone2 = Cnt::convert($input['phone2']);
             $input['mobile'] = $mobile;
             if (!empty($input['phone']))
                 $input['phone'] = $phone;
+            if (!empty($input['phone2']))
+                $input['phone2'] = $phone2;
+            $type = null;
+            $number = Cnt::random_number($type);
+            $input['code'] = $number;
 
+            if ($request->reagent) {
+                $code = $request->reagent['code'];
+                $input['reagent_code'] = $code;
+            }
 
             $user = Customer::create($input);
             return response()->json(['result' => TRUE, 'id' => $user->id]);

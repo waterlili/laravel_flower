@@ -85,5 +85,33 @@ class Cnt extends Model {
 
         return $englishNumbersOnly;
     }
+
+    public static function barcodeNumberExists($number)
+    {
+        // query the database and return a boolean
+        // for instance, it might look like this in Laravel
+        return Order::where('number', $number)->first();
+    }
+
+    public static function random_number($type)
+    {
+        if (!empty($type) && $type == 'order') {
+            $code = $six_digit_random_number = mt_rand(10000000, 99999999);
+            $number = 'BNT-' . $code;
+            // call the same function if the barcode exists already
+            if (self::barcodeNumberExists($number)) {
+                return self::order_number();
+            }
+        } else {
+            $number = $six_digit_random_number = mt_rand(100000, 999999);
+
+        }
+
+
+        // otherwise, it's valid and can be used
+        return $number;
+    }
+
+
   
 }

@@ -8,10 +8,13 @@ class Customer extends Model
     protected $fillable = [
         'fname',
         'lname',
+        'code',
+        'reagent_code',
         'name',
         'gender',
         'mobile',
         'phone',
+        'phone2',
         'address',
         'email',
         'job_id',

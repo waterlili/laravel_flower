@@ -91,7 +91,7 @@ $color = \App\View\Select::create('data.color', 'رنگ', \App\DB\Cnt::where('w'
                     <i class="icon trash red color  " ng-click="removenewVariety(item)"></i>
                 </div>
             </div>
-            <div class="content active" ng-repeat-end>
+            <div class="content" ng-class="{'active': $first}" ng-repeat-end>
                 <div class="p-md">
                     <div layout-gt-md="row" layout-align="start center">
                         <div class="ui fluid search selection dropdown ml-md-md mb-xl" use-dropdown

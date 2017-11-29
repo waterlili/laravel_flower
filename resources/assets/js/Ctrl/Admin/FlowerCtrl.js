@@ -62,7 +62,7 @@ app.controller('FlowerAddCtrl', function ($scope, htp, $controller) {
         });
     };
     _this.addVariety = function () {
-        _this.data.new_case.push({});
+        _this.data.new_case.unshift({});
 
 
     };

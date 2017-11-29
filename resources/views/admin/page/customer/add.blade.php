@@ -1,7 +1,7 @@
 <?php
 $fname = \App\View\Text::create('data.fname', 'نام')->form()->setRequired(true)->export();
 $lname = \App\View\Text::create('data.lname', 'نام خانوادگی')->form()->setRequired(true)->export();
-$customer = \App\View\Text::create('data.reagent', 'معرف')->form()->setRequired(true)->export();
+$customer = \App\View\Text::create('data.reagent', 'معرف')->form()->setRequired(false)->export();
 $email = \App\View\Text::create('data.email', 'ایمیل')->form()->setRequired(false)->setType('email')->export();
 $skill = \App\View\Select::create('data.skill_id', 'مهارت', \App\DB\Cnt::whereW(8)->pluck('title', 'id')->toArray())->export();
 $address = \App\View\Text::create('data.address', 'آدرس')->export();

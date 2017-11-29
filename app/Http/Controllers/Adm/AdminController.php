@@ -164,7 +164,7 @@ class AdminController extends Controller {
 
     protected function editCustomer(Request $request) {
         $input = $request->all();
-        if ($input['data']['reagent']) {
+        if (!empty($input['data']['reagent'])) {
             $code = $input['data']['reagent']['code'];
             $input['data']['reagent_code'] = $code;
         }

@@ -4,6 +4,7 @@ $table
         ->addCol('id', 'کد')
         ->addCol('fname', 'نام')
         ->addCol('lname', 'نام خانوادگی')
+    ->addCol('reagent_str', 'معرف')
     ->addCol('email', 'ایمیل', FALSE)
     ->addCol('gender_str', 'جنسیت', FALSE)
     ->addCol('mobile', 'موبایل')

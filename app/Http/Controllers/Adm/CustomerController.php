@@ -50,6 +50,7 @@ class CustomerController extends Controller {
         $records = Customer::select([
             '*',
             Customer::$SELECT_STS_STR,
+            Customer::$SELECT_REAGENT_STR,
             Customer::$SELECT_Gender_STR
         ]);
 

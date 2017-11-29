@@ -164,6 +164,10 @@ class AdminController extends Controller {
 
     protected function editCustomer(Request $request) {
         $input = $request->all();
+        if ($input['data']['reagent']) {
+            $code = $input['data']['reagent']['code'];
+            $input['data']['reagent_code'] = $code;
+        }
         Customer::find($input['id'])->update($input['data']);
         return response()->json(TRUE);
     }

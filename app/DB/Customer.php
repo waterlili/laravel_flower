@@ -24,6 +24,7 @@ class Customer extends Model
         'sts'
     ];
     public static $SELECT_STS_STR = 'sts as sts_str';
+    public static $SELECT_REAGENT_STR = 'reagent_code as reagent_str';
     public static $SELECT_Gender_STR = 'gender as gender_str';
 
     public static $Gender = [
@@ -56,6 +57,15 @@ class Customer extends Model
         }
         return array_get(self::$STATUS, $value, 'تعریف نشده');
 
+    }
+
+    public function getReagentStrAttribute($value)
+    {
+        if (is_null($value)) {
+            return NULL;
+        }
+        $result = Customer::where('code', $value)->get();
+        return $result[0]->fname . ' ' . $result[0]->lname;
     }
 
     public function getTypeStrAttribute($value)

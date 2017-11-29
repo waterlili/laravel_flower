@@ -29,6 +29,7 @@ class Order extends Model {
       'number',
       'vid',
       'type',
+      'type2',
       'amount',
       'time_duration',
       'daysOfWeek',

@@ -728,6 +728,13 @@ class OrderController extends Controller {
                     }
 
                     if (!empty($input['new_orders'][$i]['week'])) {
+                        if (!empty($input['new_orders'][$i]['pck_type'])) {
+                            //type2 is one means packet
+                            $type2 = 1;
+                        } else {
+                            //type2 is one means flowers
+                            $type2 = 2;
+                        }
                         $amount = $this->postGetCaulateAmount($i, $input, $flag, $vase_price)->getData();
                         $obj = [
                             'cid' => $cid,
@@ -735,6 +742,7 @@ class OrderController extends Controller {
                             'vid' => $vase_id,
                             'amount' => $amount->amount,
                             'type' => array_get($input['new_orders'][$i], 'type', NULL),
+                            'type2' => $type2,
                             'time_duration' => array_get($input['new_orders'][$i], 'time', NULL),
                             'daysOfWeek' => array_get($input['new_orders'][$i], 'week', NULL),
                             'sending' => array_get($input['new_orders'][$i], 'sending', NULL),

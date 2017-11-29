@@ -18,6 +18,8 @@ class CreateOrdersTable extends Migration
             //define vase
             $table->integer('vid')->unsigned()->nullable();
             $table->tinyInteger('type');
+            //type2 is for diagnose flower or packet
+            $table->tinyInteger('type2');
             $table->tinyInteger('sts')->default(1);
             $table->double('amount')->default(0);
             $table->integer('sent_count')->default(0);

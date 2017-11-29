@@ -21,8 +21,10 @@ class CreateOrderFlowersTable extends Migration
             $table->timestamps();
 
             $table->foreign('order_id')->references('id')->on('orders')
+                ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->foreign('flower_id')->references('id')->on('flowers')
+                ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
     }

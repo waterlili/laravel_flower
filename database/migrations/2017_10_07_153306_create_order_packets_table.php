@@ -20,10 +20,10 @@ class CreateOrderPacketsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('order_id')->references('id')->on('orders')
-                ->onUpdate('cascade');
-            $table->foreign('packet_id')->references('id')->on('flower_packets')
-                ->onUpdate('cascade');
+            $table->foreign('order_id')->references('id')->on('orders')->
+            onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('packet_id')->references('id')->on('flower_packets')->
+            onDelete('cascade')->onUpdate('cascade');
         });
     }
 

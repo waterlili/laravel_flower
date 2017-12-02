@@ -1,6 +1,5 @@
 <?php
 $name = \App\View\Text::create('data.name', 'نام')->setRequired(true)->form()->export();
-$nemad = \App\View\Text::create('data.nemad', 'نماد گل')->setRequired(true)->form()->export();
 $vahed = \App\View\Select::create('data.vahed', 'واحد', \App\DB\Flower::vahed())
     ->setRequired(true)
     ->form()
@@ -35,18 +34,18 @@ $color = \App\View\Select::create('data.color', 'رنگ', \App\DB\Cnt::where('w'
             @include('MD.input.text-sm' ,  $name)
         </div>
         <div flex layout-margin>
-            @include('MD.input.text-sm' ,  $nemad)
+            @include('MD.input.text-sm' , $price)
         </div>
         <div flex layout-margin>
-            @include('MD.input.text-sm' , $price)
+            @include('MD.input.select-sm' ,  $vahed)
         </div>
     </div>
 
     <div layout-gt-md="row">
-        <div flex-gt-md="33" layout-margin>
-            @include('MD.input.select-sm' ,  $vahed)
-        </div>
 
+        <div flex-gt-md="33" layout-margin>
+            @include('MD.input.select-sm' , $saghe)
+        </div>
         <div flex-gt-md="33" layout-margin>
             @include('MD.input.select-sm' ,  $rade)
         </div>
@@ -55,12 +54,11 @@ $color = \App\View\Select::create('data.color', 'رنگ', \App\DB\Cnt::where('w'
         </div>
     </div>
     <div layout-gt-md="row">
-
-        <div flex-gt-md="33" layout-margin>
-            @include('MD.input.select-sm' , $saghe)
-        </div>
         <div flex-gt-md="33" layout-margin>
             @include('MD.input.select-sm' , $mandegari)
+        </div>
+        <div flex-gt-md="33" layout-margin>
+
         </div>
         <div flex-gt-md="33" layout-margin>
 

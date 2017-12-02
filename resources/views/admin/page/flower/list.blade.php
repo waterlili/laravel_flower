@@ -2,7 +2,6 @@
 $table = new \App\View\NgTable('جدول گل ها', 'tbl', 'console/flower/list');
 $table
         ->addCol('name', 'نام')
-        ->addCol('nemad', 'نماد')
         ->addCol('price', 'قیمت', null, true, FALSE, 'currency:"":""')
         ->addCol('vahed_str', 'واحد', 'vahed_str')
         ->addCol('created_at_j', 'ایجاد در', 'created_at', FALSE)
@@ -11,7 +10,6 @@ $table
         ->addInclude('opt', 'عملیات', 'admin.page.flower.block.listOpt');
 
 $table->addFilter('name', 'نام', 'name', 'text');
-$table->addFilter('nemad', 'نماد', 'nemad', 'text');
 $table->addFilter('price', 'قیمت', 'price', 'number');
 
 $table->addFilter('created_at', 'تاریخ ایجاد', 'created_at', 'date');

@@ -35,7 +35,8 @@ class Controller extends BaseController {
     'O1'
   ];
 
-  protected function tableEngine(&$records, $input) {
+    protected function tableEngine(&$records, $input, $ret = false)
+    {
     $this->tableFilter($records, $input);
     $this->tableBtnFilter($records, $input);
 
@@ -49,7 +50,14 @@ class Controller extends BaseController {
     }
 
     $count = $records->count();
+
     $this->tablePaginate($records, $input);
+        if ($ret) {
+            return [
+                'rows' => $records->get()->toArray(),
+                'total' => $count
+            ];
+        }
     return response()->json([
       'rows' => $records->get()->toArray(),
       'total' => $count
@@ -148,6 +156,7 @@ class Controller extends BaseController {
 
 
     if (isset($input['filter'])) {
+
       foreach ($input['filter'] as $item) {
         if (!isset($item['ini'])) {
           continue;
@@ -181,18 +190,19 @@ class Controller extends BaseController {
         }
         elseif ($item['cr'] == 'and') {
           $record->where($item['value'], 'LIKE', "%" . $item['ini'] . "%");
+
         }
         break;
       case 'date':
 
         if ($item['cr'] == 'or') {
-          $record->orWhereDate($item['value'], $this->getSymWhenDate($item['when']), Carbon::instance(jDate::dateTimeFromFormat('Y/m/d', $item['ini'])));
+            $record->orWhereDate($item['value'], $this->getSymWhenDate($item['when']), $item['ini']);
         }
         elseif ($item['cr'] == 'not') {
-          $record->whereDate($item['value'], $this->getNotLikeSymWhenDate($this->getSymWhenDate($item['when'])), Carbon::instance(jDate::dateTimeFromFormat('Y/m/d', $item['ini'])));
+            $record->whereDate($item['value'], $this->getNotLikeSymWhenDate($this->getSymWhenDate($item['when'])), $item['ini']);
         }
         elseif ($item['cr'] == 'and') {
-          $record->whereDate($item['value'], $this->getSymWhenDate($item['when']), Carbon::instance(jDate::dateTimeFromFormat('Y/m/d', $item['ini'])));
+            $record->whereDate($item['value'], $this->getSymWhenDate($item['when']), $item['ini']);
         }
         break;
       case 'number':

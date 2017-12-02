@@ -80,7 +80,9 @@ var _trans_en = {
         'consoleflower_packageadd': 'افزودن ترکیب گل جدید',
         'consoleflower_packagelist': 'لیست ترکیب گل ها',
         'consoleflower_packetadd': 'افزودن بسته جدید',
-        'consoleflower_packetlist': 'لیست بسته ها'
+        'consoleflower_packetlist': 'لیست بسته ها',
+        'consoleorderdaily-generation': 'گزارش تولید روزانه',
+
     },
     'subject': {
         'page': 'Page'

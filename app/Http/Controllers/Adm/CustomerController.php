@@ -55,6 +55,7 @@ class CustomerController extends Controller {
         ]);
 
         $input = $request->all();
+
         $this->tableFilter($records, $input);
         $this->tableBtnFilter($records, $input);
 

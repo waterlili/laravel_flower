@@ -39,6 +39,12 @@ return [
                     'url' => 'console/order/list',
                     'ctrl' => 'OrderListCtrl',
                     'rid' => 101
+                ],
+                'daily_generation' => [
+                    'title' => 'menu.daily_generation',
+                    'url' => 'console/order/daily-generation',
+                    'ctrl' => 'DailyGenCtrl',
+                    'rid' => 101
                 ]
 //                ,
 //                'orders-day' => [

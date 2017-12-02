@@ -40,6 +40,10 @@ class OrderController extends Controller {
         return view('admin.page.order.list');
     }
 
+    public function getDailyGeneration()
+    {
+        return view('admin.page.order.dailyGeneration');
+    }
     public function getListDay()
     {
         return view('admin.page.order.list-day');
@@ -65,7 +69,44 @@ class OrderController extends Controller {
         return view('admin.page.order.all-list', ['unver' => TRUE]);
     }
 
+    public function postDailyGeneration(Request $request)
+    {
 
+        $record = OrderPacket::select([
+            '*',
+            OrderPacket::$SELECT_SENT_AT,
+            OrderPacket::$SELECT_PERIOD,
+            DB::Raw('count(*) as Day_count')
+
+        ])->groupBy(DB::Raw('DATE(sent_at)'), 'packet_id', 'period')->with('packet');
+
+        //overwrite number of total
+        $count = $record->get()->count();
+
+        //print table out
+        $input = $request->all();
+        if (isset($input['exportPrint'])) {
+            return $this->tablePrint($record, $input);
+        }
+        //print excel
+        if (isset($input['excelExport'])) {
+            return $this->tableExcel($record, $input);
+        }
+        //filter your table
+        $this->tableFilter($record, $input, true);
+
+        $export = $this->tableEngine($record, $request->all(), true);
+        //add some attribute to exist query
+        foreach ($export['rows'] as &$item) {
+            array_set($item, 'packet.pkg_names', join(', ', array_map(function ($i) {
+                return $i['name'];
+            }, array_get($item, 'packet.pkg_limit'))));
+        }
+
+        $export['total'] = $count;
+        return $export;
+
+    }
     public function postOrderList(Request $request) {
         return $this->_orderList($request);
     }
@@ -515,9 +556,16 @@ class OrderController extends Controller {
                     $pkg_cnt = count($packets_rand);
                     $numbers = range(0, $pkg_cnt - 1);
                     shuffle($numbers);
-
+                    $duration = Order::whereId($order->last_insert_id)->pluck('time_duration');
+                    $duration = $duration[0];
+                    //get duration of time
+                    if ($duration == 1 || $duration == 2)
+                        $period = 1;
+                    elseif ($duration == 3 || $duration == 4)
+                        $period = 2;
 
                     if ($input['new_orders'][$i]['type'] == 2) {
+
                         $packages = FlowerPacket::find($pk_id)->packages()->get();
                         $packets_rand = $packages->toArray();
                         if ($packets_rand != null)
@@ -526,8 +574,10 @@ class OrderController extends Controller {
                             return response()->json(['result' => FALSE], 422);
                         if (isset($packets_rand[$rand_keys]['name']))
                             $rnd_pkt = $packets_rand[$rand_keys]['name'];
+
                         $pkt_order = new OrderPacket();
                         $pkt_order->order_id = $id;
+                        $pkt_order->period = $period;
                         $pkt_order->packet_id = (int)$pk_id;
                         $pkt_order->combination = $rnd_pkt;
                         $pkt_order->save();
@@ -539,6 +589,7 @@ class OrderController extends Controller {
                             $rnd_pkt = $packets_rand[$rand_keys]['name'];
                             $pkt_order = new OrderPacket();
                             $pkt_order->order_id = $id;
+                            $pkt_order->period = $period;
                             $pkt_order->packet_id = (int)$pk_id;
                             $pkt_order->combination = $rnd_pkt;
 
@@ -571,6 +622,7 @@ class OrderController extends Controller {
                                 $rnd_pkt = $packets_rand[0]['name'];
                                 $pkt_order = new OrderPacket();
                                 $pkt_order->order_id = $id;
+                                $pkt_order->period = $period;
                                 $pkt_order->packet_id = (int)$pk_id;
                                 $pkt_order->combination = $rnd_pkt;
 
@@ -606,6 +658,7 @@ class OrderController extends Controller {
 
                                     $pkt_order = new OrderPacket();
                                     $pkt_order->order_id = $id;
+                                    $pkt_order->period = $period;
                                     $pkt_order->packet_id = (int)$pk_id;
                                     $pkt_order->combination = $rnd_pkt;
                                     if ($j == 0) {

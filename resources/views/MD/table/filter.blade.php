@@ -37,7 +37,7 @@
         <div ng-if="item.type == 'date'" ng-init="item.when = 1" class="date-filter-item">
             <input type="text" ng-model="item.ini" placeholder="{{item.title}}"
                    ng-jalaali-flat-datepicker
-                   datepicker-config="{dateFormat:'jYYYY/jMM/jDD'}"
+                   datepicker-config="{dateFormat:'jYYYY/jMM/jDD',allowFuture:true}"
             >
             <span class="when-filter-date" ng-if="item.when == 1"
                   ng-click="<% $ngTable %>.filter.when(item)">بعد از</span>

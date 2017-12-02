@@ -11,6 +11,7 @@ use App\DB\FlowerPacketType;
 use App\DB\Order;
 use App\DB\PacketType;
 use App\DB\User;
+use Carbon\Carbon;
 use App\DB\UserInfo;
 use App\Jobs\RemoveExcelForm;
 use Illuminate\Http\Request;
@@ -50,8 +51,8 @@ class AdminController extends Controller {
      */
     public function getExcelFile(Request $request) {
         if ($request->has('url')) {
-            $job = (new RemoveExcelForm($request->input('url')))->delay(60);
-            $this->dispatch($job);
+            $job = (new RemoveExcelForm($request->input('url')))->delay(Carbon::now()->addSecond(60));
+            dispatch($job);
             return response()->download(storage_path('app/excel/export') . '/' . $request->input('url'));
         }
         abort(404);

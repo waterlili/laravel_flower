@@ -23,7 +23,7 @@ class Order extends Model {
     public static $SELECT_FIRST_J = 'first as first_j';
 
 
-  protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at'];
   protected $fillable = array(
       'cid',
       'number',
@@ -188,6 +188,7 @@ class Order extends Model {
             return $date[0];
         }
     }
+
 
     public function getMonthStrAttribute($value)
     {

@@ -80,7 +80,9 @@ var _trans_en = {
         'consoleflower_packageadd': 'افزودن ترکیب گل جدید',
         'consoleflower_packagelist': 'لیست ترکیب گل ها',
         'consoleflower_packetadd': 'افزودن بسته جدید',
-        'consoleflower_packetlist': 'لیست بسته ها'
+        'consoleflower_packetlist': 'لیست بسته ها',
+        'consoleorderdaily-generation': 'گزارش تولید روزانه',
+
     },
     'subject': {
         'page': 'Page'
@@ -2931,6 +2933,42 @@ app.controller('OrderEditCtrl', function ($scope, htp) {
         .after(function () {
 
         });
+});
+app.controller('DailyGenCtrl', function ($scope, $mdDialog, htp) {
+    var _this = $scope;
+    _this.tbl = {};
+    _this.showDialog = function (row, ev) {
+        var dialog = $mdDialog.show({
+            controller: function ($scope, $controller, dt, $mdDialog) {
+                $scope.dt = dt;
+                $scope.edit_mode = true;
+                $scope.data = row;
+                $scope.hide = function () {
+                    $mdDialog.hide();
+                };
+                $scope.cancel = function () {
+                    $mdDialog.cancel();
+                };
+                $scope.tbl = {};
+                $scope.tbl.postData = function () {
+                    return {
+                        uid: dt.id
+                    }
+                };
+            },
+            templateUrl: home('console/daily-generation/data'),
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true,
+            locals: {
+                dt: row
+            },
+            fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        })
+            .then(function (answer) {
+
+            });
+    };
 });
 
 app.controller('OrderReportCtrl', function ($scope, htp) {

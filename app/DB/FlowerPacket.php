@@ -9,6 +9,7 @@ class FlowerPacket extends Model
 
     public $timestamps = TRUE;
     protected $table = 'flower_packets';
+    protected $with = 'pkg_limit';
 
     protected $fillable = ['title', 'price'];
 
@@ -24,6 +25,12 @@ class FlowerPacket extends Model
     public function packages()
     {
         return $this->belongsToMany(FlowerPackage::class);
+    }
+
+    public function pkg_limit()
+    {
+        return $this->belongsToMany(FlowerPackage::class)->select('name');
+
     }
 
 }

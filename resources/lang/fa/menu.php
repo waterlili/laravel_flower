@@ -20,6 +20,7 @@ return [
     'two_option'         => 'Option Two ',
     'three_option'       => 'Option Three',
     'orders'             => 'سفارش ها',
+    'daily_generation' => 'گزارش تولید روزانه',
     'customer'           => 'مشتریان',
     'last_orders'        => 'سفارش های جدید',
     'add_order'          => 'اضافه کردن سفارش جدید',

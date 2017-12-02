@@ -13,6 +13,7 @@ class AddSentAtToOrderPacketsTable extends Migration
     public function up()
     {
         Schema::table('order_packets', function (Blueprint $table) {
+            $table->tinyInteger('period')->after('packet_id');
             $table->dateTime('sent_at')->after('combination');
         });
     }
@@ -25,7 +26,7 @@ class AddSentAtToOrderPacketsTable extends Migration
     public function down()
     {
         Schema::table('order_packets', function (Blueprint $table) {
-            $table->dropColumn('sent_at');
+            $table->dropColumns('sent_at', 'period');
         });
     }
 }

@@ -1,5 +1,6 @@
 <?php
 $name = \App\View\Text::create('data.name', 'نام')->setRequired(true)->form()->export();
+//sign of flowers
 $nemad = \App\View\Text::create('data.nemad', 'نماد گل')->setRequired(true)->form()->export();
 $vahed = \App\View\Select::create('data.vahed', 'واحد', \App\DB\Flower::vahed())
     ->setRequired(true)

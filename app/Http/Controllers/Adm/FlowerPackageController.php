@@ -93,6 +93,7 @@ class FlowerPackageController extends Controller
         $flowers = $package->flower()->get();
         $flower_array = [];
         foreach ($flowers as $flower) {
+            //sign of each flowers combine with each others
             $flower_array[] = $flower->nemad . $flower->pivot->count;
         }
         return implode(' - ', $flower_array);

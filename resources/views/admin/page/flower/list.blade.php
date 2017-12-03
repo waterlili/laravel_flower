@@ -2,6 +2,7 @@
 $table = new \App\View\NgTable('جدول گل ها', 'tbl', 'console/flower/list');
 $table
         ->addCol('name', 'نام')
+    //sign of each flowers
         ->addCol('nemad', 'نماد')
         ->addCol('price', 'قیمت', null, true, FALSE, 'currency:"":""')
         ->addCol('vahed_str', 'واحد', 'vahed_str')

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Adm;
 
 use App\DB\FlowerVase;
+use App\DB\OrderItem;
 use Mail;
 use App\DB\Cnt;
 use App\Jobs\ChangeStatusOfOrders;
@@ -44,6 +45,11 @@ class OrderController extends Controller {
     {
         return view('admin.page.order.dailyGeneration');
     }
+
+    public function getDailyOrders()
+    {
+        return view('admin.page.order.dailyOrders');
+    }
     public function getListDay()
     {
         return view('admin.page.order.list-day');
@@ -71,15 +77,12 @@ class OrderController extends Controller {
 
     public function postDailyGeneration(Request $request)
     {
-
-        $record = OrderPacket::select([
+        $record = OrderItem::select([
             '*',
-            OrderPacket::$SELECT_SENT_AT,
-            OrderPacket::$SELECT_PERIOD,
+            OrderItem::$SELECT_SENT_AT,
             DB::Raw('count(*) as Day_count')
 
-        ])->groupBy(DB::Raw('DATE(sent_at)'), 'packet_id', 'period')->with('packet');
-
+        ])->whereItemable_type('FlowerPacket')->with('flowerPacket')->groupBy(DB::Raw('DATE(sent_at)'), 'combination');
         //overwrite number of total
         $count = $record->get()->count();
 
@@ -97,315 +100,29 @@ class OrderController extends Controller {
 
         $export = $this->tableEngine($record, $request->all(), true);
         //add some attribute to exist query
-        foreach ($export['rows'] as &$item) {
-            array_set($item, 'packet.pkg_names', join(', ', array_map(function ($i) {
-                return $i['name'];
-            }, array_get($item, 'packet.pkg_limit'))));
-        }
-
         $export['total'] = $count;
         return $export;
 
     }
-    public function postOrderList(Request $request) {
-        return $this->_orderList($request);
-    }
 
-    public function postListDay(Request $request)
+    public function postDailyOrders(Request $request)
     {
-        $records = OrderDay::select([
-            '*',
-            Order::$SELECT_TYPE_STR,
-            Order::$SELECT_STS_STR,
-            'when as when_str',
-            'when as when_day',
-            Order::$selectCJ,
-        ]);
-        $records->with('customer');
-        $records->with('product');
-        $records->with('order');
-        return $this->tableEngine($records, $request->all());
+        $today = jdate()->format('date');
+        $record = Order::select(['orders.number', 'orders.cid'])->where('expired_at', '>=', $today . ' 00:00:00')
+            ->leftJoin('order_packets', 'orders.id', '=', 'order_packets.order_id')
+            ->leftJoin('order_flowers', 'orders.id', '=', 'order_flowers.order_id')
+            ->orderBy('started_at', 'DESC')
+            ->with('customer')->get();
+        return $record;
+
+
+        $export = $this->tableEngine($record, $request->all(), true);
+
+
+        return $export;
+
     }
 
-    public function postOrderUnverified(Request $request) {
-        return $this->_orderList($request, 'unver');
-    }
-
-    public function postEditProductList(Request $request) {
-        $this->validate($request, [
-            'id' => "required"
-        ]);
-
-        $input = $request->all();
-
-        OrderList::whereOid($input['id'])->delete();
-        $sub = 0;
-        foreach ($input['data']['order_item'] as $item) {
-            $sub += ($item['total'] * $item['price']);
-            OrderList::create([
-                'pid' => (isset($item['pid'])) ? $item['pid'] : $item['id'],
-                'oid' => $input['id'],
-                'price' => $item['price'],
-                'total' => $item['total']
-            ]);
-        }
-        Order::find($input['id'])->update(['price' => $sub]);
-        return response()->json(TRUE);
-    }
-
-    public function postGetEditData(Request $request) {
-        $this->validate($request, ['id' => 'required']);
-        $order = Order::
-        with('sender_ac')
-            ->with('visitor_ac')
-            ->with('uid_ac')
-            ->find($request->input('id'));
-        $order = $order->toArray();
-        if (!is_null($order['visitor'])) {
-            $order['visitor'] = $order['visitor_ac'];
-        }
-
-        if (!is_null($order['sender'])) {
-            $order['sender'] = $order['sender_ac'];
-        }
-
-        if (!is_null($order['uid'])) {
-            $order['customer'] = $order['uid_ac'];
-        }
-        return response()->json($order);
-    }
-
-    public function postGetDayReportData(Request $request) {
-        $input = $request->all();
-        $jdate = (isset($input['date'])) ? $input['date'] : jDate::forge()
-            ->format('Y/m/d');
-        $date = Carbon::instance(jDate::dateTimeFromFormat('Y/m/d', $jdate));
-        $export = [
-            'dt' => [
-                'total_order' => Order::date('created_at', $date)->count(),
-                'order_paid' => Order::date('created_at', $date)->paid()->count(),
-                'order_unpaid' => Order::date('created_at', $date)->unpaid()
-                    ->count(),
-                'income' => Order::date('created_at', $date)->paid()->sum('price'),
-            ],
-            'date' => $jdate
-        ];
-        if (is_null($export['dt']['income'])) {
-            $export['dt']['income'] = 0;
-        }
-        return response()->json($export);
-    }
-
-    public function postGetWeekReportData(Request $request) {
-        $input = $request->all();
-        $jdate = (isset($input['date'])) ? $input['date'] : jDate::forge()
-            ->format('Y/m/d');
-        $date = Carbon::instance(jDate::dateTimeFromFormat('Y/m/d', $jdate));
-        $sub = Carbon::parse($date->toDateTimeString())->subDays(30);
-        $export = [
-            'dt' => [
-                'total_order' => Order::date('created_at', [$sub, $date])->count(),
-                'order_paid' => Order::date('created_at', [$sub, $date])
-                    ->paid()
-                    ->count(),
-                'order_unpaid' => Order::date('created_at', [$sub, $date])
-                    ->unpaid()
-                    ->count(),
-                'income' => Order::date('created_at', [$sub, $date])
-                    ->paid()
-                    ->sum('price'),
-            ],
-            'date' => $jdate
-        ];
-        if (is_null($export['dt']['income'])) {
-            $export['dt']['income'] = 0;
-        }
-        return response()->json($export);
-    }
-
-    public function postGetMonthReportData(Request $request) {
-        $input = $request->all();
-        $jdate = (isset($input['date'])) ? $input['date'] : jDate::forge()
-            ->format('Y/m/d');
-        $date = Carbon::instance(jDate::dateTimeFromFormat('Y/m/d', $jdate));
-        $sub = Carbon::parse($date->toDateTimeString())->subMonth(1);
-        $export = [
-            'dt' => [
-                'total_order' => Order::date('created_at', [$sub, $date])->count(),
-                'order_paid' => Order::date('created_at', [$sub, $date])->paid()
-                    ->count(),
-                'order_unpaid' => Order::date('created_at', [$sub, $date])->unpaid()
-                    ->count(),
-                'income' => Order::date('created_at', [$sub, $date])->paid()
-                    ->sum('price'),
-            ],
-            'date' => $jdate
-        ];
-        if (is_null($export['dt']['income'])) {
-            $export['dt']['income'] = 0;
-        }
-        return response()->json($export);
-    }
-
-    public function postDayPieChart(Request $request) {
-        $input = $request->all();
-        if (!isset($input['order_paid'])) {
-            $input['order_paid'] = 0;
-        }
-        if (!isset($input['order_unpaid'])) {
-            $input['order_unpaid'] = 0;
-        }
-        $chart = PieChart::object([$input['order_paid'], $input['order_unpaid']], [
-            'پرداخت شده',
-            'پرداخت نشده'
-        ], ['#607D8B', '#03A9F4']);
-        return response()->json($chart);
-    }
-
-    public function postWeekLineChart(Request $request) {
-        $input = $request->all();
-        $jDate = $input['date'];
-        $carbon = Carbon::instance(jDate::dateTimeFromFormat('Y/m/d', $jDate))
-            ->subDays(7);
-        $paid = Order::paid();
-        $unpaid = Order::unpaid();
-        $p = [];
-        $u = [];
-        $t = [];
-        for ($i = 0; $i < 8; $i++) {
-            $p[] = $paid->whereDate('created_at', '=', $carbon)->count();
-            $u[] = $unpaid->whereDate('created_at', '=', $carbon)->count();
-            $t[] = jDate::forge($carbon->format('Y/m/d'))->format('m/d (l)');
-            $carbon->addDay();
-        }
-        $chart = LineChart::object(
-            [
-                $p,
-                $u,
-            ],
-            $t,
-            [
-                'پرداختی ها',
-                'پرداخت نشده ها'
-            ]);
-        return response()->json($chart);
-    }
-
-
-    public function postMonthLineChart(Request $request) {
-        $input = $request->all();
-        $jDate = $input['date'];
-        $carbon = Carbon::instance(jDate::dateTimeFromFormat('Y/m/d', $jDate))
-            ->subDays(30);
-        $paid = Order::paid();
-        $unpaid = Order::unpaid();
-        $p = [];
-        $u = [];
-        $t = [];
-        for ($i = 0; $i < 31; $i++) {
-            $p[] = $paid->whereDate('created_at', '=', $carbon)->count();
-            $u[] = $unpaid->whereDate('created_at', '=', $carbon)->count();
-            $t[] = jDate::forge($carbon->format('Y/m/d'))->format('m/d (l)');
-            $carbon->addDay();
-        }
-        $chart = LineChart::object(
-            [
-                $p,
-                $u,
-            ],
-            $t,
-            [
-                'پرداختی ها',
-                'پرداخت نشده ها'
-            ]);
-        return response()->json($chart);
-    }
-
-    protected function _orderList(Request $request, $p = NULL) {
-        $records = Order::select([
-            '*',
-            Order::$SELECT_TYPE_STR,
-            Order::$SELECT_TIME_STR,
-            Order::$SELECT_DAY_STR,
-            Order::$SELECT_STS_STR,
-            Order::$selectCJ,
-            Order::$selectUJ,
-        ]);
-        if ($p == 'unver') {
-            $records->where('sts', -1);
-        }
-        $records->with('customer');
-        $records->with('user');
-        return $this->tableEngine($records, $request->all());
-    }
-
-    public function postGetOrderItems(Request $request) {
-        $this->validate($request, ['id' => 'required']);
-        $oitems = OrderList::where('oid', $request->input('id'))
-            ->with('product_name')
-            ->get();
-        return response()->json($oitems);
-    }
-
-
-    public function postAdd(Request $request) {
-
-        $input = $request->all();
-        $input['creator'] = Auth::user()->id;
-        if (isset($input['customer']) && isset($input['customer']['id'])) {
-            $input['uid'] = $input['customer']['id'];
-        }
-
-        if (isset($input['visitor']) && isset($input['visitor']['id'])) {
-            $input['visitor'] = $input['visitor']['id'];
-        }
-
-        if (isset($input['sender']) && isset($input['sender']['id'])) {
-            $input['sender'] = $input['sender']['id'];
-        }
-
-
-        if (isset($input['send_at'])) {
-            $input['send_at'] = Carbon::instance(jDate::dateTimeFromFormat('Y/m/d', $input['send_at']));
-            if (isset($input['send_at_time'])) {
-                $carbon = Carbon::parse($input['send_at_time']);
-                $input['send_at']->setTime($carbon->hour, $carbon->minute);
-            }
-        }
-
-        $input['type'] = Order::$NORMAL_TYPE;
-        $input['total_product'] = sizeof($input['order_item']);
-        $input['sts'] = -1;
-        $input['submit'] = -1;
-        $input['price'] = $input['total'];
-        $order = Order::create($input);
-        foreach ($input['order_item'] as $item) {
-            OrderList::create(
-                [
-                    'pid' => $item['id'],
-                    'oid' => $order->id,
-                    'price' => $item['price'],
-                    'total' => $item['total']
-                ]
-            );
-        }
-        return response()->json(['result' => TRUE]);
-    }
-
-
-    public function postGetProduct(Request $request) {
-        $input = $request->all();
-        $record = Product::
-        where('title', 'LIKE', '%' . $input['textSearch'] . '%')
-            ->orWhere('code', 'LIKE', '%' . $input['textSearch'] . '%')
-            ->select([
-                'id',
-                'price',
-                DB::raw("CONCAT_WS(' ',title ,concat('(',code,')')) as value")
-            ])
-            ->get();
-        return response()->json($record);
-    }
 
     public function postGetCustomer(Request $request) {
         $input = $request->all();
@@ -442,20 +159,6 @@ class OrderController extends Controller {
         return response()->json($record);
     }
 
-    public function postGetVisitor(Request $request) {
-        $input = $request->all();
-        $record = User::visitor()
-            ->where(function ($query) use ($input) {
-                $query->where('fname', 'LIKE', '%' . $input['textSearch'] . '%')
-                    ->orWhere('lname', 'LIKE', '%' . $input['textSearch'] . '%');
-            })
-            ->select([
-                'id',
-                DB::raw("CONCAT(fname,' ', lname) as value")
-            ])
-            ->get();
-        return response()->json($record);
-    }
 
     public function postGetFlowers(Request $request) {
         $input = $request->all();
@@ -464,21 +167,6 @@ class OrderController extends Controller {
             ->select(['id', 'title as value'])
             ->get();
         return response()->json($record);
-    }
-
-
-    public function postSetVisitor(Request $request) {
-        $this->validate($request, ['id' => 'required']);
-        $input = $request->all();
-        Order::find($input['id'])->update(['visitor' => Auth::user()->id]);
-        return response()->json(TRUE);
-    }
-
-    public function postSetSender(Request $request) {
-        $this->validate($request, ['id' => 'required']);
-        $input = $request->all();
-        Order::find($input['id'])->update(['sender' => Auth::user()->id]);
-        return response()->json(TRUE);
     }
 
     public function postSetSts(Request $request) {
@@ -520,23 +208,27 @@ class OrderController extends Controller {
         //find packages that are set for special packet
         $orders = count($input['new_orders']);
         $packets_rand = array();
-        for ($i = 0; $i < $orders; $i++) {
-            if (!empty($input['new_orders'][$i]['first'])) {
 
+        for ($i = 0; $i < $orders; $i++) {
+            //first of all diagnose first date isn't null
+            if (!empty($input['new_orders'][$i]['first'])) {
+                //get start date and save it database
+                $started_at = $input['new_orders'][$i]['first'];
+                $date = str_replace('/', '-', $started_at);
+                $started_at = Carbon::createFromFormat('Y-m-d', $date);
+                $last_date = '';
+                //first of all submit order in orders
+                $start_order = clone $started_at;
+
+                //order type
                 if (!empty($input['new_orders'][$i]['pck_type'])) {
 
                     if (!empty($input['new_orders'][$i]['w'])) {
-                        //get start date and save it database
-                        $started_at = $input['new_orders'][$i]['first'];
-                        $date = str_replace('/', '-', $started_at);
-                        $started_at = Carbon::createFromFormat('Y-m-d', $date);
-                        $last_date = '';
-                        //first of all submit order in orders
-                        $start_order = clone $started_at;
+
                         $order = $this->submitOrder($input, $orders, $started_at)->getData();
 
                         if (empty($order->last_insert_id)) {
-                            $message = "خطا در ارسال لینک پرداخت";
+                            $message = "خطا در ثبت سفارش";
                             return response()->json(array('error' => false, 'msg' => $message), 422);
                         } else {
                             $id = $order->last_insert_id;
@@ -553,18 +245,13 @@ class OrderController extends Controller {
                     foreach ($packages as $package) {
                         $packets_rand[] = $package;
                     }
+                    $packet = FlowerPacket::find((int)$pk_id);
                     $pkg_cnt = count($packets_rand);
                     $numbers = range(0, $pkg_cnt - 1);
                     shuffle($numbers);
-                    $duration = Order::whereId($order->last_insert_id)->pluck('time_duration');
-                    $duration = $duration[0];
-                    //get duration of time
-                    if ($duration == 1 || $duration == 2)
-                        $period = 1;
-                    elseif ($duration == 3 || $duration == 4)
-                        $period = 2;
 
                     if ($input['new_orders'][$i]['type'] == 2) {
+
 
                         $packages = FlowerPacket::find($pk_id)->packages()->get();
                         $packets_rand = $packages->toArray();
@@ -575,73 +262,85 @@ class OrderController extends Controller {
                         if (isset($packets_rand[$rand_keys]['name']))
                             $rnd_pkt = $packets_rand[$rand_keys]['name'];
 
-                        $pkt_order = new OrderPacket();
-                        $pkt_order->order_id = $id;
-                        $pkt_order->period = $period;
-                        $pkt_order->packet_id = (int)$pk_id;
-                        $pkt_order->combination = $rnd_pkt;
-                        $pkt_order->save();
-                    } elseif ($pkg_cnt >= $week) {
 
+                        $orderItem = new OrderItem();
+                        $orderItem->order_id = $id;
+                        $orderItem->sts = 1;
+                        $orderItem->count = 0;
+                        $orderItem->combination = $rnd_pkt;
+                        $orderItem->sent_at = $start_order;
+                        $txt = explode('-', $rnd_pkt);
+                        $orderItem->text = json_encode($txt);
+                        $orderItem->orderItem($packet);
+                        $orderItem->save();
+                    } elseif ($pkg_cnt >= $week) {
                         shuffle($numbers);
-                        for ($k = 0; $k <= $week; $k++) {
+                        for ($k = 0; $k < $week; $k++) {
                             $rand_keys = $numbers[$i];
                             $rnd_pkt = $packets_rand[$rand_keys]['name'];
-                            $pkt_order = new OrderPacket();
-                            $pkt_order->order_id = $id;
-                            $pkt_order->period = $period;
-                            $pkt_order->packet_id = (int)$pk_id;
-                            $pkt_order->combination = $rnd_pkt;
+
+                            $orderItem = new OrderItem();
+                            $orderItem->order_id = $id;
+                            $orderItem->sts = 1;
+                            $orderItem->count = 0;
+                            $orderItem->combination = $rnd_pkt;
+                            $txt = explode('-', $rnd_pkt);
+                            $orderItem->text = json_encode($txt);
+                            $orderItem->orderItem($packet);
 
                             if ($k == 0) {
                                 $send_at = $start_order;
                                 $last_date = $send_at;
-                                $pkt_order->sent_at = $send_at;
+                                $orderItem->sent_at = $send_at;
 //
                             } else {
                                 $extra_date = 7;
                                 $next_time = date('Y-m-d', strtotime($last_date . ' + ' . $extra_date . ' days'));
                                 $next_time = Carbon::createFromFormat('Y-m-d', $next_time);
-                                $pkt_order->sent_at = $next_time;
+                                $orderItem->sent_at = $next_time;
                                 $last_date = $next_time;
 
 
                             }
-                            $pkt_order->save();
+                            $orderItem->save();
 
                         }
                     } elseif ($pkg_cnt <= $week) {
                         $packages = FlowerPacket::find($pk_id)->packages()->distinct()->get();
                         $packets_rand = $packages->toArray();
-
-
                         $exist_arr = array();
-//                        shuffle($numbers);
                         for ($j = 0; $j < $week; $j++) {
                             if ($pkg_cnt == 1) {
+
+
                                 $rnd_pkt = $packets_rand[0]['name'];
-                                $pkt_order = new OrderPacket();
-                                $pkt_order->order_id = $id;
-                                $pkt_order->period = $period;
-                                $pkt_order->packet_id = (int)$pk_id;
-                                $pkt_order->combination = $rnd_pkt;
+
+                                $orderItem = new OrderItem();
+                                $orderItem->order_id = $id;
+                                $orderItem->sts = 1;
+                                $orderItem->count = 0;
+                                $orderItem->combination = $rnd_pkt;
+                                $txt = explode('-', $rnd_pkt);
+                                $orderItem->text = json_encode($txt);
+                                $orderItem->orderItem($packet);
 
                                 if ($j == 0) {
                                     $send_at = $start_order;
                                     $last_date = $send_at;
-                                    $pkt_order->sent_at = $send_at;
+                                    $orderItem->sent_at = $send_at;
 
                                 } else {
                                     $extra_date = 7;
                                     $next_time = date('Y-m-d', strtotime($last_date . ' + ' . $extra_date . ' days'));
                                     $next_time = Carbon::createFromFormat('Y-m-d', $next_time);
-                                    $pkt_order->sent_at = $next_time;
+                                    $orderItem->sent_at = $next_time;
                                     $last_date = $next_time;
 
 
                                 }
-                                $pkt_order->save();
+                                $orderItem->save();
                             } else {
+
                                 if ($packets_rand != null) {
 
                                     $rand_keys = array_rand($packets_rand, 1);
@@ -656,27 +355,35 @@ class OrderController extends Controller {
                                     if (isset($packets_rand[$rand_keys]['name']))
                                         $rnd_pkt = $packets_rand[$rand_keys]['name'];
 
-                                    $pkt_order = new OrderPacket();
-                                    $pkt_order->order_id = $id;
-                                    $pkt_order->period = $period;
-                                    $pkt_order->packet_id = (int)$pk_id;
-                                    $pkt_order->combination = $rnd_pkt;
+                                    //create suborder
+
+
+                                    $orderItem = new OrderItem();
+                                    $orderItem->order_id = $id;
+                                    $orderItem->sts = 1;
+                                    $orderItem->count = 0;
+                                    $orderItem->combination = $rnd_pkt;
+                                    $txt = explode('-', $rnd_pkt);
+                                    $orderItem->text = json_encode($txt);
+                                    $orderItem->orderItem($packet);
+
                                     if ($j == 0) {
                                         $send_at = $start_order;
                                         $last_date = $send_at;
-                                        $pkt_order->sent_at = $send_at;
-//
+                                        $orderItem->sent_at = $send_at;
+
                                     } else {
 
                                         $extra_date = 7;
                                         $next_time = date('Y-m-d', strtotime($last_date . ' + ' . $extra_date . ' days'));
                                         $next_time = Carbon::createFromFormat('Y-m-d', $next_time);
-                                        $pkt_order->sent_at = $next_time;
+                                        $orderItem->sent_at = $next_time;
                                         $last_date = $next_time;
 
 
                                     }
-                                    $pkt_order->save();
+
+                                    $orderItem->save();
                                     $exist_arr[] = $rand_keys;
                                     if (count($exist_arr) > 2 && ($pkg_cnt % 3 == 0)) {
                                         array_shift($exist_arr);
@@ -698,7 +405,7 @@ class OrderController extends Controller {
                         //first of all submit order in orders
                         $order = $this->submitOrder($input, $orders, $started_at)->getData();
                         if (empty($order->last_insert_id)) {
-                            $message = "خطا در ارسال لینک پرداخت";
+                            $message = "خطا در ثبت سفارش";
                             return response()->json(array('error' => false, 'msg' => $message), 422);
                         } else {
                             $id = $order->last_insert_id;
@@ -710,12 +417,48 @@ class OrderController extends Controller {
 
                     $fl_type = explode('|', $input['new_orders'][$i]['flw_type']);
                     $flw_id = $fl_type[0];
+                    if ($input['new_orders'][$i]['type'] == 2) {
+                        $packet = Flower::find((int)$flw_id);
+                        $orderItem = new OrderItem();
+                        $orderItem->order_id = $id;
+                        $orderItem->sts = 1;
+                        $orderItem->count = $input['new_orders'][$i]['total'];
+                        $orderItem->combination = null;
+                        $orderItem->sent_at = $start_order;
+                        $orderItem->text = null;
+                        $orderItem->orderItem($packet);
+                        $orderItem->save();
+                    } else {
+                        $month = (int)$input['new_orders'][$i]['w'];
 
-                    $flw_order = new OrderFlower();
-                    $flw_order->order_id = $id;
-                    $flw_order->flower_id = (int)$flw_id;
-                    $flw_order->stalk_counter = $input['new_orders'][$i]['total'];
-                    $flw_order->save();
+                        $week = $month * 4;
+                        for ($k = 0; $k < $week; $k++) {
+
+                            $packet = Flower::find((int)$flw_id);
+                            $orderItem = new OrderItem();
+                            $orderItem->order_id = $id;
+                            $orderItem->sts = 1;
+                            $orderItem->count = $input['new_orders'][$i]['total'];
+                            $orderItem->combination = null;
+                            $orderItem->text = null;
+                            $orderItem->orderItem($packet);
+                            if ($k == 0) {
+                                $send_at = $start_order;
+                                $last_date = $send_at;
+                                $orderItem->sent_at = $send_at;
+
+                            } else {
+                                $extra_date = 7;
+                                $next_time = date('Y-m-d', strtotime($last_date . ' + ' . $extra_date . ' days'));
+                                $next_time = Carbon::createFromFormat('Y-m-d', $next_time);
+                                $orderItem->sent_at = $next_time;
+                                $last_date = $next_time;
+
+
+                            }
+                            $orderItem->save();
+                        }
+                    }
 
 
                 }
@@ -737,124 +480,130 @@ class OrderController extends Controller {
 
 
         $customer = $this->checkCustomer($input)->getData();
-        $cid = $customer->customer_id;
 
-        $mobile = $customer->customer_mobile;
-        $order_id = Order::where([['cid', '=', $cid], ['type', '=', 1]])->first();
-        $vase_id = null;
-        $flag = 0;
-        if (empty($order_id)) {
-            // TODO selection of vase isn't clear
-            $vase = FlowerVase::first();
-            //for save in order take id
-            $vase_id = $vase->id;
-            $flag = 1;
-
-        }
-        if (empty($cid)) {
+        if (!empty($customer->error) && $customer->error == false) {
             return response()->json(array('error' => false), 422);
         } else {
-            $type = "order";
-            if (!empty($input['customer']['id'])) {
-                $number = Cnt::random_number($type);
+            $cid = $customer->customer_id;
+
+            $mobile = $customer->customer_mobile;
+            $order_id = Order::where([['cid', '=', $cid], ['type', '=', 1]])->first();
+            $vase_id = null;
+            $flag = 0;
+            if (empty($order_id)) {
+                // TODO selection of vase isn't clear
+                $vase = FlowerVase::first();
+                //for save in order take id
+                $vase_id = $vase->id;
+                $flag = 1;
+
+            }
+            if (empty($cid)) {
+                return response()->json(array('error' => false), 422);
+            } else {
+                $type = "order";
+                if (!empty($input['customer']['id'])) {
+                    $number = Cnt::random_number($type);
 
 
-                for ($i = 0; $i <= $orders; $i++) {
+                    for ($i = 0; $i <= $orders; $i++) {
 //
-                    if ($flag == 0 && !empty($input['new_orders'][$i]['flowerVase'])) {
-                        $flag = 2;
-                        $vase = FlowerVase::first();
-                        //for save in order take id
-                        $vase_id = $vase->id;
-                        $vase_price = $vase->price;
+                        if ($flag == 0 && !empty($input['new_orders'][$i]['flowerVase'])) {
+                            $flag = 2;
+                            $vase = FlowerVase::first();
+                            //for save in order take id
+                            $vase_id = $vase->id;
+                            $vase_price = $vase->price;
 
-                    } else {
-                        $vase_price = 1;
-                    }
-                    $start = clone $started_at;
-
-                    if (!empty($input['new_orders'][$i]['type']) && $input['new_orders'][$i]['type'] == 1) {
-                        $t = $input['new_orders'][$i]['w'] * 4;
-                        $end = $started_at->modify('+' . --$t . 'week');
-                    } else {
-                        $end = $start;
-                    }
-
-                    if (!empty($input['new_orders'][$i]['week'])) {
-                        if (!empty($input['new_orders'][$i]['pck_type'])) {
-                            //type2 is one means packet
-                            $type2 = 1;
                         } else {
-                            //type2 is one means flowers
-                            $type2 = 2;
+                            $vase_price = 1;
                         }
-                        $amount = $this->postGetCaulateAmount($i, $input, $flag, $vase_price)->getData();
-                        $obj = [
-                            'cid' => $cid,
-                            'number' => $number,
-                            'vid' => $vase_id,
-                            'amount' => $amount->amount,
-                            'type' => array_get($input['new_orders'][$i], 'type', NULL),
-                            'type2' => $type2,
-                            'time_duration' => array_get($input['new_orders'][$i], 'time', NULL),
-                            'daysOfWeek' => array_get($input['new_orders'][$i], 'week', NULL),
-                            'sending' => array_get($input['new_orders'][$i], 'sending', NULL),
-                            'month' => array_get($input['new_orders'][$i], 'w', NULL),
-                            'sending_name' => array_get($input['new_orders'][$i], 'sending_name', NULL),
-                            'sending_mobile' => array_get($input['new_orders'][$i], 'sending_mobile', NULL),
-                            'sending_address' => array_get($input['new_orders'][$i], 'sending_mobile', NULL),
-                            'started_at' => $start,
-                            'expired_at' => $end,
+                        $start = clone $started_at;
+
+                        if (!empty($input['new_orders'][$i]['type']) && $input['new_orders'][$i]['type'] == 1) {
+                            $t = $input['new_orders'][$i]['w'] * 4;
+                            $end = $started_at->modify('+' . --$t . 'week');
+                        } else {
+                            $end = $start;
+                        }
+
+                        if (!empty($input['new_orders'][$i]['week'])) {
+                            if (!empty($input['new_orders'][$i]['pck_type'])) {
+                                //type2 is one means packet
+                                $type2 = 1;
+                            } else {
+                                //type2 is one means flowers
+                                $type2 = 2;
+                            }
+                            $amount = $this->postGetCaulateAmount($i, $input, $flag, $vase_price)->getData();
+                            $obj = [
+                                'cid' => $cid,
+                                'number' => $number,
+                                'vid' => $vase_id,
+                                'amount' => $amount->amount,
+                                'type' => array_get($input['new_orders'][$i], 'type', NULL),
+                                'type2' => $type2,
+                                'time_duration' => array_get($input['new_orders'][$i], 'time', NULL),
+                                'daysOfWeek' => array_get($input['new_orders'][$i], 'week', NULL),
+                                'sending' => array_get($input['new_orders'][$i], 'sending', NULL),
+                                'month' => array_get($input['new_orders'][$i], 'w', NULL),
+                                'sending_name' => array_get($input['new_orders'][$i], 'sending_name', NULL),
+                                'sending_mobile' => array_get($input['new_orders'][$i], 'sending_mobile', NULL),
+                                'sending_address' => array_get($input['new_orders'][$i], 'sending_mobile', NULL),
+                                'started_at' => $start,
+                                'expired_at' => $end,
 //
-                        ];
-                        $id = Order::create($obj)->id;
-                        if ($input['new_orders'][$i]['type'] == 1) {
-                            $job = ((new ChangeStatusOfOrders($id))->delay($start->addWeeks(--$t)));
-                            dispatch($job);
-                        }
-                        $ord_amount = $obj['amount'];
-                        //each payment will do after create an object
-                        app('App\Http\Controllers\Adm\PaymentController')->createPayment($id, $input, $i);
-                        if (!empty($input['new_orders'][$i]['pay_type'])) {
+                            ];
+                            $id = Order::create($obj)->id;
+                            if ($input['new_orders'][$i]['type'] == 1) {
+                                $job = ((new ChangeStatusOfOrders($id))->delay($start->addWeeks(--$t)));
+                                dispatch($job);
+                            }
+                            $ord_amount = $obj['amount'];
+                            //each payment will do after create an object
+                            app('App\Http\Controllers\Adm\PaymentController')->createPayment($id, $input, $i);
+                            if (!empty($input['new_orders'][$i]['pay_type'])) {
 
-                            switch ($input['new_orders'][$i]['pay_type']) {
-                                case 1:
-                                    $this->postSendEmail($id, $ord_amount);
-                                    break;
-                                case 3:
-
-                                    $result = app('App\Http\Controllers\Adm\SmsController')->getSendMessage($id, $ord_amount, $mobile);
-                                    $status = $result->getStatusCode();
-                                    if ($status == 422) {
-                                        return response()->json(array('error' => false), 422);
-
-                                    } else {
+                                switch ($input['new_orders'][$i]['pay_type']) {
+                                    case 1:
+                                        $this->postSendEmail($id, $ord_amount);
                                         break;
-                                    }
-                                default:
-                                    return response()->json(array('success' => true, 'last_insert_id' => $id), 200);
+                                    case 3:
 
+                                        $result = app('App\Http\Controllers\Adm\SmsController')->getSendMessage($id, $ord_amount, $mobile);
+                                        $status = $result->getStatusCode();
+                                        if ($status == 422) {
+                                            return response()->json(array('error' => false), 422);
+
+                                        } else {
+                                            break;
+                                        }
+                                    default:
+                                        return response()->json(array('success' => true, 'last_insert_id' => $id), 200);
+
+
+                                }
+
+                            } else {
+                                return response()->json(array('success' => true, 'last_insert_id' => $id), 200);
 
                             }
-
-                        } else {
                             return response()->json(array('success' => true, 'last_insert_id' => $id), 200);
 
+                        } else {
+                            continue;
                         }
-                        return response()->json(array('success' => true, 'last_insert_id' => $id), 200);
 
-                    } else {
-                        continue;
+                        return response()->json(array('success' => true, 'last_insert_id' => $id), 200);
                     }
 
-                    return response()->json(array('success' => true, 'last_insert_id' => $id), 200);
+
+                } else {
+                    return response()->json(array('error' => false), 422);
                 }
-
-
-            } else {
-                return response()->json(array('error' => false), 422);
             }
         }
+
 
     }
 
@@ -962,43 +711,29 @@ class OrderController extends Controller {
 
         $input = $request->all();
         $orders = Order::whereCid($input['cid'])->select(['*', 'daysOfWeek as week_str', 'month as month_str', 'started_at as first_date'])->orderBy('id', 'desc')->get();
-        $orders->load('orderPackets', 'orderFlowers', 'orderPayment');
+        $orders->load('orderItems', 'orderPayment');
 
         $date = array();
         foreach ($orders as $order) {
             $relData = $order->getRelations();
             $day = $order->week_str;
 
-            if ($order->type == 1 && !$relData['orderFlowers']->isEmpty()) {
+            if ($order->type == 1 && $relData['orderItems'][0]['itemable_type'] == 'Flower') {
 
-                $start_at = Carbon::parse($order->started_at);
-                $date[] = $start_at;
-                $date_first = explode(' ', $order->started_at);
-                $today = jDate::forge()->format('Y-m-d');
-
-
-                $flower_data = $relData['orderFlowers'][0]->toArray();
-                $flower_count = $flower_data['stalk_counter'];
-                $flower_name = $flower_data['flower']['name'];
-                $date_rep[] = array('date' => $date_first[0], 'day' => $day, 'name' => $flower_name
-                , 'counter' => $flower_count, 'current' => $today);
-                $weekCounter = $order->month * 4;
-                for ($i = 1; $i < $weekCounter; $i++) {
-
-                    $last_date = array_last($date);
-                    $date[] = Carbon::parse($last_date)->addWeeks(1);
-                    $date_rep[] = array('date' => Carbon::parse($last_date)->addWeeks(1)->format('Y-m-d')
-                    , 'day' => $day
-                    , 'name' => $flower_name
-                    , 'counter' => $flower_count
-                    , 'current' => $today);
-
+                $flower_info = $relData['orderItems']->where('itemable_type', 'Flower');
+                $flower = $relData['orderItems']->where('itemable_type', 'Flower')->load('flower');
+                foreach ($flower_info as $flower_data) {
+                    $date_sent = explode(' ', $flower_data->sent_at);
+                    $flower_data->setAttribute('day', $day);
+                    $flower_data->setAttribute('sent', $date_sent[0]);
+                    $today = jDate::forge()->format('Y-m-d');
+                    $flower_data->setAttribute('current', $today);
                 }
+                $order->setAttribute('flowerItem', $flower[0]);
 
-                $order->setAttribute('orderCard', $date_rep);
-
-            } else if ($order->type == 1 && !$relData['orderPackets']->isEmpty()) {
-                $flower_packet = $relData['orderPackets'];
+            } else if ($order->type == 1 && $relData['orderItems'][0]['itemable_type'] == 'FlowerPacket') {
+                $packet_detail = $relData['orderItems']->where('itemable_type', 'FlowerPacket')->load('flowerPacket');
+                $flower_packet = $relData['orderItems']->where('itemable_type', 'FlowerPacket');
                 foreach ($flower_packet as $packet) {
                     $date_sent = explode(' ', $packet->sent_at);
                     $packet->setAttribute('day', $day);
@@ -1006,6 +741,11 @@ class OrderController extends Controller {
                     $today = jDate::forge()->format('Y-m-d');
                     $packet->setAttribute('current', $today);
                 }
+                $order->setAttribute('packetItem', $packet_detail[0]);
+            } else if ($order->type == 2 && $relData['orderItems'][0]['itemable_type'] == 'Flower') {
+                $relData['orderItems']->where('itemable_type', 'Flower')->load('flower');
+            } else if ($order->type == 2 && $relData['orderItems'][0]['itemable_type'] == 'FlowerPacket') {
+                $relData['orderItems']->where('itemable_type', 'FlowerPacket')->load('flowerPacket');
             }
 
 

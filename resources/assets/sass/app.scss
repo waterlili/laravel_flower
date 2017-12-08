@@ -4589,6 +4589,12 @@ ul.ng-table-pagination {
 }
 .card_sty {
   border-radius: 22px;
+  position: relative;
+}
+
+.crd-btn {
+  position: absolute;
+  left: 0px;
 }
 
 #card_pass {
@@ -4728,6 +4734,7 @@ div#box label {
 #date-du {
   border: 1px solid #aba3a3;
   border-radius: 10px;
+  width: 100%;
 }
 
 .mp {
@@ -4736,4 +4743,9 @@ div#box label {
 
 #reagent input {
   border-radius: 0.285714rem !important;
+}
+
+.date_pos {
+  display: inline-block;
+  float: left;
 }

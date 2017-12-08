@@ -31,6 +31,10 @@ class Flower extends Model
         return ($value == 'shakhe') ? 'شاخه' : 'دسته';
     }
 
+    public function items()
+    {
+        return $this->morphMany('App\DB\OrderItem', 'itemable');
+    }
     public function getSagheStrAttribute($value) {
         if($value == 'kootah')
             return "کوتاه";
@@ -107,4 +111,5 @@ class Flower extends Model
     {
         return Flower::select(['id', 'name', 'price'])->get()->toArray();
     }
+
 }

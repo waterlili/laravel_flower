@@ -138,7 +138,7 @@ class Order extends Model {
 
     public function customer()
     {
-        return $this->belongsTo('App\DB\Customer', 'cid')->select(['id', 'name']);
+        return $this->belongsTo('App\DB\Customer', 'cid')->select(['id', 'fname', 'lname', 'address', 'mobile', 'description']);
     }
 
     public function user()
@@ -246,16 +246,10 @@ class Order extends Model {
         return Order::select(['id', 'amount'])->get()->toArray();
     }
 
-    public function orderPackets()
+    public function orderItems()
     {
-        return $this->hasMany(OrderPacket::class);
+        return $this->hasMany(OrderItem::class);
     }
-
-    public function orderFlowers()
-    {
-        return $this->hasMany(OrderFlower::class);
-    }
-
     public function orderPayment()
     {
         return $this->hasOne(OrderPayment::class, 'oid');

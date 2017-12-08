@@ -82,6 +82,7 @@ var _trans_en = {
         'consoleflower_packetadd': 'افزودن بسته جدید',
         'consoleflower_packetlist': 'لیست بسته ها',
         'consoleorderdaily-generation': 'گزارش تولید روزانه',
+        'consoleorderdaily-orders': 'لیست سفارشات ارسالی روز',
 
     },
     'subject': {

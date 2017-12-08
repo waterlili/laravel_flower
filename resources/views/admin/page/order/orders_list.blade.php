@@ -16,7 +16,8 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
         سفارش
         <span>{{item.number}}</span>&nbsp;
 
-        <span ng-if="item.type==1">&nbsp;اشتراک {{item.month_str}}</span>
+        <span ng-if="item.type==1">&nbsp;اشتراک {{item.month_str}}&nbsp;<span
+                    ng-if="item.flowerItem">گل&nbsp;{{item.flowerItem.flower.name}}</span><span ng-if="item.packetItem">بسته&nbsp;{{item.packetItem.flower_packet.title}}</span></span>
         <span ng-if="item.type==2">&nbsp;هدیه </span>
 
         <div flex></div>
@@ -31,37 +32,40 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
         <div class="p-md">
             <div layout-gt-md="row" layout-align="start center">
                 <div class="form-group">
+                    <div ng-if="item.order_items[0].itemable_type=='Flower' && item.type==2">
 
-                    <div ng-if="item.order_flowers.length > 0 && item.type==2">
                         <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش گل</h4>
-                        <div><label class="lab_sty">نام گل:</label>{{item.order_flowers[0]['flower']['name']}} <span>{{item.order_flowers[0]['stalk_counter']}}
-                                شاخه</span></div>
+                        <div><label class="lab_sty">نام گل:</label>{{item.order_items[0]['flower']['name']}} -<span>{{item.order_items[0]['count']}}
+                                شاخه</span>
+                            <label class="lab_sty">هزینه سفارش:</label><span>{{item.amount}}</span>
+                        </div>
 
                     </div>
-                    <div ng-if="item.order_packets.length > 0 && item.type==2">
+                    <div ng-if="item.order_items[0].itemable_type=='FlowerPacket' && item.type==2">
+
                         <h4 class="topic_pos"><i class="material-icons">local_florist</i> سفارش بسته ی گل
                         </h4>
-                        <div><label class="lab_sty">نوع بسته:</label>{{item.order_packets[0]['packet']['title']}}</div>
-
+                        <div><label class="lab_sty">نوع بسته:</label>{{item.order_items[0]['flower_packet']['title']}}
+                            <label class="lab_sty">هزینه سفارش:</label><span>{{item.amount}}</span>
+                        </div>
 
 
                     </div>
                     <div layout="row" layout-wrap layout-xs="column"
-                         ng-if="item.order_flowers.length > 0 && item.type==1">
-                        <div flex-gt-md="25" layout-align="start center"
-                             ng-repeat="item in item.orderCard">
+                         ng-if="item.order_items[0].itemable_type=='Flower' && item.type==1">
 
-                            <md-card class="card_sty" id="card_poss" layout="row" ng-if="item.current < item.date"
+                        <div flex-gt-md="25" layout-align="start center"
+                             ng-repeat="item in item.order_items">
+                            <md-card class="card_sty" id="card_poss" layout="row" ng-if="item.current < item.sent"
                                      layout-xs="column" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}"
                                      md-theme-watch>
                                 <div flex style="width:275px">
                                     <md-card-title>
                                         <md-card-title-text>
 
-                                            <span>{{item.date}}</span>
+                                            <span>{{item.sent}}</span>
                                             <span>{{item.day}}</span>
-                                            <span>{{item.name}}</span>
-                                            <span>{{item.counter}}شاخه</span>
+                                            <span>{{item.count}}شاخه</span>
                                         </md-card-title-text>
                                     </md-card-title>
                                 </div>
@@ -71,17 +75,16 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                     </md-button>
                                 </div>
                             </md-card>
-                            <md-card layout="row" class="card_sty" id="card_pass" ng-if="item.current >= item.date"
+                            <md-card layout="row" class="card_sty" id="card_pass" ng-if="item.current >= item.sent"
                                      layout-xs="column" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}"
                                      md-theme-watch>
                                 <div flex style="width:275px">
                                     <md-card-title>
                                         <md-card-title-text green>
 
-                                            <span>{{item.date}}</span>
+                                            <span>{{item.sent}}</span>
                                             <span>{{item.day}}</span>
-                                            <span>{{item.name}}</span>
-                                            <span>{{item.counter}}شاخه</span>
+                                            <span>{{item.count}}شاخه</span>
                                         </md-card-title-text>
                                     </md-card-title>
                                 </div>
@@ -92,19 +95,21 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                 </div>
                             </md-card>
                         </div>
-
+                        <label class="lab_sty">هزینه سفارش:</label><span>{{item.amount}}</span>
 
                     </div>
 
                     <div layout="row" layout-wrap layout-xs="column"
-                         ng-if="item.order_packets.length > 0 && item.type==1">
-
+                         ng-if="item.order_items[0].itemable_type=='FlowerPacket' && item.type==1">
                         <div flex-gt-md="25" layout-align="start center"
-                             ng-repeat="item in item.order_packets">
+                             ng-repeat="item in item.order_items">
                             <md-card class="card_sty" id="card_poss" layout="row" ng-if="item.current < item.sent"
                                      layout="row" layout-xs="column"
                                      md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
                                 <div flex style="width:275px">
+                                    <md-button class="md-icon-button pull-left crd-btn" aria-label="More">
+                                        <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
+                                    </md-button>
                                     <md-card-title>
                                         <md-card-title-text>
                                             <span>{{item.sent}}</span>
@@ -112,17 +117,15 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                             <span>{{item.combination}}</span>
                                         </md-card-title-text>
                                     </md-card-title>
-                                </div>
-                                <div flex>
-                                    <md-button class="md-icon-button pull-left" aria-label="More">
-                                        <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
-                                    </md-button>
                                 </div>
                             </md-card>
                             <md-card class="card_sty" id="card_pass" layout="row" ng-if="item.current >= item.sent"
                                      layout="row" layout-xs="column"
                                      md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
                                 <div flex style="width:275px">
+                                    <md-button class="md-icon-button pull-left crd-btn" aria-label="More">
+                                        <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
+                                    </md-button>
                                     <md-card-title>
                                         <md-card-title-text>
                                             <span>{{item.sent}}</span>
@@ -131,13 +134,9 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                         </md-card-title-text>
                                     </md-card-title>
                                 </div>
-                                <div flex>
-                                    <md-button class="md-icon-button pull-left" aria-label="More">
-                                        <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
-                                    </md-button>
-                                </div>
                             </md-card>
                         </div>
+                        <label class="lab_sty">هزینه سفارش:</label><span>{{item.amount}}</span>
                     </div>
 
 

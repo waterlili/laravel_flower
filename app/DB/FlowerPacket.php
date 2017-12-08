@@ -9,10 +9,14 @@ class FlowerPacket extends Model
 
     public $timestamps = TRUE;
     protected $table = 'flower_packets';
-    protected $with = 'pkg_limit';
+//    protected $with = 'pkg_limit';
 
     protected $fillable = ['title', 'price'];
 
+    public function items()
+    {
+        return $this->morphMany('App\DB\OrderItem', 'itemable');
+    }
     public static function GetPckt()
     {
         return FlowerPacket::select(['id', 'title', 'price'])->get()->toArray();
@@ -27,11 +31,12 @@ class FlowerPacket extends Model
         return $this->belongsToMany(FlowerPackage::class);
     }
 
-    public function pkg_limit()
-    {
-        return $this->belongsToMany(FlowerPackage::class)->select('name');
+//    public function pkg_limit()
+//    {
+//        return $this->belongsToMany(FlowerPackage::class)->select('name');
+//
+//    }
 
-    }
 
 }
 

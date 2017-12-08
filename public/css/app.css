@@ -3504,7 +3504,14 @@ ul.ng-table-pagination {
   color: white; }
 
 .card_sty {
-  border-radius: 22px; }
+    border-radius: 22px;
+    position: relative;
+}
+
+.crd-btn {
+    position: absolute;
+    left: 0px;
+}
 
 #card_pass {
   background-color: #F2DEDE; }
@@ -3612,12 +3619,19 @@ div#box label {
 
 #date-du {
   border: 1px solid #aba3a3;
-  border-radius: 10px; }
+    border-radius: 10px;
+    width: 100%;
+}
 
 .mp {
   padding: 5px; }
 
 #reagent input {
   border-radius: 0.285714rem !important; }
+
+.date_pos {
+    display: inline-block;
+    float: left;
+}
 
 /*# sourceMappingURL=app.css.map */

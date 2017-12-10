@@ -80,12 +80,12 @@ class OrderController extends Controller {
         $record = OrderItem::select([
             '*',
             OrderItem::$SELECT_SENT_AT,
+            OrderItem::$SELECT_PERIOD,
             DB::Raw('count(*) as Day_count')
 
-        ])->whereItemable_type('FlowerPacket')->with('flowerPacket')->groupBy(DB::Raw('DATE(sent_at)'), 'combination');
+        ])->whereItemable_type('FlowerPacket')->with('flowerPacket')->groupBy(DB::Raw('DATE(sent_at)'), 'combination', 'period');
         //overwrite number of total
         $count = $record->get()->count();
-
         //print table out
         $input = $request->all();
         if (isset($input['exportPrint'])) {
@@ -219,9 +219,13 @@ class OrderController extends Controller {
                 $last_date = '';
                 //first of all submit order in orders
                 $start_order = clone $started_at;
-
+                if ($input['new_orders'][$i]['time'] == 1 || $input['new_orders'][$i]['time'] == 2)
+                    $period = 1;
+                if ($input['new_orders'][$i]['time'] == 3 || $input['new_orders'][$i]['time'] == 4)
+                    $period = 2;
                 //order type
                 if (!empty($input['new_orders'][$i]['pck_type'])) {
+
 
                     if (!empty($input['new_orders'][$i]['w'])) {
 
@@ -262,11 +266,11 @@ class OrderController extends Controller {
                         if (isset($packets_rand[$rand_keys]['name']))
                             $rnd_pkt = $packets_rand[$rand_keys]['name'];
 
-
                         $orderItem = new OrderItem();
                         $orderItem->order_id = $id;
                         $orderItem->sts = 1;
                         $orderItem->count = 0;
+                        $orderItem->period = $period;
                         $orderItem->combination = $rnd_pkt;
                         $orderItem->sent_at = $start_order;
                         $txt = explode('-', $rnd_pkt);
@@ -283,6 +287,7 @@ class OrderController extends Controller {
                             $orderItem->order_id = $id;
                             $orderItem->sts = 1;
                             $orderItem->count = 0;
+                            $orderItem->period = $period;
                             $orderItem->combination = $rnd_pkt;
                             $txt = explode('-', $rnd_pkt);
                             $orderItem->text = json_encode($txt);
@@ -319,6 +324,7 @@ class OrderController extends Controller {
                                 $orderItem->order_id = $id;
                                 $orderItem->sts = 1;
                                 $orderItem->count = 0;
+                                $orderItem->period = $period;
                                 $orderItem->combination = $rnd_pkt;
                                 $txt = explode('-', $rnd_pkt);
                                 $orderItem->text = json_encode($txt);
@@ -362,6 +368,7 @@ class OrderController extends Controller {
                                     $orderItem->order_id = $id;
                                     $orderItem->sts = 1;
                                     $orderItem->count = 0;
+                                    $orderItem->period = $period;
                                     $orderItem->combination = $rnd_pkt;
                                     $txt = explode('-', $rnd_pkt);
                                     $orderItem->text = json_encode($txt);
@@ -423,6 +430,7 @@ class OrderController extends Controller {
                         $orderItem->order_id = $id;
                         $orderItem->sts = 1;
                         $orderItem->count = $input['new_orders'][$i]['total'];
+                        $orderItem->period = $period;
                         $orderItem->combination = null;
                         $orderItem->sent_at = $start_order;
                         $orderItem->text = null;
@@ -439,6 +447,7 @@ class OrderController extends Controller {
                             $orderItem->order_id = $id;
                             $orderItem->sts = 1;
                             $orderItem->count = $input['new_orders'][$i]['total'];
+                            $orderItem->period = $period;
                             $orderItem->combination = null;
                             $orderItem->text = null;
                             $orderItem->orderItem($packet);

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
 {
+    protected $fillable = ['period'];
     public static $SELECT_SENT_AT = 'sent_at as sent';
     public static $SELECT_PERIOD = 'period as period_str';
     public static $PERIOD = [
@@ -56,6 +57,16 @@ class OrderItem extends Model
         }
         return array_get(self::$PERIOD, $value, 'تعریف نشده');
 
+    }
+
+    public static function timeDuration()
+    {
+
+        $periods = [
+            1 => 'صبح',
+            2 => 'عصر'
+        ];
+        return $periods;
     }
 
 }

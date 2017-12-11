@@ -51,7 +51,7 @@ class AdminController extends Controller {
      */
     public function getExcelFile(Request $request) {
         if ($request->has('url')) {
-            $job = (new RemoveExcelForm($request->input('url')))->delay(Carbon::now()->addSeconds(60));
+            $job = (new RemoveExcelForm($request->input('url')))->delay(Carbon::now()->addSeconds(2));
             dispatch($job);
             return response()->download(storage_path('app/excel/export') . '/' . $request->input('url'));
         }

@@ -109,12 +109,14 @@ class CustomerController extends Controller {
             Customer::find($input['id'])->update($input);
             return response()->json(['result' => TRUE]);
         } else {
-            $mobile = Cnt::convert($input['mobile']);
+            if (!empty($input['mobile']))
+                $mobile = Cnt::convert($input['mobile']);
             if (!empty($input['phone']))
                 $phone = Cnt::convert($input['phone']);
             if (!empty($input['phone2']))
                 $phone2 = Cnt::convert($input['phone2']);
-            $input['mobile'] = $mobile;
+            if(!empty($mobile))
+              $input['mobile'] = $mobile;
             if (!empty($input['phone']))
                 $input['phone'] = $phone;
             if (!empty($input['phone2']))

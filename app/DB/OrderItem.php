@@ -49,6 +49,11 @@ class OrderItem extends Model
         }
     }
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class)->select(['id', 'cid'])->with('customer');
+
+    }
     public function getPeriodStrAttribute($value)
     {
 

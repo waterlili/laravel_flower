@@ -266,7 +266,9 @@ app.controller('MenusCtrl', function ($scope, htp) {
             });
         }
     };
-
+    _this.affirmation = function () {
+        console.log("jere");
+    };
     _this.submit = function () {
         htp(home('console/node/save-menu'), {id: _this.menu, items: _this.list}).saveSend(trans('subject.menu'));
     };

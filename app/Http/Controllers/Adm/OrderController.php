@@ -107,13 +107,17 @@ class OrderController extends Controller {
 
     public function postDailyOrders(Request $request)
     {
-        $today = jdate()->format('date');
-        $record = Order::select(['orders.number', 'orders.cid'])->where('expired_at', '>=', $today . ' 00:00:00')
-            ->leftJoin('order_packets', 'orders.id', '=', 'order_packets.order_id')
-            ->leftJoin('order_flowers', 'orders.id', '=', 'order_flowers.order_id')
-            ->orderBy('started_at', 'DESC')
-            ->with('customer')->get();
-        return $record;
+        $record = OrderItem::select([
+            '*',
+            OrderItem::$SELECT_SENT_AT,
+            OrderItem::$SELECT_PERIOD,
+
+        ])->with('order');
+//        return $record;
+//        $today = jdate()->format('date');
+//        $record = OrderItem::all()->sortByDesc('sent_at');
+//        $record->load('order');
+
 
 
         $export = $this->tableEngine($record, $request->all(), true);

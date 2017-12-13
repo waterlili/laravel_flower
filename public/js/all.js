@@ -730,7 +730,7 @@ app.controller('AdminCtrl', function ($scope, $window, htp, $interval, $rootScop
 });
 
 
-app.controller('MenuCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+app.controller('MenuCtrl', function ($scope, $timeout, $mdSidenav, $log, $http) {
 
     $scope.last_menu = undefined;
     $scope.show_menu = true;
@@ -849,13 +849,9 @@ app.controller('MenusCtrl', function ($scope, htp) {
             });
         }
     };
-    _this.affirmation = function () {
-        console.log("jere");
-    };
     _this.submit = function () {
         htp(home('console/node/save-menu'), {id: _this.menu, items: _this.list}).saveSend(trans('subject.menu'));
     };
-
 
     _this.addMenu = function () {
         _this.list.push({
@@ -2941,9 +2937,33 @@ app.controller('DailyGenCtrl', function ($scope, $mdDialog, htp) {
     var _this = $scope;
     _this.tbl = {};
 });
-app.controller('DailyOrderCtrl', function ($scope, $mdDialog, htp) {
-    var _this = $scope;
+app.controller('DailyOrderCtrl', function ($scope, $mdDialog, htp, notify) {
+    var _this = $scope
     _this.tbl = {};
+    _this.data = {};
+    _this.orders = [];
+    _this.affirmation = function (row, ngTable) {
+
+        if (row.isSelected) {
+            _this.orders.push(row.id);
+        } else {
+            _this.orders = _.without(_this.orders, row.id);
+        }
+        return _this.orders;
+    }
+    _this.affirmations = function (orders, ngTable) {
+        htp(home('console/order/daily-orders'), {data: _this.orders, confirm: 1})
+            .then(function (response) {
+                notify('success', 'سفارش مورد نظر باموفقیت تایید شد.');
+                // if (ngTable && ngTable != 'null') {
+                //     console.log("here");
+                //     _this.$parent[ngTable].tableParams.reload();
+                // }
+                _this.tbl.reload();
+
+            });
+    };
+
 });
 
 

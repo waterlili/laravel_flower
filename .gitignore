@@ -6,6 +6,6 @@ Homestead.yaml
 Homestead.json
 .env
 /.idea
-bonit.iml
-bonita.iml
+flw-bonit.iml
+flw-bonita.iml
 *.map

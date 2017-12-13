@@ -14,7 +14,7 @@ $table
 
 
 //$table->addFilter('price', 'قیمت', 'packet.price', 'text');
-$table->addFilter('period_str', 'بازه زمانی', 'period_str', 'select');
+$table->addFilter('period', 'بازه زمانی', 'period', 'select', \App\DB\OrderItem::timeDuration());
 $table->addFilter('sent_at', 'تاریخ', 'sent_at', 'date');
 
 ?>

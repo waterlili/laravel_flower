@@ -107,23 +107,29 @@ class OrderController extends Controller {
 
     public function postDailyOrders(Request $request)
     {
-        $record = OrderItem::select([
-            '*',
-            OrderItem::$SELECT_SENT_AT,
-            OrderItem::$SELECT_PERIOD,
+        //confirm that order sent
+        if ($request->confirm == 1) {
+            $group = $request->all();
 
-        ])->with('order');
-//        return $record;
-//        $today = jdate()->format('date');
-//        $record = OrderItem::all()->sortByDesc('sent_at');
-//        $record->load('order');
+            foreach ($group['data'] as $key => $sent) {
+                OrderItem::whereId($sent)->update(['sts' => 0]);
+            }
+            return response()->json(TRUE);
+        } else {
+            $record = OrderItem::select([
+                '*',
+                OrderItem::$SELECT_SENT_AT,
+                OrderItem::$SELECT_PERIOD,
+                //status 1 means order is active right now and doesn't
+                //send till now
+            ])->whereSts(1)->with('order');
+
+            $export = $this->tableEngine($record, $request->all(), true);
 
 
+            return $export;
+        }
 
-        $export = $this->tableEngine($record, $request->all(), true);
-
-
-        return $export;
 
     }
 

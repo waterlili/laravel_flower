@@ -147,7 +147,7 @@ app.controller('AdminCtrl', function ($scope, $window, htp, $interval, $rootScop
 });
 
 
-app.controller('MenuCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+app.controller('MenuCtrl', function ($scope, $timeout, $mdSidenav, $log, $http) {
 
     $scope.last_menu = undefined;
     $scope.show_menu = true;
@@ -266,13 +266,9 @@ app.controller('MenusCtrl', function ($scope, htp) {
             });
         }
     };
-    _this.affirmation = function () {
-        console.log("jere");
-    };
     _this.submit = function () {
         htp(home('console/node/save-menu'), {id: _this.menu, items: _this.list}).saveSend(trans('subject.menu'));
     };
-
 
     _this.addMenu = function () {
         _this.list.push({

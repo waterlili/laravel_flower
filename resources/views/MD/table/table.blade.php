@@ -32,7 +32,7 @@
 
         <md-button class="md-icon-button" ng-click="<% $ngTable %>.serv()"><i
                     class="material-icons md-24 md-dark">refresh</i></md-button>
-        <md-button class="md-icon-button" ng-click="<% $ngTable %>.affirmation()"><i
+        <md-button class="md-icon-button" ng-click="affirmations()"><i
                     class="material-icons" ng-class="{ check_act:!affirmation}">done_all</i>
             <md-tooltip>تایید ارسال ها</md-tooltip>
         </md-button>

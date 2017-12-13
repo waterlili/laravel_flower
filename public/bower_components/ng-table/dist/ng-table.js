@@ -1367,7 +1367,6 @@
                 var isFirstTimeLoad = true;
                 $scope.$filterRow = {};
                 $scope.$loading = false;
-
                 // until such times as the directive uses an isolated scope, we need to ensure that the check for
                 // the params field only consults the "own properties" of the $scope. This is to avoid seeing the params
                 // field on a $scope higher up in the prototype chain

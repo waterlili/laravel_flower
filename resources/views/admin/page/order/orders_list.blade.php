@@ -56,7 +56,8 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 
                         <div flex-gt-md="25" layout-align="start center"
                              ng-repeat="item in item.order_items">
-                            <md-card class="card_sty" id="card_poss" layout="row" ng-if="item.current < item.sent"
+                            <md-card class="card_sty" id="card_poss" layout="row"
+                                     ng-if="item.current < item.sent && item.sts==1"
                                      layout-xs="column" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}"
                                      md-theme-watch>
                                 <div flex style="width:275px">
@@ -75,7 +76,27 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                     </md-button>
                                 </div>
                             </md-card>
-                            <md-card layout="row" class="card_sty" id="card_pass" ng-if="item.current >= item.sent"
+                            <md-card layout="row" class="card_sty" id="card_pass"
+                                     ng-if="item.current >= item.sent && item.sts==1"
+                                     layout-xs="column" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}"
+                                     md-theme-watch>
+                                <div flex style="width:275px">
+                                    <md-card-title>
+                                        <md-card-title-text green>
+
+                                            <span>{{item.sent}}</span>
+                                            <span>{{item.day}}</span>
+                                            <span>{{item.count}}شاخه</span>
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                </div>
+                                <div flex>
+                                    <md-button class="md-icon-button pull-left" aria-label="More">
+                                        <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
+                                    </md-button>
+                                </div>
+                            </md-card>
+                            <md-card layout="row" class="card_sty" id="card_conf" ng-if="item.sts==0"
                                      layout-xs="column" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}"
                                      md-theme-watch>
                                 <div flex style="width:275px">
@@ -102,7 +123,26 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                          ng-if="item.order_items[0].itemable_type=='Flower' && item.type==1 && item.order_payment.sts==1">
                         <div flex-gt-md="25" layout-align="start center"
                              ng-repeat="item in item.order_items">
-                            <md-card class="card_sty" id="card_de" layout="row"
+                            <md-card ng-if="item.sts==1" class="card_sty" id="card_de" layout="row"
+                                     layout-xs="column" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}"
+                                     md-theme-watch>
+                                <div flex style="width:275px">
+                                    <md-card-title>
+                                        <md-card-title-text>
+
+                                            <span>{{item.sent}}</span>
+                                            <span>{{item.day}}</span>
+                                            <span>{{item.count}}شاخه</span>
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                </div>
+                                <div flex>
+                                    <md-button class="md-icon-button pull-left" aria-label="More">
+                                        <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
+                                    </md-button>
+                                </div>
+                            </md-card>
+                            <md-card ng-if="item.sts==0" class="card_sty" id="card_conf" layout="row"
                                      layout-xs="column" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}"
                                      md-theme-watch>
                                 <div flex style="width:275px">
@@ -130,7 +170,8 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 
                         <div flex-gt-md="25" layout-align="start center"
                              ng-repeat="item in item.order_items">
-                            <md-card class="card_sty" id="card_poss" layout="row" ng-if="item.current < item.sent"
+                            <md-card class="card_sty" id="card_poss" layout="row"
+                                     ng-if="item.current < item.sent && item.sts==1"
                                      layout="row" layout-xs="column"
                                      md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
                                 <div flex style="width:275px">
@@ -146,7 +187,24 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                     </md-card-title>
                                 </div>
                             </md-card>
-                            <md-card class="card_sty" id="card_pass" layout="row" ng-if="item.current >= item.sent"
+                            <md-card class="card_sty" id="card_pass" layout="row"
+                                     ng-if="item.current >= item.sent && item.sts==1"
+                                     layout="row" layout-xs="column"
+                                     md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+                                <div flex style="width:275px">
+                                    <md-button class="md-icon-button pull-left crd-btn" aria-label="More">
+                                        <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
+                                    </md-button>
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <span>{{item.sent}}</span>
+                                            <span>{{item.day}}</span>
+                                            <span>{{item.combination}}</span>
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                </div>
+                            </md-card>
+                            <md-card class="card_sty" id="card_conf" layout="row" ng-if="item.sts==0"
                                      layout="row" layout-xs="column"
                                      md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
                                 <div flex style="width:275px">
@@ -171,7 +229,23 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                          ng-if="item.order_items[0].itemable_type=='FlowerPacket' && item.type==1 && item.order_payment.sts==1">
                         <div flex-gt-md="25" layout-align="start center"
                              ng-repeat="item in item.order_items">
-                            <md-card class="card_sty" id="card_de" layout="row"
+                            <md-card ng-if="item.sts==1" class="card_sty" id="card_de" layout="row"
+                                     layout="row" layout-xs="column"
+                                     md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+                                <div flex style="width:275px">
+                                    <md-button class="md-icon-button pull-left crd-btn" aria-label="More">
+                                        <md-icon md-svg-icon="img/button/more_vert.svg"></md-icon>
+                                    </md-button>
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <span>{{item.sent}}</span>
+                                            <span>{{item.day}}</span>
+                                            <span>{{item.combination}}</span>
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                </div>
+                            </md-card>
+                            <md-card ng-if="item.sts==0" class="card_sty" id="card_conf" layout="row"
                                      layout="row" layout-xs="column"
                                      md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
                                 <div flex style="width:275px">

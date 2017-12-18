@@ -81,9 +81,10 @@ class OrderController extends Controller {
             '*',
             OrderItem::$SELECT_SENT_AT,
             OrderItem::$SELECT_PERIOD,
+//            OrderItem::$SELECT_VASE,
             DB::Raw('count(*) as Day_count')
 
-        ])->whereItemable_type('FlowerPacket')->with('flowerPacket')->groupBy(DB::Raw('DATE(sent_at)'), 'combination', 'period');
+        ])->whereItemable_type('FlowerPacket')->with('flowerPacket', 'order')->groupBy(DB::Raw('DATE(sent_at)'), 'combination', 'period');
         //overwrite number of total
         $count = $record->get()->count();
         //print table out

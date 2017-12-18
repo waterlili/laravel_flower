@@ -114,7 +114,8 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
                         price = parseInt(prc_part[1] * item.w);
                 }
 
-                return price;
+                var prc = [price, flag];
+                return prc;
             } else if (item.type == 2) {
                 if (item.flowerVase != undefined)
                     price = parseInt(prc_part[1]) + item.flowerVase;
@@ -136,7 +137,8 @@ app.controller('OrderAddNewCtrl', function ($scope, htp, $rootScope, notify, $md
                     else
                         price = parseInt(prc_part[1] * item.w * item.total * count);
                 }
-                return price;
+                var prc = [price, flag];
+                return prc;
             } else if (item.type == 2) {
                 if (item.flowerVase != undefined)
                     price = parseInt(prc_part[1] * item.total) + item.flowerVase;

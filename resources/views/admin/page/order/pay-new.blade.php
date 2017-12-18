@@ -24,10 +24,13 @@ $date2 = \App\View\Text::create('item.pay_date', 'تاریخ واریز')->dateI
             <div layout-gt-md="row" layout-align="start start">
                 <div class="ui label large blue mb-md">
                     <span>مبلغ قابل پرداخت</span>
-                    <div class="detail">{{calcPrice(item)}}</div>
+                    <div class="detail">{{calcPrice(item)[0]}}</div>
 
                     <!--| currency:"":""-->
                     <span>تومان</span>
+                </div>
+                <div ng-if="calcPrice(item)[1]==1" class="ui label large green mb-md">
+                    <span>گلدان رایگان</span>
                 </div>
                 <div flex></div>
 

@@ -10,6 +10,7 @@ $light-spa-green: #689F38;
 $light-green: #DFF0D8;
 $dark_green: #004D40;
 $dark_grey: #616161;
+$light_grey: #E0E0E0;
 
 @media (min-width: 1280px) {
   .cn-md {
@@ -4603,6 +4604,10 @@ ul.ng-table-pagination {
 
 #card_poss {
   background-color: $light-green;
+}
+
+#card_de {
+  background-color: $light-grey;
 }
 
 .select_multi {

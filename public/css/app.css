@@ -3519,6 +3519,10 @@ ul.ng-table-pagination {
 #card_poss {
   background-color: #DFF0D8; }
 
+#card_de {
+    background-color: #E0E0E0;
+}
+
 .select_multi {
   border: 1px solid #B1B2B3;
   height: 150px;

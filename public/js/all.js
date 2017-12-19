@@ -83,6 +83,7 @@ var _trans_en = {
         'consoleflower_packetlist': 'لیست بسته ها',
         'consoleorderdaily-generation': 'گزارش تولید روزانه',
         'consoleorderdaily-orders': 'لیست سفارشات ارسالی روز',
+        'consoleorderdetail': 'گزارش کلی سفارش ها'
 
     },
     'subject': {
@@ -1213,6 +1214,7 @@ app.controller('DeleteCtrl', function ($scope, htp, $mdDialog, notify) {
     };
 
 });
+
 app.controller('DeleteItemCtrl', function ($scope, htp, $mdDialog, notify) {
     var _this = $scope;
     _this.destroy = function (id, where) {
@@ -1244,6 +1246,7 @@ app.controller('DeleteItemCtrl', function ($scope, htp, $mdDialog, notify) {
         });
     };
 });
+
 app.controller('EditCtrl', function ($scope, htp, $mdDialog, notify, $mdMedia) {
     var _this = $scope;
     _this.showEditDialog = function (ev, template_url, row, ctrl, where, id, ngTable) {
@@ -2850,6 +2853,10 @@ app.controller('DailyGenCtrl', function ($scope, $mdDialog, htp) {
     var _this = $scope;
     _this.tbl = {};
 });
+app.controller('OrderDetailCtrl', function ($scope, $mdDialog, htp) {
+    var _this = $scope;
+    _this.tbl = {};
+});
 app.controller('DailyOrderCtrl', function ($scope, $mdDialog, htp, notify) {
     var _this = $scope
     _this.tbl = {};
@@ -2878,6 +2885,29 @@ app.controller('DailyOrderCtrl', function ($scope, $mdDialog, htp, notify) {
     };
 
 });
+app.controller('PackageCtrl', function ($scope, htp, $mdDialog) {
+    var _this = $scope;
+    _this.showPkDialog = function (ev, id) {
+        console.log("here");
+        // htp(home('console/edit-dialog'), {
+        //
+        // }).then(function (response) {
+        //     $mdDialog.show(
+        //         $mdDialog.alert()
+        //             .parent(angular.element(document.querySelector('#popupContainer')))
+        //             .clickOutsideToClose(true)
+        //             .title('This is an alert title')
+        //             .textContent('You can specify some description text in here.')
+        //             .ariaLabel('Alert Dialog Demo')
+        //             .ok('درسته')
+        //             .targetEvent(ev)
+        //     );
+        // });
+
+
+    };
+});
+
 
 
 app.controller('OrderReportCtrl', function ($scope, htp) {

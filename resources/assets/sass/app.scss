@@ -11,6 +11,7 @@ $light-green: #DFF0D8;
 $dark_green: #004D40;
 $dark_grey: #616161;
 $light_grey: #E0E0E0;
+$light_blue: #D9EDF7;
 
 @media (min-width: 1280px) {
   .cn-md {
@@ -4610,6 +4611,10 @@ ul.ng-table-pagination {
   background-color: $light-grey;
 }
 
+#card_conf {
+  background-color: $light_blue;
+}
+
 .select_multi {
   border: 1px solid #B1B2B3;
   height: 150px;
@@ -4755,28 +4760,37 @@ div#box label {
   float: left;
 }
 
+//table {
+//  margin: 0;
+//  padding: 0;
+//  width: 100%;
+//  table-layout: fixed;
+//}
+//
+//table caption {
+//  font-size: 1.5em;
+//  margin: .5em 0 .75em;
+//}
+//
+//table tr {
+//  padding: .35em;
+//}
+//
+//table th,
+//table td {
+//  padding: .625em;
+//  text-align: right;
+//}
 table {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  table-layout: fixed;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
 }
-
-table caption {
-  font-size: 1.5em;
-  margin: .5em 0 .75em;
-}
-
-table tr {
-  padding: .35em;
-}
-
 table th,
 table td {
   padding: .625em;
   text-align: right;
 }
-
 @media screen and (max-width: 600px) {
   table {
     border: 0;

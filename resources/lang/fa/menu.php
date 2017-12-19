@@ -21,6 +21,7 @@ return [
     'three_option'       => 'Option Three',
     'orders'             => 'سفارش ها',
     'daily_generation' => 'گزارش تولید روزانه',
+    'orders_detail' => 'گزارش سفارش ها',
     'daily_orders' => 'لیست سفارشات ارسالی روز',
     'customer'           => 'مشتریان',
     'last_orders'        => 'سفارش های جدید',

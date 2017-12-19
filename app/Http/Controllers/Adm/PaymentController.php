@@ -17,7 +17,7 @@ class PaymentController extends Controller
         $order_payment = new OrderPayment();
         if (empty($input['new_orders'][$i]['pay_type']) || $input['new_orders'][$i]['pay_type'] == 5) {
 
-            $order_payment->sts = Null;
+            $order_payment->sts = '0';
             $type = null;
         } else {
             $type = $input['new_orders'][$i]['pay_type'];

@@ -3523,6 +3523,10 @@ ul.ng-table-pagination {
     background-color: #E0E0E0;
 }
 
+#card_conf {
+    background-color: #D9EDF7;
+}
+
 .select_multi {
   border: 1px solid #B1B2B3;
   height: 150px;
@@ -3639,19 +3643,9 @@ div#box label {
 }
 
 table {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    table-layout: fixed;
-}
-
-table caption {
-    font-size: 1.5em;
-    margin: .5em 0 .75em;
-}
-
-table tr {
-    padding: .35em;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 table th,

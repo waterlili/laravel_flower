@@ -63,6 +63,11 @@ class OrderController extends Controller {
         return view('admin.page.order.all-list');
     }
 
+    public function getDetail()
+    {
+        return view('admin.page.order.ordersDetail');
+    }
+
     public function getProductListEdit() {
         return view('admin.page.order.block.product-list-edit');
     }
@@ -106,6 +111,29 @@ class OrderController extends Controller {
 
     }
 
+    public function postDetail(Request $request)
+    {
+        $input = $request->all();
+        $record = Order::select([
+            '*',
+            Order::$SELECT_FIRST_J,
+            Order::$SELECT_DAY_STR,
+            Order::$SELECT_Dur_STR,
+            Order::$SELECT_Vase_str
+        ])->with('orderItems', 'customer', 'orderPayment')->orderBy('id', 'asc');
+
+        $this->tableEngine($record, $request->all(), true);
+
+
+        $count = $record->count();
+        $this->tablePaginate($record, $input);
+
+
+        return response()->json([
+            'rows' => $record->get()->toArray(),
+            'total' => $count
+        ]);
+    }
     public function postDailyOrders(Request $request)
     {
         //confirm that order sent

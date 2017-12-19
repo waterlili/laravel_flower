@@ -10,6 +10,7 @@ class OrderItem extends Model
     public static $SELECT_SENT_AT = 'sent_at as sent';
     public static $SELECT_PERIOD = 'period as period_str';
     public static $SELECT_VASE = 'order.vid as vase_str';
+
     public static $PERIOD = [
         1 => 'صبح',
         2 => 'عصر'

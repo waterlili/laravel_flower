@@ -18,13 +18,18 @@ class Order extends Model {
   public static $SELECT_TYPE_STR = 'type as type_str';
   public static $SELECT_CLOSEAT_J = 'closed_at as closed_at_j';
   public static $SELECT_AUTOMATE_STR = 'automate as automate_str';
-    public static $SELECT_DAY_STR = 'week as week_str';
-    public static $SELECT_TIME_STR = 'time as time_str';
-    public static $SELECT_FIRST_J = 'first as first_j';
+    public static $SELECT_DAY_STR = 'daysOfWeek as week_str';
+    public static $SELECT_TIME_STR = 'time_duration as time_str';
+    public static $SELECT_Dur_STR = 'time_duration as duration_str';
+    public static $SELECT_FIRST_J = 'started_at as first_j';
+    public static $SELECT_Vase_str = 'vid as vase_str';
+
 
 
     protected $dates = ['deleted_at'];
-  protected $fillable = array(
+
+
+    protected $fillable = array(
       'cid',
       'number',
       'vid',
@@ -76,6 +81,16 @@ class Order extends Model {
       2 => 'عصر',
     ];
   }
+
+    public static function GetTime()
+    {
+        return [
+            1 => '9-12',
+            2 => '12-15',
+            3 => '15-18',
+            4 => '18-21'
+        ];
+    }
 
   public static function GetType() {
     return [
@@ -171,6 +186,21 @@ class Order extends Model {
     return array_get(self::GetWhen(), $value, 'تعریف نشده');
   }
 
+    public function getDurationStrAttribute($value)
+    {
+        return array_get(self::GetTime(), $value, 'تعریف نشده');
+    }
+
+    public function getVaseStrAttribute($value)
+    {
+        if (is_null($value)) {
+            return 'ندارد';
+        } else {
+
+            return 'دارد';
+        }
+    }
+
     public function getWeekStrAttribute($value)
     {
     if (is_null($value)) {
@@ -179,7 +209,7 @@ class Order extends Model {
     return array_get(self::GetDays(), $value, 'تعریف نشده');
   }
 
-    public function getFirstDateAttribute($value)
+    public function getStartedAtAttribute($value)
     {
         if (is_null($value)) {
             return NULL;
@@ -252,7 +282,7 @@ class Order extends Model {
     }
     public function orderPayment()
     {
-        return $this->hasOne(OrderPayment::class, 'oid');
+        return $this->hasOne(OrderPayment::class, 'oid')->select(['*', 'sts as sts_str']);
     }
 
 

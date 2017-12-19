@@ -25,8 +25,7 @@ class OrderPayment extends Model
 
     );
     public static $StsStr = [
-        '-2' => 'لغو سفارش',
-        '-1' => 'پرداخت نشده',
+        0 => 'پرداخت نشده',
         1 => 'پرداخت شده',
     ];
 

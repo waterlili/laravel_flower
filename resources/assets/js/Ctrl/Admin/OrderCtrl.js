@@ -151,6 +151,10 @@ app.controller('DailyGenCtrl', function ($scope, $mdDialog, htp) {
     var _this = $scope;
     _this.tbl = {};
 });
+app.controller('OrderDetailCtrl', function ($scope, $mdDialog, htp) {
+    var _this = $scope;
+    _this.tbl = {};
+});
 app.controller('DailyOrderCtrl', function ($scope, $mdDialog, htp, notify) {
     var _this = $scope
     _this.tbl = {};
@@ -179,4 +183,27 @@ app.controller('DailyOrderCtrl', function ($scope, $mdDialog, htp, notify) {
     };
 
 });
+app.controller('PackageCtrl', function ($scope, htp, $mdDialog) {
+    var _this = $scope;
+    _this.showPkDialog = function (ev, id) {
+        console.log("here");
+        // htp(home('console/edit-dialog'), {
+        //
+        // }).then(function (response) {
+        //     $mdDialog.show(
+        //         $mdDialog.alert()
+        //             .parent(angular.element(document.querySelector('#popupContainer')))
+        //             .clickOutsideToClose(true)
+        //             .title('This is an alert title')
+        //             .textContent('You can specify some description text in here.')
+        //             .ariaLabel('Alert Dialog Demo')
+        //             .ok('درسته')
+        //             .targetEvent(ev)
+        //     );
+        // });
+
+
+    };
+});
+
 

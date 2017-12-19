@@ -10,7 +10,7 @@ $table
     ->addCol('sent', 'زمان ارسال', FALSE)
     ->addCol('period_str', ' ', FALSE)
     ->addCol('order.customer.description', 'توضیحات', FALSE)
-    ->addInclude('opt', 'عملیات', 'admin.page.order.block.checkOpt');;
+    ->addInclude('opt', 'عملیات', 'admin.page.order.block.checkOpt');
 
 
 //$table->addFilter('price', 'قیمت', 'packet.price', 'text');

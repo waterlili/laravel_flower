@@ -17,7 +17,7 @@ class CreateOrderPaymentsTable extends Migration
             //each orders has a payments
             $table->integer('oid')->unsigned();
             $table->tinyInteger('type')->nullable();
-            $table->tinyInteger('sts')->nullable();
+            $table->tinyInteger('sts')->nullable()->default('0');
             $table->softDeletes();
             $table->timestamps();
 

@@ -4760,28 +4760,37 @@ div#box label {
   float: left;
 }
 
+//table {
+//  margin: 0;
+//  padding: 0;
+//  width: 100%;
+//  table-layout: fixed;
+//}
+//
+//table caption {
+//  font-size: 1.5em;
+//  margin: .5em 0 .75em;
+//}
+//
+//table tr {
+//  padding: .35em;
+//}
+//
+//table th,
+//table td {
+//  padding: .625em;
+//  text-align: right;
+//}
 table {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  table-layout: fixed;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
 }
-
-table caption {
-  font-size: 1.5em;
-  margin: .5em 0 .75em;
-}
-
-table tr {
-  padding: .35em;
-}
-
 table th,
 table td {
   padding: .625em;
   text-align: right;
 }
-
 @media screen and (max-width: 600px) {
   table {
     border: 0;

@@ -40,6 +40,12 @@ return [
                     'ctrl' => 'OrderListCtrl',
                     'rid' => 101
                 ],
+                'orders_detail' => [
+                    'title' => 'menu.orders_detail',
+                    'url' => 'console/order/detail',
+                    'ctrl' => 'OrderDetailCtrl',
+                    'rid' => 101
+                ],
                 'daily_generation' => [
                     'title' => 'menu.daily_generation',
                     'url' => 'console/order/daily-generation',

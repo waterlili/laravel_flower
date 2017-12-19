@@ -16,7 +16,7 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->integer('cid')->unsigned();
             //define vase
-            $table->integer('vid')->unsigned()->nullable();
+            $table->integer('vid')->unsigned()->nullable()->default(0);
             $table->tinyInteger('type');
             //type2 is for diagnose flower or packet
             $table->tinyInteger('type2');

@@ -10,7 +10,7 @@ class OrderItem extends Model
     public static $SELECT_SENT_AT = 'sent_at as sent';
     public static $SELECT_PERIOD = 'period as period_str';
     public static $SELECT_VASE = 'order.vid as vase_str';
-
+    public static $SELECT_Dur_STR = 'period as duration_str';
     public static $PERIOD = [
         1 => 'صبح',
         2 => 'عصر'
@@ -19,6 +19,16 @@ class OrderItem extends Model
         1 => 'دارد',
 
     ];
+
+    public static function GetTime()
+    {
+        return [
+            1 => '9-12',
+            2 => '12-15',
+            3 => '15-18',
+            4 => '18-21'
+        ];
+    }
 
     public function itemable()
     {
@@ -88,6 +98,11 @@ class OrderItem extends Model
             2 => 'عصر'
         ];
         return $periods;
+    }
+
+    public function getDurationStrAttribute($value)
+    {
+        return array_get(self::GetTime(), $value, 'تعریف نشده');
     }
 
 }

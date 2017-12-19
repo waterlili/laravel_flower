@@ -65,6 +65,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                         <md-card-title-text>
 
                                             <span>{{item.sent}}</span>
+                                            <span> ساعت {{item.duration_str}}</span>
                                             <span>{{item.day}}</span>
                                             <span>{{item.count}}شاخه</span>
                                         </md-card-title-text>
@@ -85,6 +86,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                         <md-card-title-text green>
 
                                             <span>{{item.sent}}</span>
+                                            <span> ساعت {{item.duration_str}}</span>
                                             <span>{{item.day}}</span>
                                             <span>{{item.count}}شاخه</span>
                                         </md-card-title-text>
@@ -104,6 +106,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                         <md-card-title-text green>
 
                                             <span>{{item.sent}}</span>
+                                            <span> ساعت {{item.duration_str}}</span>
                                             <span>{{item.day}}</span>
                                             <span>{{item.count}}شاخه</span>
                                         </md-card-title-text>
@@ -131,6 +134,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                         <md-card-title-text>
 
                                             <span>{{item.sent}}</span>
+                                            <span> ساعت {{item.duration_str}}</span>
                                             <span>{{item.day}}</span>
                                             <span>{{item.count}}شاخه</span>
                                         </md-card-title-text>
@@ -150,6 +154,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                         <md-card-title-text>
 
                                             <span>{{item.sent}}</span>
+                                            <span> ساعت {{item.duration_str}}</span>
                                             <span>{{item.day}}</span>
                                             <span>{{item.count}}شاخه</span>
                                         </md-card-title-text>
@@ -167,6 +172,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     <div layout="row" layout-wrap layout-xs="column"
                          ng-if="item.order_items[0].itemable_type=='FlowerPacket' && item.type==1 && item.order_payment.sts==0">
 
+
                         <div flex-gt-md="25" layout-align="start center"
                              ng-repeat="item in item.order_items">
                             <md-card class="card_sty" id="card_poss" layout="row"
@@ -180,6 +186,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                     <md-card-title>
                                         <md-card-title-text>
                                             <span>{{item.sent}}</span>
+                                            <span> ساعت {{item.duration_str}}</span>
                                             <span>{{item.day}}</span>
                                             <span>{{item.combination}}</span>
                                         </md-card-title-text>
@@ -197,6 +204,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                     <md-card-title>
                                         <md-card-title-text>
                                             <span>{{item.sent}}</span>
+                                            <span> ساعت {{item.duration_str}}</span>
                                             <span>{{item.day}}</span>
                                             <span>{{item.combination}}</span>
                                         </md-card-title-text>
@@ -213,6 +221,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                     <md-card-title>
                                         <md-card-title-text>
                                             <span>{{item.sent}}</span>
+                                            <span> ساعت {{item.duration_str}}</span>
                                             <span>{{item.day}}</span>
                                             <span>{{item.combination}}</span>
                                         </md-card-title-text>
@@ -226,6 +235,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                     </div>
                     <div layout="row" layout-wrap layout-xs="column"
                          ng-if="item.order_items[0].itemable_type=='FlowerPacket' && item.type==1 && item.order_payment.sts==1">
+
                         <div flex-gt-md="25" layout-align="start center"
                              ng-repeat="item in item.order_items">
                             <md-card ng-if="item.sts==1" class="card_sty" id="card_de" layout="row"
@@ -238,6 +248,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                     <md-card-title>
                                         <md-card-title-text>
                                             <span>{{item.sent}}</span>
+                                            <span> ساعت {{item.duration_str}}</span>
                                             <span>{{item.day}}</span>
                                             <span>{{item.combination}}</span>
                                         </md-card-title-text>
@@ -254,6 +265,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
                                     <md-card-title>
                                         <md-card-title-text>
                                             <span>{{item.sent}}</span>
+                                            <span> ساعت {{item.duration_str}}</span>
                                             <span>{{item.day}}</span>
                                             <span>{{item.combination}}</span>
                                         </md-card-title-text>
@@ -266,9 +278,12 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 
                 </div>
 
-            </div>
-
-
         </div>
-    </div>
-</div>
+
+
+
+
+
+
+
+

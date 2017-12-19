@@ -38,6 +38,7 @@ Route::group(['middleware' => 'web'], function () {
   Route::post('password/reset', 'Auth\PasswordController@postReset');
   Route::get('password/set/{token}', 'Auth\PasswordController@getPass');
     Route::get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha')
+//    Route::get('order/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha')
     ->middleware('web');
     Route::controller('/payment/{query}', 'Adm\PaymentController'); 
     Route::controller('/console/customer', 'Adm\CustomerController');

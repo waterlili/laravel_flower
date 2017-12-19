@@ -23,6 +23,9 @@ class Order extends Model {
     public static $SELECT_Dur_STR = 'time_duration as duration_str';
     public static $SELECT_FIRST_J = 'started_at as first_j';
     public static $SELECT_Vase_str = 'vid as vase_str';
+    public static $SELECT_Type_str = 'type as type_str';
+    public static $SELECT_Type2_str = 'type2 as type2_str';
+
 
 
 
@@ -99,9 +102,13 @@ class Order extends Model {
     ];
   }
 
-    public static $TypeStr = [
-        1 => 'هفتگی',
-        2 => 'مناسبتی',
+    public static $TYPE = [
+        1 => 'اشتراکی',
+        2 => 'هدیه',
+    ];
+    public static $TYPE2 = [
+        1 => 'بسته',
+        2 => 'گل',
     ];
 
 
@@ -209,6 +216,15 @@ class Order extends Model {
     return array_get(self::GetDays(), $value, 'تعریف نشده');
   }
 
+    public function getFirstDateAttribute($value)
+    {
+        if (is_null($value)) {
+            return NULL;
+        } else {
+            $date = explode(" ", $value);
+            return $date[0];
+        }
+    }
     public function getStartedAtAttribute($value)
     {
         if (is_null($value)) {
@@ -229,7 +245,12 @@ class Order extends Model {
     }
 
   public function getTypeStrAttribute($value) {
-    return array_get(self::GetType(), $value, 'تعریف نشده');
+      return array_get(self::$TYPE, $value, 'تعریف نشده');
+  }
+
+    public function getType2StrAttribute($value)
+    {
+        return array_get(self::$TYPE2, $value, 'تعریف نشده');
   }
 
   public function getClosedAtJAttribute($value) {
@@ -278,7 +299,7 @@ class Order extends Model {
 
     public function orderItems()
     {
-        return $this->hasMany(OrderItem::class, 'order_id');
+        return $this->hasMany(OrderItem::class, 'order_id')->select(['*', 'period as duration_str']);
     }
     public function orderPayment()
     {

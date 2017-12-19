@@ -2874,12 +2874,18 @@ app.controller('DailyOrderCtrl', function ($scope, $mdDialog, htp, notify) {
     _this.affirmations = function (orders, ngTable) {
         htp(home('console/order/daily-orders'), {data: _this.orders, confirm: 1})
             .then(function (response) {
-                notify('success', 'سفارش مورد نظر باموفقیت تایید شد.');
-                // if (ngTable && ngTable != 'null') {
-                //     console.log("here");
-                //     _this.$parent[ngTable].tableParams.reload();
-                // }
-                _this.tbl.reload();
+                if (response) {
+                    notify('success', 'سفارش مورد نظر باموفقیت تایید شد.');
+                    // if (ngTable && ngTable != 'null') {
+                    //     console.log("here");
+                    //     _this.$parent[ngTable].tableParams.reload();
+                    // }
+                    _this.tbl.reload();
+                } else {
+                    notify('warning', 'لطفا سفارش های مورد نظر را انتخاب کنید.');
+
+                }
+
 
             });
     };
@@ -2888,26 +2894,22 @@ app.controller('DailyOrderCtrl', function ($scope, $mdDialog, htp, notify) {
 app.controller('PackageCtrl', function ($scope, htp, $mdDialog) {
     var _this = $scope;
     _this.showPkDialog = function (ev, id) {
-        console.log("here");
-        // htp(home('console/edit-dialog'), {
-        //
-        // }).then(function (response) {
-        //     $mdDialog.show(
-        //         $mdDialog.alert()
-        //             .parent(angular.element(document.querySelector('#popupContainer')))
-        //             .clickOutsideToClose(true)
-        //             .title('This is an alert title')
-        //             .textContent('You can specify some description text in here.')
-        //             .ariaLabel('Alert Dialog Demo')
-        //             .ok('درسته')
-        //             .targetEvent(ev)
-        //     );
-        // });
+        htp(home('console/order/package-list'), {id: id}).then(function (res) {
+            $mdDialog.show(
+                $mdDialog.alert()
+                    .parent(angular.element(document.querySelector('#popupContainer')))
+                    .clickOutsideToClose(true)
+                    .htmlContent('<h4>لیست ترکیب ها</h4>' + '</br>' + '<span style="background:#DDF2D6;">' + res + '</span>')
+                    .ariaLabel('Alert Dialog Demo')
+                    .ok('درسته')
+                    .targetEvent(ev)
+            );
+        });
+
 
 
     };
 });
-
 
 
 app.controller('OrderReportCtrl', function ($scope, htp) {

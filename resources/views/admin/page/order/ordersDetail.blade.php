@@ -8,6 +8,8 @@ $table
     ->addCol('customer.address', 'آدرس', FALSE)
     ->addCol('customer.mobile', 'تلفن', FALSE)
     ->addCol('amount', 'هزینه(ریال)', FALSE)
+    ->addCol('type_str', 'نوع سفارش', FALSE)
+    ->addCol('type2_str', 'نوع سفارش', FALSE)
     ->addCol('order_payment.sts_str', 'وضعیت', FALSE)
     ->addCol('started_at', 'اولین ارسال', FALSE)
     ->addCol('week_str', 'روز', FALSE)

@@ -86,7 +86,6 @@ class OrderController extends Controller {
             '*',
             OrderItem::$SELECT_SENT_AT,
             OrderItem::$SELECT_PERIOD,
-//            OrderItem::$SELECT_VASE,
             DB::Raw('count(*) as Day_count')
 
         ])->whereItemable_type('FlowerPacket')->with('flowerPacket', 'order')->groupBy(DB::Raw('DATE(sent_at)'), 'combination', 'period');
@@ -119,9 +118,11 @@ class OrderController extends Controller {
             Order::$SELECT_FIRST_J,
             Order::$SELECT_DAY_STR,
             Order::$SELECT_Dur_STR,
-            Order::$SELECT_Vase_str
+            Order::$SELECT_Vase_str,
+            Order::$SELECT_Type_str,
+            Order::$SELECT_Type2_str
         ])->with('orderItems', 'customer', 'orderPayment')->orderBy('id', 'asc');
-
+//
         $this->tableEngine($record, $request->all(), true);
 
 
@@ -134,6 +135,17 @@ class OrderController extends Controller {
             'total' => $count
         ]);
     }
+
+    public function postPackageList(Request $request)
+    {
+        $Items = OrderItem::where('order_id', $request->id)->get();
+        $combinations = array();
+        foreach ($Items as $Item) {
+            $cb = ltrim($Item->combination, '"');
+            $combinations[] = $cb . ' ';
+        }
+        return $combinations;
+    }
     public function postDailyOrders(Request $request)
     {
         //confirm that order sent
@@ -141,9 +153,12 @@ class OrderController extends Controller {
             $group = $request->all();
 
             foreach ($group['data'] as $key => $sent) {
-                OrderItem::whereId($sent)->update(['sts' => 0]);
+                $up = OrderItem::whereId($sent)->update(['sts' => 0]);
             }
-            return response()->json(TRUE);
+            if (!empty($up))
+                return response()->json(TRUE);
+            else
+                return response()->json(FALSE);
         } else {
             $record = OrderItem::select([
                 '*',

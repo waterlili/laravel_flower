@@ -5,7 +5,6 @@ $table
     ->addCol('flower_packet["price"]', 'قیمت', FALSE)
     ->addCol('combination', 'ترکیب', FALSE)
     ->addCol('period_str', 'بازه زمانی', FALSE)
-    ->addCol('order.vid', 'گلدان', FALSE)
     ->addCol('sent', 'تاریخ', FALSE)
     ->addCol('Day_count', 'تعداد', FALSE);
 

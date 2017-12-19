@@ -56,12 +56,14 @@
             </div>
         </div>
         <section layout="row" style="height: 100%">
+
             <md-sidenav
                     flex
                     class="md-sidenav-right"
                     md-component-id="menu"
                     md-is-locked-open="$mdMedia('gt-md')"
                     md-whiteframe="4">
+
                 <md-content flex layout-fill class="md-bg md-accent md-hue-1" ng-controller="MenuCtrl">
                     @include('admin.block.profileMneu')
                     @include('admin.block.menu')

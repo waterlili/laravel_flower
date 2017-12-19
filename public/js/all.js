@@ -1214,7 +1214,6 @@ app.controller('DeleteCtrl', function ($scope, htp, $mdDialog, notify) {
     };
 
 });
-
 app.controller('DeleteItemCtrl', function ($scope, htp, $mdDialog, notify) {
     var _this = $scope;
     _this.destroy = function (id, where) {
@@ -1246,7 +1245,6 @@ app.controller('DeleteItemCtrl', function ($scope, htp, $mdDialog, notify) {
         });
     };
 });
-
 app.controller('EditCtrl', function ($scope, htp, $mdDialog, notify, $mdMedia) {
     var _this = $scope;
     _this.showEditDialog = function (ev, template_url, row, ctrl, where, id, ngTable) {

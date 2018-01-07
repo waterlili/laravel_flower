@@ -121,7 +121,7 @@ class OrderController extends Controller {
             Order::$SELECT_Vase_str,
             Order::$SELECT_Type_str,
             Order::$SELECT_Type2_str
-        ])->with('orderItems', 'customer', 'orderPayment')->orderBy('id', 'asc');
+        ])->with('orderItems', 'customer', 'orderPayment')->orderBy('started_at', 'asc');
 //
         $this->tableEngine($record, $request->all(), true);
 
@@ -142,6 +142,7 @@ class OrderController extends Controller {
         $combinations = array();
         foreach ($Items as $Item) {
             $cb = ltrim($Item->combination, '"');
+            $cb  = '<div class="ui blue label">'.$cb.'</div>';
             $combinations[] = $cb . ' ';
         }
         return $combinations;
@@ -159,14 +160,14 @@ class OrderController extends Controller {
                 return response()->json(TRUE);
             else
                 return response()->json(FALSE);
-        } else {
+        } else { 
             $record = OrderItem::select([
                 '*',
                 OrderItem::$SELECT_SENT_AT,
                 OrderItem::$SELECT_PERIOD,
                 //status 1 means order is active right now and doesn't
                 //send till now
-            ])->whereSts(1)->with('order');
+            ])->whereSts(1)->orderBy('sent_at', 'asc')->with('order');
 
             $export = $this->tableEngine($record, $request->all(), true);
 
@@ -279,8 +280,6 @@ class OrderController extends Controller {
                     $period = 2;
                 //order type
                 if (!empty($input['new_orders'][$i]['pck_type'])) {
-
-
                     if (!empty($input['new_orders'][$i]['w'])) {
 
                         $order = $this->submitOrder($input, $orders, $started_at)->getData();
@@ -406,7 +405,7 @@ class OrderController extends Controller {
                                     $rand_keys = array_rand($packets_rand, 1);
                                 } else {
                                     DB::table('orders')->latest()->delete();
-                                    return response()->json(['result' => FALSE], 422);
+                                    return response()->json(['result' => 12], 422);
                                 }
                                 if (!empty($exist_arr) && in_array($rand_keys, $exist_arr)) {
                                     $j--;

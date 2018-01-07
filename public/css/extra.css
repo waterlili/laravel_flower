@@ -18,3 +18,8 @@ input[ui-mask] {
 fieldset {
   border: 1px solid #aba3a3;
 }
+table {
+  display: table;
+  overflow: auto;
+  white-space: normal;
+}

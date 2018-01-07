@@ -8,7 +8,7 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 
 ?>
 
-<div class="ui styled accordion" style="width: 100%">
+<div class="ui styled accordion mt-md" style="width: 100%">
     <div ng-if="item" flex layout="column" layout-align="center center" class="text-c enter">لیست سفارشات مشتری</div>
     <div class="title" layout="row" layout-align="start center" data-ng-init="init()"
          ng-repeat-start="item in data.orders.orders">
@@ -278,12 +278,11 @@ $first2 = \App\View\Text::create('item.first', 'تاریخ ارسال')->dateInp
 
                 </div>
 
+            </div>
         </div>
+    </div>
+</div>
 
-
-
-
-
-
-
-
+<div class="notice notice-error" ng-if="data.orders.orders.length == 0">
+هیچ سفارشی برای این کاربر به ثبت نرسیده است.
+</div>

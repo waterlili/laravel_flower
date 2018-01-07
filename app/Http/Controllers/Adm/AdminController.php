@@ -163,6 +163,15 @@ class AdminController extends Controller {
     }
 
 
+
+    protected function editFlowerpackets(Request $request) {
+        $input = $request->all();
+        $fp = new FlowerPacketController();
+        return $fp->edit($request);
+//        return response()->json(TRUE);
+    }
+
+
     protected function editCustomer(Request $request) {
         $input = $request->all();
         if (!empty($input['data']['reagent'])) {

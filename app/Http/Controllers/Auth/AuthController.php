@@ -138,7 +138,7 @@ class AuthController extends Controller {
       $data['remember'] = FALSE;
     }
     if (Auth::attempt([
-      'email' => $data['email'],
+      'username' => $data['email'],
       'password' => $data['password']
     ], $data['remember'])
     ) {

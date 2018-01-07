@@ -37,12 +37,13 @@ class FlowerPacketController extends Controller
 
     public function postList(Request $request)
     {
-        $record = FlowerPacket::select([
-            '*',
-
-        ]);
-
+        $record = FlowerPacket::with('packages')->select(['*']);
         return $this->tableEngine($record, $request->all());
+    }
+
+    public function edit(Request $request){
+        $input = $request->all();
+        return response()->json(true);
     }
 
     public function postAdd(Request $request)

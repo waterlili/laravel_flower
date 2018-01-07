@@ -13,7 +13,7 @@ $comp_package = \App\View\Select::create('comp.package', 'ترکیب', \App\DB\F
 
         <fieldset>
             <legend>افزودن ترکیب</legend>
-            <div layout-gt-md="row" layout-align="start center">
+            <div layout-gt-md="row" layout-align="start start">
                 <div flex-gt-md="35">
                     @include('MD.input.select-sm' , $comp_package)
                 </div>

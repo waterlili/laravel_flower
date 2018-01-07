@@ -16,6 +16,7 @@ $table->addFilter('nemad', 'نماد', 'nemad', 'text');
 $table->addFilter('price', 'قیمت', 'price', 'number');
 
 $table->addFilter('created_at', 'تاریخ ایجاد', 'created_at', 'date');
+$table->extraRow('admin.page.flower.block.extra-row');
 
 ?>
 @include('MD.table.table' , $table->export())

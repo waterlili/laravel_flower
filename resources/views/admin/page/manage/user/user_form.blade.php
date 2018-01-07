@@ -19,6 +19,7 @@ $email->hasMessage('Form', 'email');
 $confirm->hasMessage('Form', 'confirm');
 $password->hasMessage('Form', 'password');
 $confirm->setMessage('confirm', trans('subject.password_confirm_must_be_same'));
+$type = \App\View\Select::create('data.type' , 'نوع کاربری',\App\DB\User::$TYPES)->setRequired(true)->export();
 ?>
 
 <section class="w-box p-md">
@@ -28,23 +29,16 @@ $confirm->setMessage('confirm', trans('subject.password_confirm_must_be_same'));
                 @include('MD.header.header' , ['title'=>'ایجاد کاربر'])
                 <div layout-gt-md="row">
                     <div flex-gt-md="50">
-                        @include('MD.input.text' , $fname->export())
-                        @include('MD.input.text' , $lname->export())
+                        @include('MD.input.text-sm' , $fname->export())
+                        @include('MD.input.text-sm' , $lname->export())
                     </div>
-                    <div flex-gt-md="50">
-                        <md-input-container>
-                            <label><% trans('field.user_type') %></label>
-                            <md-select ng-model="data.type">
-                                @foreach(\App\DB\User::$TYPES as $key=>$item)
-                                    <md-option value="<% $key %>"><% trans($item) %></md-option>
-                                @endforeach
-                            </md-select>
-                        </md-input-container>
-                        @include('MD.input.text' , $username->export())
-                        @include('MD.input.text' , $email->export())
+                    <div flex-gt-md="50" class="mr-md-md">
+                        @include('MD.input.select-sm' , $type)
+                        @include('MD.input.text-sm' , $username->export())
+                        @include('MD.input.text-sm' , $email->export())
                         @if(!isset($edt))
-                            @include('MD.input.text' , $password->export())
-                            @include('MD.input.text' , $confirm->export())
+                            @include('MD.input.text-sm' , $password->export())
+                            @include('MD.input.text-sm' , $confirm->export())
                         @endif
                     </div>
                 </div>

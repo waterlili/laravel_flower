@@ -2056,6 +2056,7 @@ app.controller('FlowerPackageAddCtrl', function ($scope, htp, $controller) {
                 });
                 result = tmp;
             });
+               console.log(result);
             _this.data.combine_arr = result;
         };
     };

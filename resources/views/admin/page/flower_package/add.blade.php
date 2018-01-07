@@ -57,7 +57,7 @@ $comp_count = \App\View\Text::create('comp.count', 'تعداد')->form()->export
         </div>
         <fieldset>
             <ul style="list-style: none">
-                <li ng-repeat="item in data.combine_arr">
+                <li ng-repeat="item in data.combine_arr track by $index">
                     <label>
                         <input type="checkbox" ng-checked="data.checkedCombines.indexOf(item) != -1"
                                ng-click="toggleCheck(item)" name="datacombines[]" value="{{item}}">
